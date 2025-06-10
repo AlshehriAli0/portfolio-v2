@@ -1,0 +1,266 @@
+---
+title: "From 200 Line Nightmare to 10x Speed: Optimizing SQL Like a Pro"
+summary: "Ever struggled with a 200 line SQL query that made no sense? Same. 
+It was slow, messy, and inefficient. But with some digging and database magic, 
+I 10x’ed performance and made it way more maintainable. Separating concerns, leveraging the database,
+and fetching only what’s needed can turn a sluggish app into a lightning fast one. Your users and
+future self will thank you."
+---
+
+### The Mess I Inherited
+
+When I first joined the company, I naturally took a quick dive into the codebase to get a general understanding of how it works.
+This helped me quickly grasp the structure of the codebase, when I reached the core
+functionality in the backend services I was welcomed with a 200 line sql query that no matter how much I tried to read it or
+understand it, it was a big mess with many joins and sub queries, and I wasn't even sure what it was doing.
+
+Simply, it felt like navigating a jungle in the dark, yet after finding the way to fix all this (not to brag but I literally 10x'ed
+it lol) it has become a big personal
+achievement for me, and a big step towards becoming a better engineer.
+
+![Plans to fixing](../plans-meme.png)
+
+### The Philosophy of Separation of Concerns
+
+The general definition of separation of concerns is that each component of a system should be responsible for only one thing, but to me
+this sounds like a very vague definition or strategy that may make a codebase have 1000 components functions or classes that are absolutely
+just bloating the codebase, and I'm not sure if this is the right way to go about it.
+
+A better way to think about it is that each component should be responsible for one middle sized piece of functionality or logic,
+of course you should not do too much or too little with each component, but the idea is that each component should be responsible for
+one thing, and that thing should be as small as possible, yet as big as possible in the same time if that makes sense.
+
+Many people think the database is only meant to **store** data, but it's actually meant to **store & manage**,
+I thought that separating logic in the backend service was better than in the database because database logic might create bottlenecks and slow down performance, but after research I found out that it will boost the performance of the service, many calculations and
+functionalities will be done faster if the the database handled them instead of **your code** doing it since the major databases already
+have built in functions for your case or already are optimized for it behind the scenes.
+
+### The Art of Database Design
+
+Good database design isn't just about getting the relations right, or the data types right, its about understanding how
+the data is going to be used, retrieved and queried, when making the structure there has to be a general idea of how each group of
+data will be queried. In many cases the database model will be solid but without thought of how it will be queried it can make
+the process very complex and slow or even having to rewrite the entire database model.
+
+In my case restructuring the database model wasn't a viable option since we don't have the time to do it due to the fact that we
+have many business and product plans we need to follow, so I gave in and decided to tackle the 200 line sql query that was
+causing me so much pain to start with. One reason why this query was so large is the lack of separation of concerns, so just by
+creating more controllers while also bringing the complexity of the query down, I was able to make the smaller queries much more
+readable, performant and easier to maintain.
+
+Also there were many queries that could be grouped together, for example there was a query that was getting the user
+object but to get the user photo url to retrieve it from the bucket it had a separate query that would run in a loop for each
+user object you fetched, so imagine that you fetched 100 users, you would have to run 100 queries to get the
+user photos, so I just grouped them together and made a single query that would get all the user photos in one query.
+
+#### **Before Optimization: Fetching Users and Their Photos Separately**
+
+```typescript
+import { db } from "@/db";
+import { users, userPhotos } from "@/db/schema";
+import { eq } from "drizzle-orm";
+
+import { sql, eq } from "drizzle-orm";
+
+async function getUsersWithPhotos() {
+  const fetchedUsers = await db.execute(sql`
+    SELECT 
+      users.id, 
+      users.name, 
+      users.email, 
+      userProfiles.bio
+    FROM users
+    LEFT JOIN userProfiles ON users.id = userProfiles.userId
+  `);
+
+  for (const user of fetchedUsers) {
+    const photo = await db
+      .select({ url: userPhotos.url })
+      .from(userPhotos)
+      .where(eq(userPhotos.userId, user.id))
+      .orderBy(userPhotos.createdAt)
+      .limit(1);
+
+    user.photo = photo.length > 0 ? photo[0].url : null;
+  }
+
+  return fetchedUsers;
+}
+```
+
+#### **After Optimization: Fetching Users and Their Photos Combined**
+
+```typescript
+import { sql } from "drizzle-orm";
+
+async function getUsersWithPhotos() {
+  const fetchedUsers = await db.execute(sql`
+    SELECT 
+      users.id, 
+      users.name, 
+      users.email, 
+      userProfiles.bio, 
+      latestPhotos.url AS photo
+    FROM users
+    LEFT JOIN userProfiles ON users.id = userProfiles.userId
+    LEFT JOIN (
+      SELECT userPhotos.userId, userPhotos.url 
+      FROM userPhotos
+      WHERE userPhotos.createdAt = (
+        SELECT MAX(createdAt) 
+        FROM userPhotos p 
+        WHERE p.userId = userPhotos.userId
+      )
+    ) AS latestPhotos ON users.id = latestPhotos.userId
+  `);
+
+  return fetchedUsers;
+}
+```
+
+Additionally, another big thing you should always have in mind is **Fetch what you need**, even if the query is small if every time
+I wanted to get the user object I would have to fetch the entire user object with all data relating to it, this is a waste of
+resources and can cause a lot of overhead, if you want make your app fast you should rely on database level filtering
+instead of fetching the entire object and filtering it in your code.
+
+#### **Inefficient: Fetching All User Data**
+
+```typescript
+import { sql } from "drizzle-orm";
+
+async function getUsersWithPhotos() {
+  // Fetch ALL user data (including unnecessary fields)
+  const users = await db.execute(sql`SELECT * FROM users`);
+
+  const filteredUsers = [];
+
+  for (const user of users) {
+    const photo = await db.execute(sql`
+      SELECT url FROM userPhotos WHERE userId = ${user.id} ORDER BY createdAt DESC LIMIT 1
+    `);
+
+    // We manually extract only the necessary fields
+    filteredUsers.push({
+      id: user.id,
+      name: user.name,
+      photo: photo.length > 0 ? photo[0].url : null,
+    });
+
+    //  We fetched ALL columns but only needed three
+    //  making the query unnecessarily slow.
+  }
+
+  return filteredUsers;
+}
+```
+
+#### **After Optimization: Fetching Only Necessary Data**
+
+```typescript
+import { sql } from "drizzle-orm";
+
+async function getUsersWithPhotos() {
+  const users = await db.execute(sql`
+    SELECT 
+      users.id, 
+      users.name, 
+      latestPhotos.url AS photo
+    FROM users
+    LEFT JOIN (
+      SELECT userPhotos.userId, userPhotos.url
+      FROM userPhotos
+      WHERE userPhotos.createdAt = (
+        SELECT MAX(createdAt) 
+        FROM userPhotos p WHERE p.userId = userPhotos.userId
+      )
+    ) AS latestPhotos ON users.id = latestPhotos.userId
+  `);
+
+  // No extra filtering needed, already optimized!
+  return users;
+}
+```
+
+### The 10x Optimization
+
+After optimizing the query, the code was much more readable, performant and easier to maintain, although the optimizations
+I mentioned above may seem small and insignificant such as making the queries smaller or more optimal and
+also just fetching the actual thing we need making the request smaller,
+but they make a big difference especially in large codebases, or service that has to be fast and performant.
+
+This all happened because I was responsible of a feature that required **Infinite Scrolling**, to put it into perspective
+after implementing the feature and before the optimizations each page (section you scroll down to) would take about 3 seconds to load,
+imagine scrolling on instagram or tik tok and you reach the end of the page, how frustrating would it be to wait for 3 seconds every
+few posts for the nest to load.
+
+Very proud that all the digging and optimizations I did was worth it, I have managed to bring it down to an average of sub
+**0.3 seconds !**
+
+Now it feels instantaneous, you wont even notice reaching the end of the page.
+
+#### **After Optimization: Average response time**
+
+![Average Response Time](../blazing-requests.png)
+
+### Bonus: Pro Tips learned from this Experience
+
+Before we wrap this up, let’s talk about some bonus tips that can take your database optimization to the next level.
+These are the little things that, when done right, can make a huge difference in how your queries perform.
+Think of them as the secret sauce to keeping your database running smoothly.
+
+#### Indexing is Your Best Friend
+
+Indexes are like the table of contents in a book,they help the database find what it’s looking for without scanning every single page.
+If you’re querying a column frequently (like userId or accountName), slap an index on it. But be careful, over indexing can slow down
+writes, so only index what you actually need. It’s a balancing act, but when done right, it’s pure magic.
+
+#### Use EXPLAIN to Understand What’s Happening Under the Hood
+
+If you’re not using EXPLAIN (or its equivalent in your database), trust me when I say you’re wasting your time.
+database is executing your query what indexes it’s using, how it’s joining tables, and where the bottlenecks are.
+It’s like having X ray vision for your queries.
+
+When I ran EXPLAIN on that monstrous 200 line query, it was amazing. I could see exactly where the database was
+struggling whether it was a missing index, a poorly optimized join, or a subquery that was running way too many times.
+With this knowledge, I was able to refactor the query step by step, making it faster and more efficient.
+
+#### Test, Test, and Test Some More
+
+Optimization isn’t a one and done deal. You need to test your changes thoroughly to make sure they’re actually improving performance.
+This means running your queries in different scenarios small datasets, large datasets, edge cases, you name it.
+And don’t just rely on local testing run your optimized queries in a staging environment that mimics production as closely as possible.
+
+In my case, after optimizing the infinite scroll feature, I ran a bunch of tests to simulate real world usage.
+I loaded hundreds of items, scrolled through pages, and monitored the response times.
+It was only after seeing consistent sub 0.3 second loads that I felt confident pushing the changes to next release.
+
+![bell curve meme](../optimizing-meme.webp)
+
+### Lessons Learned: The Journey to Becoming a Better Engineer
+
+This whole experience was a huge learning curve for me, and it taught me some valuable lessons that I’ll carry with me throughout my
+career. Here’s the TL;DR of what I took away:
+
+- **Separation of Concerns is a Guiding Light, Not a Rulebook**, It’s not about splitting everything into a million tiny pieces.
+  It’s about finding the right balance—keeping your components focused but not overly fragmented.
+  Think of it like organizing your closet: you don’t want one giant pile of clothes, but you also don’t want a separate drawer
+  for every sock.
+
+- **Databases Are Smarter Than You Think**, Don’t be afraid to let the database do the heavy lifting. It’s optimized for this stuff,
+  and chances are, it’ll do a better job than your code. Trust the database, but also understand how it works so you can use it
+  effectively.
+
+- **Optimization is a Mindset**, It’s not just about making things faster—it’s about thinking critically about how your code interacts
+  with the database, how data flows through your system, and where the bottlenecks are. Every small improvement adds up, and over
+  time, those improvements can lead to a 10x boost in performance.
+
+- **Patience and Persistence Pay Off**, When I first saw that 200 line query, I wanted to cry. But breaking it down,
+  understanding it piece by piece, and iterating on it taught me so much. It’s a reminder that even the messiest problems
+  can be solved with patience and persistence.
+
+- **Celebrate the Wins**, Bringing that query down from 3 seconds to 0.3 seconds felt like winning a marathon.
+  It’s important to celebrate these moments—they’re a reminder of how far you’ve come and how much you’ve grown as an engineer.
+
+So, if you’re staring down a massive, convoluted query or a database model that feels like a maze, don’t panic.
+Take a deep breath, grab a cup of coffee, and start chipping away at it. Remember, every optimization—no matter how small—is a step
+toward a faster, more efficient system. And who knows? You might just 10x your performance Just like the way I did ^-^.
