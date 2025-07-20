@@ -50,11 +50,7 @@ export default async function Home() {
           </span>
         </h1>
         <p className="text-slate-700 text-lg md:text-xl leading-normal">
-          I work with amazing companies to create exceptional products. Most
-          recently i started working with Netzero to help make the world a
-          greener place using tech. Before that, I built numerous personal
-          projects and freelance solutions. As well as pursing a computer
-          science bachelors degree at Imam Abdulrahman Bin Faisal University.
+          I work with amazing companies to create exceptional products.
         </p>
         <Link
           href="/info"

@@ -48,10 +48,17 @@ export default async function InfoPage() {
           side working with some amazing companies to help them build theirs.
         </p>
         <p>
+          Most recently i started working with Netzero to help make the world a
+          greener place using tech. Before that, I built numerous personal
+          projects and freelance solutions. .
+        </p>
+        <p>
           Currently, I&apos;m working as a software engineer with Netzero to
           help build the future of a greener world. Originally joining as a
           intern, I&apos;m also a part of wavez as freelance developer whose
-          ready to turn ideas into reality instantly.
+          ready to turn ideas into reality instantly. As well as pursing an
+          Artificial Intelligence bachelors degree at Imam Abdulrahman Bin
+          Faisal University.
         </p>
 
         <p>
