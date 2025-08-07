@@ -1,9 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Metadata } from "next";
 
 import { ArticleLink } from "./components/article-link";
-import clsx from "clsx";
 import { getAllPosts } from "@/lib/articles";
 import { Title } from "@/app/components/title";
 
@@ -12,26 +10,6 @@ export const metadata: Metadata = {
     canonical: "https://ali-sh.com/",
   },
 };
-
-const projects: {
-  href?: string;
-  title: string;
-  description: string;
-  image: string;
-}[] = [
-  {
-    title: "DocLabs",
-    href: "https://doclabs.app/",
-    description: "The revamped DocLabs landing page",
-    image: "/doclabs.png",
-  },
-  {
-    title: "UFB Portfolio",
-    href: "https://ufbsa.com/",
-    description: "A Portfolio website.",
-    image: "/ufb.png",
-  },
-];
 
 export const dynamic = "force-static";
 
@@ -64,49 +42,10 @@ export default async function Home() {
       </section>
 
       <section className="pb-16">
-        <Title as="h2" variant="secondary" className="mb-4">
-          Personal Projects
-        </Title>
-
         <p className="text-slate-700 text-lg">
-          Below is a selection of recent projects that I&apos;ve worked on.
-        </p>
-        <div className="lg:w-[170%] lg:-ml-[35%] grid grid-cols-1 md:grid-cols-2 grid-flow-dense gap-8 mt-16">
-          {projects.map((project) => {
-            const isLink = !!project.href;
-            const WrappingComponent = isLink ? Link : "div";
-
-            return (
-              <WrappingComponent
-                href={project.href ?? "/"}
-                key={project.title}
-                className={clsx(
-                  "flex flex-col justify-center bg-slate-100 hover:bg-slate-200/55 hover:shadow-md group transition-colors rounded-xl p-8"
-                )}
-              >
-                <div className="relative rounded-xl mb-4 shadow-project">
-                  <Image
-                    width={450}
-                    height={240}
-                    src={project.image}
-                    alt=""
-                    className="rounded-xl bg-cover"
-                  />
-                </div>
-                <h3 className="text-slate-700 font-semibold tracking-tight text-xl">
-                  {project.title}
-                </h3>
-                <h3 className="text-slate-500 text-base">
-                  {project.description}
-                </h3>
-              </WrappingComponent>
-            );
-          })}
-        </div>
-        <p className="text-slate-700 pt-14">
-          Many more projects can be found in my{" "}
-          <Link href={"https://github.com/AlshehriAli0"} className="underline">
-            Github
+          You can find my personal projects on my{" "}
+          <Link href="https://github.com/AlshehriAli0" className="underline">
+            GitHub
           </Link>
           .
         </p>
