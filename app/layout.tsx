@@ -125,7 +125,7 @@ export default function RootLayout({
       >
         <div className="max-w-2xl lg:max-w-xl mx-auto">
           <Nav />
-          <TransitionProvider>{children}</TransitionProvider>
+          {children}
 
           <footer className="px-4 md:px-0 border-t border-slate-200 py-8 text-slate-700 font-mono text-xs tracking-tight flex justify-between">
             <p>

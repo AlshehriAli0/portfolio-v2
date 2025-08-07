@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
-import Transition from './Transition';
+import { AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+import Transition from "./Transition";
 
 export default function TransitionProvider({
   children,
@@ -12,7 +12,7 @@ export default function TransitionProvider({
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" initial={false}>
       <Transition key={pathname}>{children}</Transition>
     </AnimatePresence>
   );
