@@ -5,17 +5,6 @@ const nextConfig = {
   redirects: async () => {
     return [
       {
-        source: "/:path*",
-        has: [
-          {
-            type: "host",
-            value: "www.ali-sh.com",
-          },
-        ],
-        destination: "https://ali-sh.com/:path*",
-        permanent: true,
-      },
-      {
         source: "/profile",
         destination: "/",
         permanent: true,
