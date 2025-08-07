@@ -13,7 +13,7 @@ export default function TransitionProvider({
 
   return (
     <AnimatePresence mode="wait" initial={false}>
-      <Transition key={pathname}>{children}</Transition>
+      <Transition key={"pathname"}>{children}</Transition>
     </AnimatePresence>
   );
 }
