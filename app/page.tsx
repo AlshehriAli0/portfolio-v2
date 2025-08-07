@@ -9,6 +9,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://ali-sh.com/",
   },
+  description:
+    "Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia. I build high‑performance, accessible web apps with Next.js, React & TypeScript.",
+  openGraph: {
+    url: "https://ali-sh.com/",
+    title: "Ali Alshehri — Software Engineer",
+    description:
+      "Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia. I build high‑performance, accessible web apps with Next.js, React & TypeScript.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ali Alshehri — Software Engineer",
+    description:
+      "Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia. I build high‑performance, accessible web apps with React & TypeScript.",
+  },
 };
 
 export const dynamic = "force-static";
@@ -35,20 +49,10 @@ export default async function Home() {
           className="group bg-slate-950 hover:bg-slate-800 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
         >
           More Information{" "}
-          <span className="inline-block group-hover:translate-x-2 transition-transform">
+          <span className="inline-block group-hover:translate-x-1.5 transition-transform">
             →
           </span>
         </Link>
-      </section>
-
-      <section className="pb-16">
-        <p className="text-slate-700 text-lg">
-          You can find my personal projects on my{" "}
-          <Link href="https://github.com/AlshehriAli0" className="underline">
-            GitHub
-          </Link>
-          .
-        </p>
       </section>
 
       <section className="pt-10 pb-16">
@@ -77,6 +81,16 @@ export default async function Home() {
             →
           </span>
         </Link>
+      </section>
+
+      <section className="pb-16">
+        <p className="text-slate-700 text-lg">
+          You can find my personal projects on my{" "}
+          <Link href="https://github.com/AlshehriAli0" className="underline">
+            GitHub
+          </Link>
+          .
+        </p>
       </section>
     </main>
   );

@@ -8,6 +8,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://ali-sh.com/info",
   },
+  title: "Information | Ali Alshehri",
+  description:
+    "Information about Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia. Experience, background, and contact details.",
+  openGraph: {
+    url: "https://ali-sh.com/info",
+    title: "Information | Ali Alshehri",
+    description:
+      "Information about Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia.",
+  },
 };
 
 const experience: {

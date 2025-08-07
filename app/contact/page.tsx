@@ -7,6 +7,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://ali-sh.com/contact",
   },
+  title: "Contact | Ali Alshehri",
+  description:
+    "Contact Ali Alshehri — Software Engineer. Email and social profiles (GitHub, LinkedIn, X).",
+  openGraph: {
+    url: "https://ali-sh.com/contact",
+    title: "Contact | Ali Alshehri",
+    description:
+      "Contact Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia.",
+  },
 };
 
 const contact: {

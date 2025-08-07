@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 import { getAllPosts } from "@/lib/articles";
 
-const baseUrl = `https://www.ali-sh.com`;
+const baseUrl = `https://ali-sh.com`;
 
 const baseSitemap = [
   {
@@ -44,10 +44,6 @@ export async function generateSitemap(
     includeDrafts: process.env.NODE_ENV === "development",
   });
 
-  const projects = await getAllPosts({
-    isWork: true,
-  });
-
   const filteredPosts = posts.filter((post) => {
     if (post.meta?.draft && process.env.NODE_ENV !== "development") {
       return false;
@@ -57,17 +53,10 @@ export async function generateSitemap(
 
   const postsSitemap = filteredPosts.map((post) => ({
     url: `${baseUrl}/posts/${post.slug}`,
-    lastModified: new Date(),
+    lastModified: new Date(post.date),
     changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-  const projectsSitemap = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "yearly",
-    priority: 0.6,
-  }));
-
-  return [...postsSitemap, ...projectsSitemap] as MetadataRoute.Sitemap;
+  return [...postsSitemap] as MetadataRoute.Sitemap;
 }

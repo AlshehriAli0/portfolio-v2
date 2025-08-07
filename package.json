@@ -33,5 +33,6 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3"
   },
+  "packageManager": "bun",
   "node": ">=20"
 }

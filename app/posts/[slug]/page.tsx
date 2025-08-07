@@ -29,20 +29,28 @@ export async function generateMetadata(
     description: post?.meta.summary,
     publisher: "Ali Alshehri",
     creator: "Ali Alshehri",
+    alternates: {
+      canonical: `https://ali-sh.com/posts/${params.slug}`,
+    },
 
     openGraph: {
       ...parentMeta?.openGraph,
       title: post?.meta?.title || parentMeta?.openGraph?.title,
       description: post?.meta?.summary || parentMeta?.openGraph?.description,
-      url: `https://alialshehri.works/posts/${params.slug}`,
+      url: `https://ali-sh.com/posts/${params.slug}`,
       images: [
         {
-          url: `https://alialshehri.works/api/og?title=${post?.meta?.title}`,
+          url: `https://ali-sh.com/api/og?title=${post?.meta?.title}`,
           width: 1200,
           height: 630,
           alt: "Ali Alshehri - Software Engineer",
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@alicantcode",
+      creator: "@alicantcode",
     },
   };
 }

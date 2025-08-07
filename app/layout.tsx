@@ -23,11 +23,16 @@ const JetBrainsMonoFont = JetBrains_Mono({
 
 export async function generateMetadata() {
   return {
-    title: "Ali Alshehri - Software Engineer",
+    title: {
+      default: "Ali Alshehri - Software Engineer",
+      template: "%s | Ali Alshehri",
+    },
     description:
       "Ali Alshehri is a software engineer based in Al khobar, working on pushing the boundary between front-end and back-end utilizing full-stack.",
     openGraph: {
       title: "Ali Alshehri - Software Engineer",
+      type: "website",
+      url: "https://ali-sh.com",
       images: [
         {
           url: imageUrl("/open-graph.png"),
@@ -37,6 +42,22 @@ export async function generateMetadata() {
         },
       ],
       siteName: "Ali Alshehri - Software Engineer",
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@alicantcode",
+      creator: "@alicantcode",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        maxImagePreview: "large",
+        maxSnippet: -1,
+        maxVideoPreview: -1,
+      },
     },
     icons: {
       icon: "/icon.svg",
@@ -50,9 +71,15 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Ali Alshehri",
-  image: "https://ali-sh.com/avatar.jpeg",
+  image: "https://ali-sh.com/open-graph.png",
   url: "https://ali-sh.com",
   jobTitle: "Software Engineer",
+  alternateName: [
+    "Ali Al-Shehri",
+    "Ali Al Shehri",
+    "Alshehri Ali",
+    "@alicantcode",
+  ],
   sameAs: [
     "https://x.com/alicantcode",
     "https://www.github.com/AlshehriAli0",
@@ -72,10 +99,21 @@ export default function RootLayout({
           name="google-site-verification"
           content="Bi6gdlrmvQ1g0lpGqT81tmb889eL-vOmUt4nXy1Dzms"
         />
-        <meta property="og:url" content="https://www.ali-sh.com" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Ali Alshehri - Software Engineer",
+              url: "https://ali-sh.com",
+            }),
+          }}
         />
       </head>
       <body
