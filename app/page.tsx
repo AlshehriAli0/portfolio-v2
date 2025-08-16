@@ -47,6 +47,7 @@ export default async function Home() {
         <Link
           href="/info"
           className="group bg-slate-950 hover:bg-slate-800 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
+          prefetch={true}
         >
           More Information{" "}
           <span className="inline-block group-hover:translate-x-1.5 transition-transform">
@@ -75,6 +76,7 @@ export default async function Home() {
         <Link
           href="/posts"
           className="group bg-slate-950 hover:bg-slate-800 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
+          prefetch={true}
         >
           View More Posts{" "}
           <span className="inline-block group-hover:translate-x-2 transition-transform">
@@ -86,7 +88,11 @@ export default async function Home() {
       <section className="pb-16">
         <p className="text-slate-700 text-lg">
           You can find my personal projects on my{" "}
-          <Link href="https://github.com/AlshehriAli0" className="underline">
+          <Link
+            href="https://github.com/AlshehriAli0"
+            className="underline"
+            prefetch={false}
+          >
             GitHub
           </Link>
           .

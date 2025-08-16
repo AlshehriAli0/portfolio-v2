@@ -13,6 +13,7 @@ export const Nav = () => {
         href="/"
         className="group transition"
         aria-label="Ali Alshehri home"
+        prefetch={true}
       >
         <h1 className="text-base font-mono font-semibold text-slate-950">as</h1>
         <span
@@ -26,6 +27,7 @@ export const Nav = () => {
           href="/info"
           className="text-950 text-sm group transition tracking-tighter font-mono font-semibold"
           aria-label="Information about Ali Alshehri"
+          prefetch={true}
         >
           Information
           <span
@@ -38,6 +40,7 @@ export const Nav = () => {
           href="/posts"
           className="text-950 group transition text-sm tracking-tighter font-mono font-semibold"
           aria-label="Writing by Ali Alshehri"
+          prefetch={true}
         >
           Writing
           <span
@@ -50,6 +53,7 @@ export const Nav = () => {
           href="/contact"
           className="text-950 group transition text-sm tracking-tighter font-mono font-semibold"
           aria-label="Contact Ali Alshehri"
+          prefetch={true}
         >
           Contact
           <span
