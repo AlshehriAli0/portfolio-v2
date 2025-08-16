@@ -61,7 +61,7 @@ export default async function Home() {
           Recent Writing
         </Title>
         <div className="divide-y">
-          {posts.slice(0, 3).map((post) => {
+          {posts.slice(0, 2).map((post) => {
             return (
               <ArticleLink
                 key={post?.meta.title}

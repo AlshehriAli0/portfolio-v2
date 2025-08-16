@@ -1,20 +1,52 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       typography: {
+        DEFAULT: {
+          css: {
+            code: {
+              fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+              fontWeight: "500",
+            },
+            pre: {
+              fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+              fontWeight: "500",
+            },
+            "pre code": {
+              fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+              fontWeight: "500",
+            },
+            "inline-code": {
+              fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+              fontWeight: "500",
+            },
+          },
+        },
         lg: {
           css: {
             h2: {
-              fontSize: '1.3rem',
-              marginBottom: '1rem',
+              fontSize: "1.3rem",
+              marginBottom: "1rem",
+            },
+            code: {
+              fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+              fontWeight: "500",
+            },
+            pre: {
+              fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+              fontWeight: "500",
+            },
+            "pre code": {
+              fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+              fontWeight: "500",
             },
           },
         },
       },
       fontFamily: {
-        mono: 'var(--font-monospace)',
+        mono: "var(--font-monospace)",
       },
       boxShadow: {
         project: `
@@ -29,5 +61,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require("@tailwindcss/typography")],
 };

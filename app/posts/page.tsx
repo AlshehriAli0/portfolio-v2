@@ -30,7 +30,7 @@ export default async function Page() {
     <main className="px-4 md:px-0">
       <PageHeader title="Writing" />
       <section className="divide-y">
-        {filteredPosts.slice(0, 2).map((post) => {
+        {filteredPosts.map((post) => {
           return (
             <ArticleLink
               key={post.meta.title}

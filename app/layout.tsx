@@ -9,7 +9,7 @@ import { Nav } from "./components/Nav";
 import { Analytics } from "@vercel/analytics/react";
 import { imageUrl } from "@/lib/imageUrl";
 import TransitionProvider from "./components/TransitionProvider";
-import { PrefetchProvider } from "./components/PrefetchProvider";
+import { PrefetchProvider } from "./components/prefetch-provider";
 
 const SaansFont = localFont({
   src: "./saans-font.woff2",
@@ -124,7 +124,7 @@ export default function RootLayout({
           "bg-slate-50"
         )}
       >
-        <div className="max-w-2xl lg:max-w-xl mx-auto">
+        <div className="max-w-xl lg:max-w-2xl mx-auto">
           <PrefetchProvider>
             <Nav />
             <TransitionProvider>{children}</TransitionProvider>

@@ -1,12 +1,13 @@
-import "../../assets/github-dark.css";
 import { notFound } from "next/navigation";
 import { getAllPostPaths, getPostBySlug } from "@/lib/articles";
 import { Metadata, ResolvingMetadata } from "next";
 import { createPostJsonLd } from "@/lib/jsonLd/post";
-import ReactMarkdown from "react-markdown";
+import { compile, run } from "@mdx-js/mdx";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
+import rehypePrettyCode from "rehype-pretty-code";
 import { calculateReadingTime } from "@/lib/estimate-time";
+import * as runtime from "react/jsx-runtime";
+import { CodeBlock } from "@/app/components/code-block";
 
 export async function generateStaticParams() {
   const paths = getAllPostPaths();
@@ -59,6 +60,35 @@ type Params = {
   slug: string;
 };
 
+async function compileMdx(
+  content: string,
+  mdxComponents: Record<string, React.ComponentType<any>>
+) {
+  const compiled = await compile(content, {
+    outputFormat: "function-body",
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [
+      [
+        rehypePrettyCode,
+        {
+          theme: "poimandres",
+          keepBackground: false,
+          defaultLang: "plaintext",
+        },
+      ],
+    ],
+    providerImportSource: "@mdx-js/react",
+  });
+
+  const { default: Component } = await run(compiled, {
+    ...runtime,
+    baseUrl: import.meta.url,
+    useMDXComponents: () => mdxComponents,
+  });
+
+  return Component;
+}
+
 export default async function Post({ params }: { params: Params }) {
   const post = getPostBySlug(params.slug);
 
@@ -72,6 +102,11 @@ export default async function Post({ params }: { params: Params }) {
 
   const readingTime = calculateReadingTime(content);
   const postJsonLd = createPostJsonLd(post);
+
+  const mdxComponents = {
+    pre: CodeBlock,
+  };
+  const MdxContent = await compileMdx(content, mdxComponents);
 
   return (
     <>
@@ -95,12 +130,7 @@ export default async function Post({ params }: { params: Params }) {
 
         <section className="py-5">
           <article className="prose prose-lg table-wrapper">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight]}
-            >
-              {content}
-            </ReactMarkdown>
+            <MdxContent />
           </article>
         </section>
       </main>

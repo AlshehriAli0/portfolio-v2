@@ -1,0 +1,563 @@
+---
+title: "Why is Unistyles Goated"
+summary: "Why Unistyles is the React Native styling 
+solution you've been waiting for: zero re-renders, centralized theming,
+ and native level performance."
+---
+
+When your Flutter engineers suddenly and unexpectedly get pulled into other projects and you're left with a codebase nobody on your
+TypeScript focused team can maintain, migrating to React Native becomes inevitable.
+
+![Unistyles](../unistyles.png)
+
+## The Problem
+
+Being assigned as the project lead for this migration, when planning/reviewing the architecture, and tech stack, I found myself facing a
+frustrating choice between a few equally disappointing options:
+
+- **NativeWind** promised familiar Tailwind syntax but delivered weird behaviors and performance caveats that were not worth the hassle.
+  This obsession that is trending to have all your tools and tech stack be the same in completely
+  and inherently different platforms didn't make sense to me, when choosing the tool you should prioritize its efficiency, effectiveness
+  and ease of use, not skipping all these critical characteristics just because you prefer something familiar to give you a false sense
+  of security in your choice.
+
+- **Dripsy**, Kinda mid ngl.
+
+- **Regular React Native StyleSheet** felt like writing CSS in 2010, repetitive, and completely disconnected from modern development workflows.
+  Not to mention, many of modern interactive apps have complex conditional styling, if you still want to go with it be ready for the amount of
+  renders you will have in each interaction _just to change the style_.
+
+## The Discovery
+
+As anyone who is in my situation, I started asking experienced friends for their thoughts and experiences, this all started when one of them
+told me:
+
+> _If we are going to build a new app this won't be a problem and I would be using_ **Unistyles**
+
+I was like, _"What is this Unistyles?"_
+
+So I went to the docs and started reading, to put it simply, it's a drop-in replacement for the regular React Native StyleSheet, but
+**on steroids**. TRUST ME, I'm not exaggerating.
+
+**Unistyles** takes pride in being lightweight, fast, and easy to use, as they frame it in their [docs](https://www.unistyl.es/v3/start/introduction)
+"Unistyles is a superset of StyleSheet similar to how TypeScript is a superset of JavaScript". Nothing new, except the superpowers it gives you.
+
+## What Makes Unistyles Special
+
+**Unistyles** isn't just a normal library for React Native, it's built with **C++** and it leverages the power of nitro modules, this means
+that you will get incredible performance out of the gates, even comparable to natively styled apps.
+
+But performance was just the beginning. As we started integrating **Unistyles** into our migration project,
+I discovered features that completely changed how we approach styling in React Native.
+
+Here are some of the key features I love most, with practical examples showing you how to
+configure and utilize them:
+
+#### No Extra Re-renders
+
+When you are using the regular React Native StyleSheet, you will have to add inline logic to the style prop to conditionally style your components,
+this will not only make your code extremely ugly, unmaintainable and spaghetti, but also will cause a re-render each time a state changes.
+
+**Unistyles** on the other hand, allows you to easily create dynamic style functions which can be used to conditionally style your components by
+passing any props your logic needs and not only keep your code clean, but also will **not cause a re-render** each time a state changes.
+
+Here's a clear example of the difference:
+
+**❌ Regular StyleSheet (causes re-renders):**
+
+```tsx
+import { useState } from "react";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+
+export const ButtonComponent = () => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.button,
+        // This inline logic causes re-renders on every state change,
+        // and can also easily grow into spaghetti code with
+        // increasing complexity.
+        isPressed && styles.pressed,
+        isDisabled && styles.disabled,
+      ]}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+    >
+      <Text style={[styles.text, isDisabled && styles.disabledText]}>
+        Button
+      </Text>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  button: {
+    padding: 16,
+    backgroundColor: "#007AFF",
+    borderRadius: 8,
+  },
+  pressed: {
+    backgroundColor: "#0056CC",
+    transform: [{ scale: 0.98 }],
+  },
+  disabled: {
+    backgroundColor: "#CCCCCC",
+  },
+  text: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  disabledText: {
+    color: "#666666",
+  },
+});
+```
+
+**✅ Unistyles (no re-renders, no inline logic, no spaghetti):**
+
+```tsx
+import { useState } from "react";
+import { View, TouchableOpacity, Text } from "react-native";
+import { StyleSheet } from "react-native-unistyles";
+
+export const ButtonComponent = () => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  return (
+    <TouchableOpacity
+      // No inline logic, no re-renders caused from style changes!
+      style={styles.button(isPressed, isDisabled)}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+    >
+      {/* Easy, clean and maintainable. */}
+      <Text style={styles.text(isDisabled)}>Button</Text>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  // In each dynamic style function you can easily pass each
+  // prop needed, and whats amazing is that on style change,
+  // no re-renders will happen.
+  button: (isPressed: boolean, isDisabled: boolean) => ({
+    padding: 16,
+    backgroundColor: isDisabled ? "gray" : isPressed ? "green" : "blue",
+    borderRadius: 8,
+    transform: isPressed ? [{ scale: 0.98 }] : undefined,
+  }),
+  text: (isDisabled: boolean) => ({
+    color: isDisabled ? "#666666" : "white",
+    fontWeight: "bold",
+  }),
+});
+```
+
+The magic happens in the dynamic style functions. **Unistyles** handles the conditional logic at the native level,
+completely avoiding React re-renders!
+
+#### Customizability, Theming and Consistent Styling
+
+**Unistyles** provides **powerful theming capabilities** that eliminate _hardcoded values_ and make your app easily customizable.
+Instead of scattering _magic numbers_ and _hex codes_ throughout your styles, you define everything **once** in a theme object and access
+it using `theme.[property]`, and when you need to change the theme, you can simply change the theme object and **not have to worry about**
+the styles being applied correctly.
+
+By configuring the theme object you can **centralize all your design system** in one place,
+from _sizing_ to _spacing_, _colors_, _typography_, and more.
+
+We set it up using **Tailwind style key-value pairs** conventions.
+This creates a **shared vocabulary** where designers can specify `width: 64` in their design
+tools, and developers can easily translate that to `width: theme.sizing["64"]` (which is 64 \* 4 = 256px in **Tailwind** convention)
+ensuring **pixel-perfect consistency**.
+
+Here's how theming works:
+
+**1. Define your theme object in Unistyles.ts:**
+
+```tsx
+// unistyles.ts
+import { StyleSheet } from "react-native-unistyles";
+
+const baseTheme = {
+  // Tailwind style sizing system for width, height, etc...
+  sizing: {
+    "0": 0,
+    px: 1,
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "5": 20,
+    "6": 24,
+    "8": 32,
+    "10": 40,
+    "12": 48,
+    "16": 64,
+    // etc...
+  },
+  // Tailwind style spacing system for padding, margin, etc...
+  spacing: {
+    "0": 0,
+    px: 1,
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "5": 20,
+    "6": 24,
+    "7": 28,
+    "8": 32,
+    "9": 36,
+    "10": 40,
+    "12": 48,
+    "16": 64,
+    // etc...
+  },
+  // Tailwind style border radius
+  borderRadius: {
+    xs: 4,
+    sm: 8,
+    md: 12,
+    lg: 16,
+    xl: 24,
+    "2xl": 32,
+    "3xl": 40,
+    "4xl": 48,
+    full: 9999,
+  },
+  typography: {
+    fontSize: {
+      xs: 12,
+      sm: 14,
+      base: 16,
+      lg: 18,
+      xl: 20,
+      "2xl": 24,
+      "3xl": 30,
+    },
+    fontWeight: {
+      thin: "100",
+      extralight: "200",
+      light: "300",
+      base: "400",
+      medium: "500",
+      semibold: "600",
+      bold: "700",
+      extrabold: "800",
+      black: "900",
+    },
+  },
+  // Helper functions for intermediate values within the theme
+  utils: {
+    // Function to create consistent elevation shadows
+    createElevationShadow: (elevation: number) => ({
+      shadowOffset: {
+        width: 0,
+        height: elevation * 0.5,
+      },
+      shadowOpacity: elevation * 0.05,
+      shadowRadius: elevation * 1.2,
+      elevation: elevation, // Android
+    }),
+    // Function for consistent spacing scales
+    getScaledSpacing: (baseValue: number, scale: number) => baseValue * scale,
+    // Function to get consistent alpha values for colors
+    withOpacity: (opacity: number) =>
+      `${Math.round(opacity * 255)
+        .toString(16)
+        .padStart(2, "0")}`,
+  },
+};
+
+const lightTheme = {
+  ...baseTheme,
+  colors: {
+    primary: "#007AFF",
+    secondary: "#5856D6",
+    background: "#FFFFFF",
+    card: "#FFFFFF",
+    text: "#000000",
+    textSecondary: "#8E8E93",
+    textMuted: "#C7C7CC",
+    danger: "#FF3B30",
+    success: "#34C759",
+    warning: "#FF9500",
+  },
+} as const;
+
+const darkTheme = {
+  ...baseTheme,
+  colors: {
+    primary: "#0A84FF",
+    secondary: "#5E5CE6",
+    background: "#000000",
+    card: "#2C2C2E",
+    text: "#FFFFFF",
+    textSecondary: "#8E8E93",
+    textMuted: "#48484A",
+    danger: "#FF453A",
+    success: "#30D158",
+    warning: "#FF9F0A",
+  },
+} as const;
+
+// you can also add as many themes as you need to
+const themes = {
+  light: lightTheme,
+  dark: darkTheme,
+};
+
+// you can also add custom width breakpoints just like the web!
+// If your app will be used on tablets phones and screens with
+// different sizes, this will help you to create a more responsive app.
+const breakpoints = {
+  xs: 0,
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+  superLarge: 2000,
+  tvLike: 4000,
+} as const;
+
+// you can easily get the types to create components with variants
+// just like shadcn/ui
+type AppBreakpoints = typeof breakpoints;
+type AppThemes = typeof themes;
+
+declare module "react-native-unistyles" {
+  interface UnistylesThemes extends AppThemes {}
+  interface UnistylesBreakpoints extends AppBreakpoints {}
+}
+
+StyleSheet.configure({
+  settings: {
+    initialTheme: "light",
+  },
+  breakpoints,
+  themes,
+});
+```
+
+**2. Use `theme.[anything]` in your styles:**
+
+```tsx
+import { StyleSheet } from "react-native-unistyles";
+
+const styles = StyleSheet.create((theme) => ({
+  // Easily access any color from your theme
+  container: {
+    backgroundColor: theme.colors.background,
+    paddingVertical: theme.spacing["4"], // 16px padding vertical
+    borderRadius: theme.borderRadius["2"], // 8px border radius
+    width: {
+      xs: theme.sizing["64"], // 256px width on mobile
+      md: theme.sizing["112"], // 448px width on tablet screens
+    },
+  },
+  title: {
+    color: theme.colors.text,
+    fontSize: theme.typography.fontSize["24"],
+    fontWeight: theme.typography.fontWeight.bold,
+    marginBottom: theme.spacing["6"],
+  },
+  button: {
+    backgroundColor: theme.colors.primary,
+    paddingHorizontal: theme.spacing["8"],
+    borderRadius: theme.borderRadius["3"],
+    width: theme.sizing["48"],
+  },
+  // Using theme utility functions for intermediate values
+  card: {
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.borderRadius.md,
+    padding: theme.spacing["4"],
+    // Use theme utils for consistent elevation shadows
+    ...theme.utils.createElevationShadow(4),
+  },
+  scaledContainer: (scale: number) => ({
+    // Use theme utils to maintain spacing consistency
+    padding: theme.utils.getScaledSpacing(theme.spacing["4"], scale),
+    margin: theme.utils.getScaledSpacing(theme.spacing["2"], scale),
+  }),
+}));
+```
+
+**Design & Developer Handoff Made Simple All Thanks to Unistyles**
+
+The **magic** happens when your design team uses the **same numeric system**.
+When a designer says _"make the button width 64 and add spacing of 8"_,
+you can **directly translate** that to:
+
+```tsx
+button: {
+  width: theme.sizing["64"], // Designer says "width 64" → 256px
+  padding: theme.spacing["8"], // Designer says "spacing 8" → 32px
+}
+```
+
+The **beauty** is that `theme.[anything]` gives you access to **ANY property** you've defined in
+your theme object. Want to add a new color? Just add it to `theme.colors`
+and _immediately_ use it anywhere with `theme.colors.newColor`.
+Need different shadows? Define `theme.shadows` and access with `theme.shadows.[shadowName]`.
+
+This approach makes your entire app's design system **centralized**,
+**consistent**, and _incredibly easy to modify_. When you need intermediate values or calculations,
+you can define utility functions right in the theme object (like `theme.utils.createElevationShadow(4)`)
+to keep everything consistent and maintainable. Told you, I'm not exaggerating. It's **Unistyles Magic**.
+
+#### Toggling themes made easy
+
+Unistyles makes it incredibly easy to toggle themes,
+you can do it by simply calling the `UnistylesRuntime.setTheme`
+function and passing the theme name as a string.
+
+```tsx
+import { UnistylesRuntime } from "react-native-unistyles";
+
+// change the theme in any component
+export const ChangeTheme = () => {
+  // get the current theme
+  const handleThemeChange = () => {
+    const currentTheme = UnistylesRuntime.themeName;
+    UnistylesRuntime.setTheme(currentTheme === "light" ? "dark" : "light");
+  };
+
+  // toggle the theme
+  return <Pressable title="Change theme" onPress={handleThemeChange} />;
+};
+```
+
+This will toggle the theme between the light and dark themes, and you can also pass a callback function to be executed after the theme is toggled.
+
+#### Everywhere Usage
+
+Whether you are using modern server rendering or not, you can call unistyles from anywhere in your app.
+getting themes, variables, breakpoints, etc...
+
+If for some reason you need the theme object in your component, you can use the `useUnistyles` hook.
+
+```tsx
+import { useUnistyles } from "react-native-unistyles";
+
+export const ThemeComponent = () => {
+  const { theme } = useUnistyles();
+  return <View style={theme.colors.background} />;
+};
+```
+
+or if you want to server side render the theme object, you can use the `UnistylesRuntime.theme` object.
+
+```tsx
+"use client";
+
+import { PropsWithChildren, useRef } from "react";
+import { useServerUnistyles } from "react-native-unistyles/server";
+import { useServerInsertedHTML } from "next/navigation";
+import "./unistyles";
+
+export const Style = ({ children }: PropsWithChildren) => {
+  const isServerInserted = useRef(false);
+  const unistyles = useServerUnistyles();
+
+  useServerInsertedHTML(() => {
+    if (isServerInserted.current) {
+      return null;
+    }
+
+    isServerInserted.current = true;
+
+    return unistyles;
+  });
+
+  return <>{children}</>;
+};
+```
+
+then wrap your app with the `Style` component.
+
+```tsx
+import "../unistyles";
+import { Style } from "../Style";
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body>
+        <Style>{children}</Style>
+      </body>
+    </html>
+  );
+}
+```
+
+now you can style client or server, web or native, it's all the same.
+
+#### Beyond Styling
+
+While most devs reach for `react-native-safe-area-context` or
+similar libraries just to get basic device measurements,
+Unistyles gives you everything through `UnistylesRuntime` without any extra dependencies.
+
+```tsx
+import { UnistylesRuntime } from "react-native-unistyles";
+
+// Screen dimensions - always current, always accurate
+UnistylesRuntime.screen.width; // 400
+UnistylesRuntime.screen.height; // 760
+
+// Safe area insets - no more useSafeAreaInsets hook
+UnistylesRuntime.insets.top; // 42
+UnistylesRuntime.insets.bottom; // 24
+
+// Status/navigation bars - for custom headers/footers
+UnistylesRuntime.statusBar.height; // 24
+UnistylesRuntime.navigationBar.height; // 24
+
+// Device specs
+UnistylesRuntime.pixelRatio; // 2.0
+UnistylesRuntime.fontScale; // 1.0
+```
+
+The best part? These values automatically update when orientation
+changes or when you programmatically show/hide system bars.
+No subscriptions, no effect hooks, no manual tracking,
+just access the values when you need them.
+
+It's one less dependency to worry about and one less thing that can break.
+
+## Conclusion
+
+So here we are. We started with a frustrating migration from Flutter to React Native,
+faced with styling options that all felt like compromises.
+NativeWind had its quirks, regular StyleSheet felt ancient, and everything seemed to cause
+unnecessary re-renders. Then Unistyles came along and actually solved these problems.
+
+Dynamic style functions that don't cause re-renders? Check.
+Centralized theming that actually makes sense? Check. Being able to toggle
+between light and dark modes without breaking a sweat? Check. Getting device measurements
+without importing yet another library? Check.
+
+But here's the thing, all this flexibility comes with incredible
+performance. The whole thing is built with C++ and uses nitro modules,
+so you're getting native level speed while having way more power than regular
+StyleSheet or any other alternative could ever give you.
+If you want to see the technical magic behind how
+this all works, check out
+[how Unistyles works under the hood](https://www.unistyl.es/v3/start/how-unistyles-works).
+
+When you find a library that eliminates re-renders,
+centralizes your design system, works everywhere, and does it all while
+being faster than the alternatives, while keeping your code clean and actually
+enjoyable to write, there's really only one way to describe it.
+
+That's why Unistyles is goated.
