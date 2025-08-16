@@ -71,14 +71,66 @@ body {
 }
 
 /* Table specific */
-.table-wrapper {
+.prose .table-wrapper {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-table {
-  display: inline-block;
+.prose table {
+  display: table;
+  width: 100%;
   overflow-x: auto;
   max-width: 100%;
+}
+
+/* Ensure tables don't cause horizontal scroll on mobile */
+.prose table {
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.prose th,
+.prose td {
+  word-break: break-word;
+  max-width: 200px;
+}
+
+/* Responsive table wrapper for mobile */
+@media (max-width: 640px) {
+  .prose table {
+    font-size: 0.875rem;
+  }
+
+  .prose th,
+  .prose td {
+    padding: 0.5rem 0.25rem;
+    max-width: 150px;
+  }
+}
+
+/* Prevent horizontal scroll on mobile for code blocks and pre elements */
+.prose pre {
+  overflow-x: auto;
+  max-width: 100%;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.prose code {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Ensure all prose content respects container bounds */
+.prose * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Specifically handle inline code to prevent overflow */
+.prose :not(pre) > code {
+  white-space: pre-wrap;
+  word-break: break-word;
 }

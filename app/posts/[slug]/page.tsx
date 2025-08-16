@@ -129,7 +129,7 @@ export default async function Post({ params }: { params: Params }) {
         </section>
 
         <section className="py-5">
-          <article className="prose prose-lg table-wrapper">
+          <article className="prose prose-lg prose-slate text-justify w-full max-w-none">
             <MdxContent />
           </article>
         </section>
