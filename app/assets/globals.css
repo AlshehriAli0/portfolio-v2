@@ -134,3 +134,28 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+/* Responsive font size for code blocks on smaller screens */
+@media (max-width: 640px) {
+  .prose pre,
+  .prose pre code {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.4;
+  }
+
+  .prose :not(pre) > code {
+    font-size: 0.8rem; /* 12.8px */
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .prose pre,
+  .prose pre code {
+    font-size: 0.8rem; /* 12.8px */
+    line-height: 1.4;
+  }
+
+  .prose :not(pre) > code {
+    font-size: 0.85rem; /* 13.6px */
+  }
+}
