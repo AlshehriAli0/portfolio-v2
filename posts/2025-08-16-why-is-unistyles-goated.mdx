@@ -44,8 +44,15 @@ So I went to the docs and started reading, to put it simply, it's a drop-in repl
 
 ## What Makes Unistyles Special
 
-**Unistyles** isn't just a normal library for React Native, it's built with **C++** and it leverages the power of nitro modules, this means
-that you will get incredible performance out of the gates, even comparable to natively styled apps.
+**Unistyles** isn't just a normal library for React Native, it's built with **C++** and it leverages the power of **nitro modules**.
+
+> **What are Nitro Modules?** Nitro modules are React Native's next gen native module architecture,
+> designed to replace the legacy bridge based system.
+> Unlike the old bridge that required expensive serialization between JavaScript and native code,
+> nitro modules enable direct synchronous communication (using the JSI) which means zero serialization overhead,
+> type safe native calls, and performance that's virtually indistinguishable from pure native code.
+
+This means that you will get incredible performance out of the gates, even comparable to natively styled apps.
 
 But performance was just the beginning. As we started integrating **Unistyles** into our migration project,
 I discovered features that completely changed how we approach styling in React Native.
