@@ -49,7 +49,7 @@ export const dynamic = "force-static";
 
 export default async function InfoPage() {
   return (
-    <main className="px-4 md:px-0">
+    <main className="px-6 md:px-0">
       <PageHeader title="Contact" />
       <section className="pb-8">
         <p className="text-lg mb-6">

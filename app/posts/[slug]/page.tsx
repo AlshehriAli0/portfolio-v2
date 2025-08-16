@@ -110,7 +110,7 @@ export default async function Post({ params }: { params: Params }) {
 
   return (
     <>
-      <main className="px-4 md:px-0 overflow-x-hidden">
+      <main className="px-6 md:px-0 overflow-x-hidden">
         <section>
           <h1 className="font-semibold tracking-tight text-4xl text-slate-900">
             {meta.title}

@@ -130,7 +130,7 @@ export default function RootLayout({
             <TransitionProvider>{children}</TransitionProvider>
           </PrefetchProvider>
 
-          <footer className="px-4 md:px-0 border-t border-slate-200 py-8 text-slate-700 font-mono text-xs tracking-tight flex justify-between">
+          <footer className="px-6 md:px-0 border-t border-slate-200 py-8 text-slate-700 font-mono text-xs tracking-tight flex justify-between">
             <p>
               &copy; {new Date().getFullYear()} {"/"} Ali Alshehri
             </p>

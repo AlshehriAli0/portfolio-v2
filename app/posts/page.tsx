@@ -27,7 +27,7 @@ export default async function Page() {
   });
 
   return (
-    <main className="px-4 md:px-0">
+    <main className="px-6 md:px-0">
       <PageHeader title="Writing" />
       <section className="divide-y">
         {filteredPosts.map((post) => {
