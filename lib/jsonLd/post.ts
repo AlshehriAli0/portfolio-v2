@@ -1,4 +1,4 @@
-import { Post } from "@/lib/articles";
+import type { Post } from "@/lib/articles";
 
 export const createPostJsonLd = (post: Post) => {
   return {

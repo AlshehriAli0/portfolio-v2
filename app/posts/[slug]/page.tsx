@@ -1,13 +1,13 @@
-import { notFound } from "next/navigation";
-import { getAllPostPaths, getPostBySlug } from "@/lib/articles";
-import { Metadata, ResolvingMetadata } from "next";
-import { createPostJsonLd } from "@/lib/jsonLd/post";
 import { compile, run } from "@mdx-js/mdx";
-import remarkGfm from "remark-gfm";
-import rehypePrettyCode from "rehype-pretty-code";
-import { calculateReadingTime } from "@/lib/estimate-time";
+import type { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 import * as runtime from "react/jsx-runtime";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
 import { CodeBlock } from "@/app/components/code-block";
+import { getAllPostPaths, getPostBySlug } from "@/lib/articles";
+import { calculateReadingTime } from "@/lib/estimate-time";
+import { createPostJsonLd } from "@/lib/jsonLd/post";
 
 export async function generateStaticParams() {
   const paths = getAllPostPaths();
@@ -60,10 +60,7 @@ type Params = {
   slug: string;
 };
 
-async function compileMdx(
-  content: string,
-  mdxComponents: Record<string, React.ComponentType<any>>
-) {
+async function compileMdx(content: string, mdxComponents: Record<string, React.ComponentType<any>>) {
   const compiled = await compile(content, {
     outputFormat: "function-body",
     remarkPlugins: [remarkGfm],
@@ -112,9 +109,7 @@ export default async function Post({ params }: { params: Params }) {
     <>
       <main className="px-6 md:px-0 overflow-x-hidden">
         <section>
-          <h1 className="font-semibold tracking-tight text-4xl text-slate-900">
-            {meta.title}
-          </h1>
+          <h1 className="font-semibold tracking-tight text-4xl text-slate-900">{meta.title}</h1>
           <span className="text-slate-500 text-sm tracking-tight font-mono block mt-4">
             Published on{" "}
             <time dateTime={post.date}>
@@ -123,9 +118,7 @@ export default async function Post({ params }: { params: Params }) {
               }).format(new Date(post.date))}
             </time>
           </span>
-          <span className="text-slate-500 text-sm tracking-tight font-mono block mt-1">
-            {readingTime} minute read
-          </span>
+          <span className="text-slate-500 text-sm tracking-tight font-mono block mt-1">{readingTime} minute read</span>
         </section>
 
         <section className="py-5">
@@ -134,10 +127,8 @@ export default async function Post({ params }: { params: Params }) {
           </article>
         </section>
       </main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(postJsonLd) }}
-      />
+      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: seo */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(postJsonLd) }} />
     </>
   );
 }

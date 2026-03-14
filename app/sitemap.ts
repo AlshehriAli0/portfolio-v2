@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 import { getAllPosts } from "@/lib/articles";
 
@@ -37,21 +37,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [...baseSitemap, ...flagsSitemap] as MetadataRoute.Sitemap;
 }
 
-export async function generateSitemap(
-  baseUrl: string
-): Promise<MetadataRoute.Sitemap> {
+export async function generateSitemap(baseUrl: string): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts({
     includeDrafts: process.env.NODE_ENV === "development",
   });
 
-  const filteredPosts = posts.filter((post) => {
+  const filteredPosts = posts.filter(post => {
     if (post.meta?.draft && process.env.NODE_ENV !== "development") {
       return false;
     }
     return true;
   });
 
-  const postsSitemap = filteredPosts.map((post) => ({
+  const postsSitemap = filteredPosts.map(post => ({
     url: `${baseUrl}/posts/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: "monthly",

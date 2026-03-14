@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
 import { usePathname } from "next/navigation";
 
 export const Nav = () => {
@@ -9,12 +8,7 @@ export const Nav = () => {
 
   return (
     <header className="pt-8 md:pt-16 pb-16 px-6 md:px-0 flex justify-between">
-      <Link
-        href="/"
-        className="group transition"
-        aria-label="Ali Alshehri home"
-        prefetch={true}
-      >
+      <Link href="/" className="group transition" aria-label="Ali Alshehri home" prefetch={true}>
         <h1 className="text-base font-mono font-semibold text-slate-950">as</h1>
         <span
           className={`block ${

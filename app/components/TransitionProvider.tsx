@@ -1,7 +1,3 @@
-export default function TransitionProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function TransitionProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

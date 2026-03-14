@@ -3,10 +3,7 @@ export function calculateReadingTime(content: string): number {
   const contentWithoutTables = content.replace(/<table[\s\S]*?<\/table>/gi, "");
 
   // More accurate Markdown table removal (entire rows)
-  const contentWithoutMarkdownTables = contentWithoutTables.replace(
-    /^\|.*\|.*$/gm,
-    ""
-  );
+  const contentWithoutMarkdownTables = contentWithoutTables.replace(/^\|.*\|.*$/gm, "");
 
   // Remove HTML tags
   const textContent = contentWithoutMarkdownTables.replace(/<[^>]*>/g, " ");

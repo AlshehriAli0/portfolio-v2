@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+
 interface PostRoute {
   href: string;
   slug: string;
@@ -21,7 +22,7 @@ export const usePrefetch = () => {
         const staticRoutes = ["/info", "/posts", "/contact"];
 
         // Prefetch static routes
-        staticRoutes.forEach((route) => {
+        staticRoutes.forEach(route => {
           router.prefetch(route);
         });
 
@@ -34,7 +35,7 @@ export const usePrefetch = () => {
         const posts: PostRoute[] = await response.json();
 
         // Prefetch all blog post routes
-        posts.forEach((post) => {
+        posts.forEach(post => {
           router.prefetch(post.href);
         });
 
@@ -42,9 +43,7 @@ export const usePrefetch = () => {
 
         // Optional: Log prefetching completion in development
         if (process.env.NODE_ENV === "development") {
-          console.log(
-            `🚀 Prefetched ${staticRoutes.length} static routes and ${posts.length} blog posts`
-          );
+          console.log(`🚀 Prefetched ${staticRoutes.length} static routes and ${posts.length} blog posts`);
         }
       } catch (error) {
         console.error("Error prefetching routes:", error);

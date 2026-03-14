@@ -1,5 +1,5 @@
-import { getAllPosts } from "@/lib/articles";
 import { NextResponse } from "next/server";
+import { getAllPosts } from "@/lib/articles";
 
 export async function GET() {
   try {
@@ -8,7 +8,7 @@ export async function GET() {
     });
 
     // Return only the necessary data for prefetching (href is what we need)
-    const postRoutes = posts.map((post) => ({
+    const postRoutes = posts.map(post => ({
       href: post.href,
       slug: post.slug,
     }));
@@ -16,10 +16,7 @@ export async function GET() {
     return NextResponse.json(postRoutes);
   } catch (error) {
     console.error("Error fetching posts:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch posts" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch posts" }, { status: 500 });
   }
 }
 

@@ -1,9 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Metadata } from "next";
-
-import { ArticleLink } from "./components/article-link";
-import { getAllPosts } from "@/lib/articles";
 import { Title } from "@/app/components/title";
+import { getAllPosts } from "@/lib/articles";
+import { ArticleLink } from "./components/article-link";
 
 export const metadata: Metadata = {
   alternates: {
@@ -37,9 +36,7 @@ export default async function Home() {
       <section className="pb-14 border-b border-slate-300 mb-14">
         <h1 className="font-semibold text-4xl mb-4 text-slate-950">
           {"HI, I'm Ali Alshehri."}
-          <span className="block text-slate-500 font-normal text-2xl pt-1">
-            A software engineer based in khobar.
-          </span>
+          <span className="block text-slate-500 font-normal text-2xl pt-1">A software engineer based in khobar.</span>
         </h1>
         <p className="text-slate-700 text-lg md:text-xl leading-normal">
           I work with amazing companies to create exceptional products.
@@ -49,10 +46,7 @@ export default async function Home() {
           className="group bg-slate-950 hover:bg-slate-800 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
           prefetch={true}
         >
-          More Information{" "}
-          <span className="inline-block group-hover:translate-x-1.5 transition-transform">
-            →
-          </span>
+          More Information <span className="inline-block group-hover:translate-x-1.5 transition-transform">→</span>
         </Link>
       </section>
 
@@ -61,7 +55,7 @@ export default async function Home() {
           Recent Writing
         </Title>
         <div className="divide-y">
-          {posts.slice(0, 2).map((post) => {
+          {posts.slice(0, 2).map(post => {
             return (
               <ArticleLink
                 key={post?.meta.title}
@@ -78,21 +72,14 @@ export default async function Home() {
           className="group bg-slate-950 hover:bg-slate-800 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
           prefetch={true}
         >
-          View More Posts{" "}
-          <span className="inline-block group-hover:translate-x-2 transition-transform">
-            →
-          </span>
+          View More Posts <span className="inline-block group-hover:translate-x-2 transition-transform">→</span>
         </Link>
       </section>
 
       <section className="pb-16">
         <p className="text-slate-700 text-lg">
           You can find my personal projects on my{" "}
-          <Link
-            href="https://github.com/AlshehriAli0"
-            className="underline"
-            prefetch={false}
-          >
+          <Link href="https://github.com/AlshehriAli0" className="underline" prefetch={false}>
             GitHub
           </Link>
           .

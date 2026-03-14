@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "node:fs";
+import path from "node:path";
+import matter from "gray-matter";
 
 export interface Post {
   meta: {
@@ -16,7 +16,7 @@ export const getRegexForSlug = (slug: string): RegExp => {
   return new RegExp(`^\\d{4}-\\d{2}-\\d{2}-${slug}.mdx$`);
 };
 
-const POSTS_PATH = 'posts';
+const POSTS_PATH = "posts";
 
 interface DateAndSlug {
   date: string;
@@ -28,9 +28,7 @@ interface DateAndSlug {
  * @param filename - The filename to extract data from.
  * @returns An object containing the date and slug, or null if the filename does not match the expected format.
  */
-export const getDateAndSlugFromFilename = (
-  filename: string
-): DateAndSlug | null => {
+export const getDateAndSlugFromFilename = (filename: string): DateAndSlug | null => {
   const match = filename.match(/^(\d{4}-\d{2}-\d{2})-(.*).mdx$/);
   if (match) {
     return {
@@ -47,7 +45,7 @@ export const getDateAndSlugFromFilename = (
  * @returns An object containing the front matter, date, slug, and href, or null if the filename does not match the expected format.
  */
 const getPostFromFile = (filename: string, isWork?: boolean): Post | null => {
-  const fileContent = fs.readFileSync(path.join(POSTS_PATH, filename), 'utf-8');
+  const fileContent = fs.readFileSync(path.join(POSTS_PATH, filename), "utf-8");
 
   const { data: frontMatter, content } = matter(fileContent);
 
@@ -64,7 +62,7 @@ const getPostFromFile = (filename: string, isWork?: boolean): Post | null => {
     content,
     slug,
     date,
-    href: `/${isWork ? 'projects' : 'posts'}/${slug}`,
+    href: `/${isWork ? "projects" : "posts"}/${slug}`,
   };
 };
 
@@ -103,9 +101,7 @@ export const getAllPosts = async ({
 }): Promise<Post[]> => {
   const files = fs.readdirSync(path.join(POSTS_PATH));
 
-  const posts: Post[] = files
-    .map((item) => getPostFromFile(item, isWork))
-    .filter((post): post is Post => post !== null);
+  const posts: Post[] = files.map(item => getPostFromFile(item, isWork)).filter((post): post is Post => post !== null);
 
   const filteredAndSortedPosts = posts.sort((a, b) => {
     if (new Date(a.date) > new Date(b.date)) {
@@ -124,7 +120,7 @@ export const getAllPosts = async ({
 export async function getAllPostPaths(isWork?: boolean) {
   const posts = await getAllPosts({ isWork });
 
-  const paths = posts.map((post) => ({ slug: post.slug }));
+  const paths = posts.map(post => ({ slug: post.slug }));
 
   return paths;
 }

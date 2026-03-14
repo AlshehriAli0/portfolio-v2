@@ -1,7 +1,7 @@
+import type { Metadata } from "next";
 import { PageHeader } from "@/app/components/page-header";
-import { ArticleLink } from "../components/article-link";
 import { getAllPosts } from "@/lib/articles";
-import { Metadata } from "next";
+import { ArticleLink } from "../components/article-link";
 
 export const dynamic = "force-static";
 
@@ -19,7 +19,7 @@ export default async function Page() {
     includeDrafts: process.env.NODE_ENV === "development",
   });
 
-  const filteredPosts = posts.filter((post) => {
+  const filteredPosts = posts.filter(post => {
     if (post.meta?.draft && process.env.NODE_ENV !== "development") {
       return false;
     }
@@ -30,7 +30,7 @@ export default async function Page() {
     <main className="px-6 md:px-0">
       <PageHeader title="Writing" />
       <section className="divide-y">
-        {filteredPosts.map((post) => {
+        {filteredPosts.map(post => {
           return (
             <ArticleLink
               key={post.meta.title}

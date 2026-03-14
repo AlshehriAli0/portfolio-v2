@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { DetailedHTMLProps, HTMLAttributes } from "react";
 import clsx from "clsx";
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
+import { useRef, useState } from "react";
 
-interface CodeBlockProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement> {
+interface CodeBlockProps extends DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement> {
   children?: React.ReactNode;
 }
 
@@ -51,11 +50,10 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
         <div className="relative w-4 h-4">
           {/* Copy Icon */}
           <svg
+            aria-hidden="true"
             className={clsx(
               "absolute inset-0 w-4 h-4 text-slate-300 transition-all duration-150",
-              copied || isAnimating
-                ? "opacity-0 scale-50 blur-sm"
-                : "opacity-100 scale-100 blur-0"
+              copied || isAnimating ? "opacity-0 scale-50 blur-sm" : "opacity-100 scale-100 blur-0"
             )}
             fill="none"
             stroke="currentColor"
@@ -71,22 +69,16 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
 
           {/* Success Icon */}
           <svg
+            aria-hidden="true"
             className={clsx(
               "absolute inset-0 w-4 h-4 text-green-400 transition-all duration-150",
-              copied
-                ? "opacity-100 scale-100 blur-0"
-                : "opacity-0 scale-50 blur-sm"
+              copied ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-50 blur-sm"
             )}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
       </button>

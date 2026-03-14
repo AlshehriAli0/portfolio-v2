@@ -1,20 +1,18 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHeader } from "@/app/components/page-header";
 import { Title } from "@/app/components/title";
-import Link from "next/link";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   alternates: {
     canonical: "https://ali-sh.com/contact",
   },
   title: "Contact | Ali Alshehri",
-  description:
-    "Contact Ali Alshehri — Software Engineer. Email and social profiles (GitHub, LinkedIn, X).",
+  description: "Contact Ali Alshehri — Software Engineer. Email and social profiles (GitHub, LinkedIn, X).",
   openGraph: {
     url: "https://ali-sh.com/contact",
     title: "Contact | Ali Alshehri",
-    description:
-      "Contact Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia.",
+    description: "Contact Ali Alshehri — Software Engineer in Al Khobar, Saudi Arabia.",
   },
 };
 
@@ -53,12 +51,11 @@ export default async function InfoPage() {
       <PageHeader title="Contact" />
       <section className="pb-8">
         <p className="text-lg mb-6">
-          If you&apos;d like to get in touch, you can reach me using the
-          following methods.
+          If you&apos;d like to get in touch, you can reach me using the following methods.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {contact.map((contactMethod) => {
+          {contact.map(contactMethod => {
             return (
               <div className="flex flex-col" key={contactMethod.method}>
                 <Title as="h2" variant="tertiary">
