@@ -39,7 +39,7 @@ export default async function Home() {
           <span className="block text-slate-500 font-normal text-2xl pt-1">A software engineer based in khobar.</span>
         </h1>
         <p className="text-slate-700 text-lg md:text-xl leading-normal">
-          I work with amazing companies to create exceptional products.
+          I love building software that feels good to use, the kind people actually want to come back to.
         </p>
         <Link
           href="/info"

@@ -21,28 +21,46 @@ export const metadata: Metadata = {
 const experience: {
   company: string;
   role: string;
-  date: string;
+  start: Date;
+  end: Date | null;
   logo: string;
 }[] = [
   {
     company: "Netzero",
     role: "Software Engineer",
-    date: "October 2024 → Present",
+    start: new Date("2024-10-01"),
+    end: null,
     logo: "/netzero.png",
   },
   {
     company: "Netzero",
     role: "Software Engineering Intern",
-    date: "July 2024 → October 2024",
+    start: new Date("2024-07-01"),
+    end: new Date("2024-10-01"),
     logo: "/netzero.png",
   },
   {
     company: "Wavez",
     role: "Full-Stack Developer",
-    date: "May 2024 → Present",
+    start: new Date("2024-05-01"),
+    end: null,
     logo: "/wavez.png",
   },
 ];
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
+function calcDuration(start: Date, end: Date | null) {
+  const to = end ?? new Date();
+  const months = (to.getFullYear() - start.getFullYear()) * 12 + (to.getMonth() - start.getMonth()) + 1;
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+  if (years === 0) return `${remainingMonths} mo`;
+  if (remainingMonths === 0) return `${years} yr`;
+  return `${years} yr ${remainingMonths} mo`;
+}
 
 export const dynamic = "force-static";
 
@@ -51,29 +69,25 @@ export default async function InfoPage() {
     <main className="px-6 md:px-0">
       <PageHeader title="Information" />
       <section className="pb-8 prose prose-lg">
+        <p>Hey, I&apos;m Ali, a software engineer.</p>
         <p>
-          Hi there, I&apos;m Ali Alshehri. I enjoy building tech products, along side working with some amazing
-          companies to help them build theirs.
+          I&apos;ve worked across a lot of different projects over the years, web, mobile, and backend, building and
+          scaling them through real challenges. That experience has shaped a lot of how I think about software.
         </p>
         <p>
-          Most recently i started working with Netzero to help make the world a greener place using tech. Before that, I
-          built numerous personal projects and freelance solutions. .
+          These days I&apos;m mostly in the mobile world. I enjoy building native-feeling experiences on React Native
+          and I&apos;ve been spending a good amount of time creating my own packages and contributing to libraries I use
+          daily, including some major ones like react-native-screens.
         </p>
         <p>
-          Currently, I&apos;m working as a software engineer with Netzero to help build the future of a greener world.
-          Originally joining as a intern, I&apos;m also a part of wavez as freelance developer whose ready to turn ideas
-          into reality instantly. As well as pursing an Artificial Intelligence bachelors degree at Imam Abdulrahman Bin
-          Faisal University.
-        </p>
-
-        <p>
-          I&apos;ve always bounced somewhere between Front-end and Back-end, however the common thread has always been
-          my love for building things that people love to use.
+          I&apos;m genuinely excited about AI and where it&apos;s going. But I care just as much about the craft.
+          Leveraging the best tools available is great, but quality and maintainability are things I won&apos;t trade
+          away.
         </p>
 
         <p>
           If you&apos;re interested in working together, feel free to reach out to me here:{" "}
-          <Link href="mailto:ali0alshehri@outlook.com">ali0alshehri@outlook.com</Link>.
+          <Link href="mailto:ali0alshehri@outlook.com">Ali0Alshehri@outlook.com</Link>.
         </p>
       </section>
 
@@ -85,7 +99,7 @@ export default async function InfoPage() {
         <div className="divide-y divide-slate-200">
           {experience.map(exp => {
             return (
-              <div className="flex gap-4 py-6" key={exp.date}>
+              <div className="flex gap-4 py-6" key={`${exp.company}-${exp.role}`}>
                 <Image
                   width={56}
                   height={56}
@@ -97,7 +111,8 @@ export default async function InfoPage() {
                   <span className="text-slate-800 text-xl font-semibold">{exp.company}</span>
                   <span className="text-slate-700 text-lg">{exp.role}</span>
                   <span className="block mt-4 text-slate-500 col-span-2 text-sm font-medium tracking-tighter font-mono">
-                    {exp.date}
+                    {formatDate(exp.start)} → {exp.end ? formatDate(exp.end) : "Present"}
+                    <span className="ml-2 text-slate-400">· {calcDuration(exp.start, exp.end)}</span>
                   </span>
                 </div>
               </div>

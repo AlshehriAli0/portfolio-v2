@@ -24,7 +24,7 @@ const contact: {
   {
     method: "Email",
     link: "mailto:ali0alshehri@outlook.com",
-    label: "ali0alshehri@outlook.com",
+    label: "Ali0Alshehri@outlook.com",
   },
   {
     method: "X",
