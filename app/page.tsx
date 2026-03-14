@@ -33,17 +33,19 @@ export default async function Home() {
 
   return (
     <main className="px-6 md:px-0">
-      <section className="pb-14 border-b border-slate-300 mb-14">
-        <h1 className="font-semibold text-4xl mb-4 text-slate-950">
+      <section className="pb-14 border-b border-slate-300 dark:border-white/10 mb-14">
+        <h1 className="font-semibold text-4xl mb-4 text-slate-950 dark:text-slate-50">
           {"HI, I'm Ali Alshehri."}
-          <span className="block text-slate-500 font-normal text-2xl pt-1">A software engineer based in khobar.</span>
+          <span className="block text-slate-500 dark:text-slate-400 font-normal text-2xl pt-1">
+            A software engineer based in khobar.
+          </span>
         </h1>
-        <p className="text-slate-700 text-lg md:text-xl leading-normal">
+        <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl leading-normal">
           I love building software that feels good to use, the kind people actually want to come back to.
         </p>
         <Link
           href="/info"
-          className="group bg-slate-950 hover:bg-slate-800 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
+          className="group bg-slate-950 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white dark:text-slate-950"
           prefetch={true}
         >
           More Information <span className="inline-block group-hover:translate-x-1.5 transition-transform">→</span>
@@ -54,7 +56,7 @@ export default async function Home() {
         <Title as="h2" variant="secondary" className="mb-8">
           Recent Writing
         </Title>
-        <div className="divide-y">
+        <div className="divide-y dark:divide-white/10">
           {posts.slice(0, 2).map(post => {
             return (
               <ArticleLink
@@ -69,7 +71,7 @@ export default async function Home() {
         </div>
         <Link
           href="/posts"
-          className="group bg-slate-950 hover:bg-slate-800 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
+          className="group bg-slate-950 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white dark:text-slate-950"
           prefetch={true}
         >
           View More Posts <span className="inline-block group-hover:translate-x-2 transition-transform">→</span>
@@ -77,7 +79,7 @@ export default async function Home() {
       </section>
 
       <section className="pb-16">
-        <p className="text-slate-700 text-lg">
+        <p className="text-slate-700 dark:text-slate-300 text-lg">
           You can find my personal projects on my{" "}
           <Link href="https://github.com/AlshehriAli0" className="underline" prefetch={false}>
             GitHub

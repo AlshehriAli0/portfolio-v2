@@ -8,9 +8,9 @@ interface Props {
 }
 
 const classNames = {
-  primary: "font-semibold text-4xl tracking-tight",
-  secondary: "font-semibold text-2xl tracking-tight",
-  tertiary: "font-semibold text-xl tracking-tight",
+  primary: "font-semibold text-4xl tracking-tight text-slate-900 dark:text-slate-100",
+  secondary: "font-semibold text-2xl tracking-tight text-slate-900 dark:text-slate-100",
+  tertiary: "font-semibold text-xl tracking-tight text-slate-900 dark:text-slate-100",
 };
 
 export function Title({ children, as = "span", variant = "primary", className }: Props) {

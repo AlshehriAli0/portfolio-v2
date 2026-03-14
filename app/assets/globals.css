@@ -6,6 +6,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-synthesis: none !important;
+  transition:
+    background-color 0.6s ease,
+    color 0.6s ease,
+    border-color 0.6s ease;
 }
 
 /* This is needed as there is a bug in Safari which is causing our font weights to render weirdly. */

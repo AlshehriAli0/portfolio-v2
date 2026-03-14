@@ -30,7 +30,7 @@ export default async function Page() {
   return (
     <main className="px-6 md:px-0">
       <PageHeader title="Writing" />
-      <section className="divide-y">
+      <section className="divide-y dark:divide-white/10">
         {filteredPosts.map(post => {
           return (
             <ArticleLink

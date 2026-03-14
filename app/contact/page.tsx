@@ -50,7 +50,7 @@ export default async function InfoPage() {
     <main className="px-6 md:px-0">
       <PageHeader title="Contact" />
       <section className="pb-8">
-        <p className="text-lg mb-6">
+        <p className="text-lg mb-6 dark:text-slate-300">
           If you&apos;d like to get in touch, you can reach me using the following methods.
         </p>
 
@@ -61,7 +61,7 @@ export default async function InfoPage() {
                 <Title as="h2" variant="tertiary">
                   {contactMethod.method}
                 </Title>
-                <Link href={contactMethod.link} className="text-slate-700">
+                <Link href={contactMethod.link} className="text-slate-700 dark:text-slate-300">
                   {contactMethod.label}
                 </Link>
               </div>

@@ -10,6 +10,7 @@ import { keywords } from "@/lib/keywords";
 import { Nav } from "./components/Nav";
 import { PrefetchProvider } from "./components/prefetch-provider";
 import TransitionProvider from "./components/TransitionProvider";
+import { ThemeProvider } from "./components/theme-provider";
 
 const SaansFont = localFont({
   src: "./saans-font.woff2",
@@ -85,8 +86,14 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: prevent dark mode flash
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})()`,
+          }}
+        />
         <meta name="google-site-verification" content="Bi6gdlrmvQ1g0lpGqT81tmb889eL-vOmUt4nXy1Dzms" />
 
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: seo */}
@@ -104,20 +111,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={clsx(SaansFont.className, JetBrainsMonoFont.variable, "bg-slate-50")}>
-        <div className="max-w-xl lg:max-w-2xl mx-auto">
-          <PrefetchProvider>
-            <Nav />
-            <TransitionProvider>{children}</TransitionProvider>
-          </PrefetchProvider>
+      <body
+        className={clsx(
+          SaansFont.className,
+          JetBrainsMonoFont.variable,
+          "bg-slate-50 dark:bg-[#0f0f12] transition-colors"
+        )}
+      >
+        <ThemeProvider>
+          <div className="max-w-xl lg:max-w-2xl mx-auto">
+            <PrefetchProvider>
+              <Nav />
+              <TransitionProvider>{children}</TransitionProvider>
+            </PrefetchProvider>
 
-          <footer className="px-6 md:px-0 border-t border-slate-200 py-8 text-slate-700 font-mono text-xs tracking-tight flex justify-between">
-            <p>
-              &copy; {new Date().getFullYear()} {"/"} Ali Alshehri
-            </p>
-            <p>{/* <Link href="">View Source</Link> */}</p>
-          </footer>
-        </div>
+            <footer className="px-6 md:px-0 border-t border-slate-200 dark:border-white/10 py-8 text-slate-700 dark:text-slate-400 font-mono text-xs tracking-tight flex justify-between">
+              <p>
+                &copy; {new Date().getFullYear()} {"/"} Ali Alshehri
+              </p>
+              <p>{/* <Link href="">View Source</Link> */}</p>
+            </footer>
+          </div>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

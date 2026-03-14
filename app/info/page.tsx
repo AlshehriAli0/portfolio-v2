@@ -68,7 +68,7 @@ export default async function InfoPage() {
   return (
     <main className="px-6 md:px-0">
       <PageHeader title="Information" />
-      <section className="pb-8 prose prose-lg">
+      <section className="pb-8 prose prose-lg dark:prose-invert">
         <p>Hey, I&apos;m Ali, a software engineer.</p>
         <p>
           I&apos;ve worked across a lot of different projects over the years, web, mobile, and backend, building and
@@ -96,7 +96,7 @@ export default async function InfoPage() {
           Experience
         </Title>
 
-        <div className="divide-y divide-slate-200">
+        <div className="divide-y divide-slate-200 dark:divide-white/10">
           {experience.map(exp => {
             return (
               <div className="flex gap-4 py-6" key={`${exp.company}-${exp.role}`}>
@@ -108,11 +108,13 @@ export default async function InfoPage() {
                   className="w-14 h-14 rounded-xl"
                 />
                 <div className="flex flex-col col-span-9">
-                  <span className="text-slate-800 text-xl font-semibold">{exp.company}</span>
-                  <span className="text-slate-700 text-lg">{exp.role}</span>
-                  <span className="block mt-4 text-slate-500 col-span-2 text-sm font-medium tracking-tighter font-mono">
+                  <span className="text-slate-800 dark:text-slate-200 text-xl font-semibold">{exp.company}</span>
+                  <span className="text-slate-700 dark:text-slate-300 text-lg">{exp.role}</span>
+                  <span className="block mt-4 text-slate-500 dark:text-slate-400 col-span-2 text-sm font-medium tracking-tighter font-mono">
                     {formatDate(exp.start)} → {exp.end ? formatDate(exp.end) : "Present"}
-                    <span className="ml-2 text-slate-400">· {calcDuration(exp.start, exp.end)}</span>
+                    <span className="ml-2 text-slate-400 dark:text-slate-500">
+                      · {calcDuration(exp.start, exp.end)}
+                    </span>
                   </span>
                 </div>
               </div>

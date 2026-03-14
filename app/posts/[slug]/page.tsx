@@ -109,8 +109,8 @@ export default async function Post({ params }: { params: Params }) {
     <>
       <main className="px-6 md:px-0 overflow-x-hidden">
         <section>
-          <h1 className="font-semibold tracking-tight text-4xl text-slate-900">{meta.title}</h1>
-          <span className="text-slate-500 text-sm tracking-tight font-mono block mt-4">
+          <h1 className="font-semibold tracking-tight text-4xl text-slate-900 dark:text-slate-100">{meta.title}</h1>
+          <span className="text-slate-500 dark:text-slate-400 text-sm tracking-tight font-mono block mt-4">
             Published on{" "}
             <time dateTime={post.date}>
               {new Intl.DateTimeFormat("en-GB", {
@@ -118,11 +118,13 @@ export default async function Post({ params }: { params: Params }) {
               }).format(new Date(post.date))}
             </time>
           </span>
-          <span className="text-slate-500 text-sm tracking-tight font-mono block mt-1">{readingTime} minute read</span>
+          <span className="text-slate-500 dark:text-slate-400 text-sm tracking-tight font-mono block mt-1">
+            {readingTime} minute read
+          </span>
         </section>
 
         <section className="py-5">
-          <article className="prose prose-lg prose-slate text-justify w-full max-w-none">
+          <article className="prose prose-lg prose-slate dark:prose-invert text-justify w-full max-w-none">
             <MdxContent />
           </article>
         </section>
