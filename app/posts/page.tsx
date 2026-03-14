@@ -6,6 +6,7 @@ import { ArticleLink } from "../components/article-link";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
+  title: "Writing",
   alternates: {
     canonical: "https://ali-sh.com/posts",
   },
