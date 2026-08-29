@@ -1,0 +1,1042 @@
+{
+  "ok": true,
+  "tool": "tw2sx",
+  "tailwind": "3.4.17",
+  "entry": "/Users/ali/Developer/www/tailwind.config.js",
+  "summary": {
+    "files": 21,
+    "usages": 69,
+    "converted": 23,
+    "skipped": 46,
+    "byReason": {
+      "marker-class": 7,
+      "parent-state": 39,
+      "dynamic-classes": 8,
+      "sibling-state": 7,
+      "passed-in-classes": 2,
+      "descendant-selector": 7,
+      "styles-children": 4
+    },
+    "byFix": {
+      "safe": 7,
+      "needs-lookup": 53,
+      "check-first": 14
+    }
+  },
+  "files": [
+    {
+      "file": "app/api/og/route.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/api/posts/route.ts",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/Nav.tsx",
+      "verdict": "partial",
+      "usages": 11,
+      "converted": 2,
+      "skipped": 9,
+      "source": "const styles = stylex.create({\n  el1: {\n    display: \"flex\",\n    alignItems: \"center\",\n    justifyContent: \"space-between\",\n    paddingLeft: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n    paddingRight: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n    paddingBottom: \"4rem\",\n    paddingTop: {\n      default: \"2rem\",\n      \"@media (min-width: 768px)\": \"4rem\",\n    },\n  },\n  el5: {\n    display: \"flex\",\n    alignItems: \"center\",\n    gap: \"1rem\",\n  },\n});",
+      "skips": [
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 12,
+          "column": 22,
+          "reason": "marker-class",
+          "fix": "safe",
+          "class": "group",
+          "detail": "\"group\" marks this element so descendants or siblings can react to its state.",
+          "hint": "Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover').",
+          "message": "app/components/Nav.tsx:12:22: skipped marker-class \"group\": \"group\" marks this element so descendants or siblings can react to its state. fix: Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover')."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 13,
+          "column": 13,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-50",
+          "detail": "\"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:13:13: skipped parent-state \"dark:text-slate-50\": \"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 15,
+          "column": 11,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Template literal with 1 interpolation(s) at line 15.",
+          "hint": "Lift the condition into a boolean and apply a separate StyleX style conditionally.",
+          "message": "app/components/Nav.tsx:15:11: skipped dynamic-classes: Template literal with 1 interpolation(s) at line 15. fix: Lift the condition into a boolean and apply a separate StyleX style conditionally."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 15,
+          "column": 11,
+          "reason": "sibling-state",
+          "fix": "needs-lookup",
+          "class": "group-hover:max-w-full",
+          "detail": "\"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\").",
+          "hint": "Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element.",
+          "message": "app/components/Nav.tsx:15:11: skipped sibling-state \"group-hover:max-w-full\": \"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\"). fix: Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 15,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:bg-slate-50",
+          "detail": "\"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:15:11: skipped parent-state \"dark:bg-slate-50\": \"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 23,
+          "column": 11,
+          "reason": "marker-class",
+          "fix": "safe",
+          "class": "group",
+          "detail": "\"group\" marks this element so descendants or siblings can react to its state.",
+          "hint": "Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover').",
+          "message": "app/components/Nav.tsx:23:11: skipped marker-class \"group\": \"group\" marks this element so descendants or siblings can react to its state. fix: Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover')."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 23,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-50",
+          "detail": "\"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:23:11: skipped parent-state \"dark:text-slate-50\": \"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 29,
+          "column": 13,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Template literal with 1 interpolation(s) at line 29.",
+          "hint": "Lift the condition into a boolean and apply a separate StyleX style conditionally.",
+          "message": "app/components/Nav.tsx:29:13: skipped dynamic-classes: Template literal with 1 interpolation(s) at line 29. fix: Lift the condition into a boolean and apply a separate StyleX style conditionally."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 29,
+          "column": 13,
+          "reason": "sibling-state",
+          "fix": "needs-lookup",
+          "class": "group-hover:max-w-full",
+          "detail": "\"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\").",
+          "hint": "Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element.",
+          "message": "app/components/Nav.tsx:29:13: skipped sibling-state \"group-hover:max-w-full\": \"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\"). fix: Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 29,
+          "column": 13,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:bg-slate-50",
+          "detail": "\"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:29:13: skipped parent-state \"dark:bg-slate-50\": \"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 36,
+          "column": 11,
+          "reason": "marker-class",
+          "fix": "safe",
+          "class": "group",
+          "detail": "\"group\" marks this element so descendants or siblings can react to its state.",
+          "hint": "Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover').",
+          "message": "app/components/Nav.tsx:36:11: skipped marker-class \"group\": \"group\" marks this element so descendants or siblings can react to its state. fix: Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover')."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 36,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-50",
+          "detail": "\"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:36:11: skipped parent-state \"dark:text-slate-50\": \"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 42,
+          "column": 13,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Template literal with 1 interpolation(s) at line 42.",
+          "hint": "Lift the condition into a boolean and apply a separate StyleX style conditionally.",
+          "message": "app/components/Nav.tsx:42:13: skipped dynamic-classes: Template literal with 1 interpolation(s) at line 42. fix: Lift the condition into a boolean and apply a separate StyleX style conditionally."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 42,
+          "column": 13,
+          "reason": "sibling-state",
+          "fix": "needs-lookup",
+          "class": "group-hover:max-w-full",
+          "detail": "\"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\").",
+          "hint": "Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element.",
+          "message": "app/components/Nav.tsx:42:13: skipped sibling-state \"group-hover:max-w-full\": \"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\"). fix: Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 42,
+          "column": 13,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:bg-slate-50",
+          "detail": "\"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:42:13: skipped parent-state \"dark:bg-slate-50\": \"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 49,
+          "column": 11,
+          "reason": "marker-class",
+          "fix": "safe",
+          "class": "group",
+          "detail": "\"group\" marks this element so descendants or siblings can react to its state.",
+          "hint": "Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover').",
+          "message": "app/components/Nav.tsx:49:11: skipped marker-class \"group\": \"group\" marks this element so descendants or siblings can react to its state. fix: Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover')."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 49,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-50",
+          "detail": "\"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:49:11: skipped parent-state \"dark:text-slate-50\": \"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 55,
+          "column": 13,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Template literal with 1 interpolation(s) at line 55.",
+          "hint": "Lift the condition into a boolean and apply a separate StyleX style conditionally.",
+          "message": "app/components/Nav.tsx:55:13: skipped dynamic-classes: Template literal with 1 interpolation(s) at line 55. fix: Lift the condition into a boolean and apply a separate StyleX style conditionally."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 55,
+          "column": 13,
+          "reason": "sibling-state",
+          "fix": "needs-lookup",
+          "class": "group-hover:max-w-full",
+          "detail": "\"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\").",
+          "hint": "Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element.",
+          "message": "app/components/Nav.tsx:55:13: skipped sibling-state \"group-hover:max-w-full\": \"group-hover:max-w-full\" depends on a marked ancestor or sibling (\".group:hover .group-hover:max-w-full\"). fix: Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element."
+        },
+        {
+          "file": "app/components/Nav.tsx",
+          "line": 55,
+          "column": 13,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:bg-slate-50",
+          "detail": "\"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/Nav.tsx:55:13: skipped parent-state \"dark:bg-slate-50\": \"dark:bg-slate-50\" applies only under an ancestor (\".dark:bg-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/Transition.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/TransitionProvider.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/article-link.tsx",
+      "verdict": "partial",
+      "usages": 4,
+      "converted": 2,
+      "skipped": 2,
+      "source": "const styles = stylex.create({\n  el1: {\n    display: \"flex\",\n    flexDirection: \"column\",\n    gap: \"1rem\",\n    paddingTop: {\n      default: \"2rem\",\n      \":first-child\": \"0px\",\n    },\n    paddingBottom: \"2rem\",\n    textDecorationLine: \"none\",\n  },\n  el2: {\n    display: \"flex\",\n    flexDirection: \"column\",\n  },\n});",
+      "skips": [
+        {
+          "file": "app/components/article-link.tsx",
+          "line": 19,
+          "column": 15,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-400",
+          "detail": "\"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/article-link.tsx:19:15: skipped parent-state \"dark:text-slate-400\": \"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/article-link.tsx",
+          "line": 28,
+          "column": 12,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-300",
+          "detail": "\"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/article-link.tsx:28:12: skipped parent-state \"dark:text-slate-300\": \"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/code-block.tsx",
+      "verdict": "partial",
+      "usages": 6,
+      "converted": 1,
+      "skipped": 5,
+      "source": "const styles = stylex.create({\n  el4: {\n    position: \"relative\",\n    height: \"1rem\",\n    width: \"1rem\",\n  },\n});",
+      "skips": [
+        {
+          "file": "app/components/code-block.tsx",
+          "line": 40,
+          "column": 10,
+          "reason": "marker-class",
+          "fix": "safe",
+          "class": "group",
+          "detail": "\"group\" marks this element so descendants or siblings can react to its state.",
+          "hint": "Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover').",
+          "message": "app/components/code-block.tsx:40:10: skipped marker-class \"group\": \"group\" marks this element so descendants or siblings can react to its state. fix: Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover')."
+        },
+        {
+          "file": "app/components/code-block.tsx",
+          "line": 41,
+          "column": 25,
+          "reason": "passed-in-classes",
+          "fix": "check-first",
+          "detail": "Variable \"className\" flows into a class string at line 41.",
+          "hint": "Give the component a \"style?: StyleXStylesWithout<{...}>\" prop and pass it last to stylex.props(); see the skill's references/component-api.md.",
+          "message": "app/components/code-block.tsx:41:25: skipped passed-in-classes: Variable \"className\" flows into a class string at line 41. fix: Give the component a \"style?: StyleXStylesWithout<{...}>\" prop and pass it last to stylex.props(); see the skill's references/component-api.md."
+        },
+        {
+          "file": "app/components/code-block.tsx",
+          "line": 46,
+          "column": 9,
+          "reason": "sibling-state",
+          "fix": "needs-lookup",
+          "class": "group-hover:opacity-100",
+          "detail": "\"group-hover:opacity-100\" depends on a marked ancestor or sibling (\".group:hover .group-hover:opacity-100\").",
+          "hint": "Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element.",
+          "message": "app/components/code-block.tsx:46:9: skipped sibling-state \"group-hover:opacity-100\": \"group-hover:opacity-100\" depends on a marked ancestor or sibling (\".group:hover .group-hover:opacity-100\"). fix: Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element."
+        },
+        {
+          "file": "app/components/code-block.tsx",
+          "line": 54,
+          "column": 13,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Ternary in a class expression at line 56.",
+          "hint": "Write both branches as separate styles and pick one with the same condition.",
+          "message": "app/components/code-block.tsx:54:13: skipped dynamic-classes: Ternary in a class expression at line 56. fix: Write both branches as separate styles and pick one with the same condition."
+        },
+        {
+          "file": "app/components/code-block.tsx",
+          "line": 73,
+          "column": 13,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Ternary in a class expression at line 75.",
+          "hint": "Write both branches as separate styles and pick one with the same condition.",
+          "message": "app/components/code-block.tsx:73:13: skipped dynamic-classes: Ternary in a class expression at line 75. fix: Write both branches as separate styles and pick one with the same condition."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/page-header.tsx",
+      "verdict": "skipped",
+      "usages": 1,
+      "converted": 0,
+      "skipped": 1,
+      "skips": [
+        {
+          "file": "app/components/page-header.tsx",
+          "line": 8,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:border-white/10",
+          "detail": "\"dark:border-white/10\" applies only under an ancestor (\".dark:border-white/10:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/page-header.tsx:8:11: skipped parent-state \"dark:border-white/10\": \"dark:border-white/10\" applies only under an ancestor (\".dark:border-white/10:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/page-header.tsx",
+          "line": 8,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-100",
+          "detail": "\"dark:text-slate-100\" applies only under an ancestor (\".dark:text-slate-100:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/page-header.tsx:8:11: skipped parent-state \"dark:text-slate-100\": \"dark:text-slate-100\" applies only under an ancestor (\".dark:text-slate-100:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/prefetch-provider.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/theme-provider.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/theme-toggle.tsx",
+      "verdict": "skipped",
+      "usages": 3,
+      "converted": 0,
+      "skipped": 3,
+      "skips": [
+        {
+          "file": "app/components/theme-toggle.tsx",
+          "line": 13,
+          "column": 7,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-400",
+          "detail": "\"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/components/theme-toggle.tsx:13:7: skipped parent-state \"dark:text-slate-400\": \"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/components/theme-toggle.tsx",
+          "line": 13,
+          "column": 7,
+          "reason": "descendant-selector",
+          "fix": "needs-lookup",
+          "class": "dark:hover:text-slate-50",
+          "detail": "\"dark:hover:text-slate-50\" targets a descendant (\".dark:hover:text-slate-50:hover:is(.dark *)\"). StyleX hard-errors on descendant selectors.",
+          "hint": "Style the child component directly instead.",
+          "message": "app/components/theme-toggle.tsx:13:7: skipped descendant-selector \"dark:hover:text-slate-50\": \"dark:hover:text-slate-50\" targets a descendant (\".dark:hover:text-slate-50:hover:is(.dark *)\"). StyleX hard-errors on descendant selectors. fix: Style the child component directly instead."
+        },
+        {
+          "file": "app/components/theme-toggle.tsx",
+          "line": 25,
+          "column": 9,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Template literal with 1 interpolation(s) at line 25.",
+          "hint": "Lift the condition into a boolean and apply a separate StyleX style conditionally.",
+          "message": "app/components/theme-toggle.tsx:25:9: skipped dynamic-classes: Template literal with 1 interpolation(s) at line 25. fix: Lift the condition into a boolean and apply a separate StyleX style conditionally."
+        },
+        {
+          "file": "app/components/theme-toggle.tsx",
+          "line": 39,
+          "column": 9,
+          "reason": "dynamic-classes",
+          "fix": "check-first",
+          "detail": "Template literal with 1 interpolation(s) at line 39.",
+          "hint": "Lift the condition into a boolean and apply a separate StyleX style conditionally.",
+          "message": "app/components/theme-toggle.tsx:39:9: skipped dynamic-classes: Template literal with 1 interpolation(s) at line 39. fix: Lift the condition into a boolean and apply a separate StyleX style conditionally."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/title.tsx",
+      "verdict": "skipped",
+      "usages": 1,
+      "converted": 0,
+      "skipped": 1,
+      "skips": [
+        {
+          "file": "app/components/title.tsx",
+          "line": 18,
+          "column": 21,
+          "reason": "passed-in-classes",
+          "fix": "check-first",
+          "detail": "Variable \"className\" flows into a class string at line 18.",
+          "hint": "Give the component a \"style?: StyleXStylesWithout<{...}>\" prop and pass it last to stylex.props(); see the skill's references/component-api.md.",
+          "message": "app/components/title.tsx:18:21: skipped passed-in-classes: Variable \"className\" flows into a class string at line 18. fix: Give the component a \"style?: StyleXStylesWithout<{...}>\" prop and pass it last to stylex.props(); see the skill's references/component-api.md."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/contact/page.tsx",
+      "verdict": "partial",
+      "usages": 6,
+      "converted": 4,
+      "skipped": 2,
+      "source": "const styles = stylex.create({\n  el1: {\n    paddingLeft: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n    paddingRight: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n  },\n  el2: {\n    paddingBottom: \"2rem\",\n  },\n  el4: {\n    display: \"grid\",\n    gridTemplateColumns: {\n      default: \"repeat(1, minmax(0, 1fr))\",\n      \"@media (min-width: 768px)\": \"repeat(2, minmax(0, 1fr))\",\n    },\n    gap: \"1rem\",\n  },\n  el5: {\n    display: \"flex\",\n    flexDirection: \"column\",\n  },\n});",
+      "skips": [
+        {
+          "file": "app/contact/page.tsx",
+          "line": 53,
+          "column": 12,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-300",
+          "detail": "\"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/contact/page.tsx:53:12: skipped parent-state \"dark:text-slate-300\": \"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/contact/page.tsx",
+          "line": 64,
+          "column": 49,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-300",
+          "detail": "\"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/contact/page.tsx:64:49: skipped parent-state \"dark:text-slate-300\": \"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/info/page.tsx",
+      "verdict": "partial",
+      "usages": 11,
+      "converted": 5,
+      "skipped": 6,
+      "source": "const styles = stylex.create({\n  el1: {\n    paddingLeft: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n    paddingRight: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n  },\n  el3: {\n    marginBottom: \"1rem\",\n    marginTop: \"2rem\",\n  },\n  el5: {\n    display: \"flex\",\n    gap: \"1rem\",\n    paddingTop: \"1.5rem\",\n    paddingBottom: \"1.5rem\",\n  },\n  el6: {\n    height: \"3.5rem\",\n    width: \"3.5rem\",\n    borderRadius: \"0.75rem\",\n  },\n  el7: {\n    gridColumn: \"span 9 / span 9\",\n    display: \"flex\",\n    flexDirection: \"column\",\n  },\n});",
+      "skips": [
+        {
+          "file": "app/info/page.tsx",
+          "line": 71,
+          "column": 16,
+          "reason": "descendant-selector",
+          "fix": "needs-lookup",
+          "class": "prose",
+          "detail": "\"prose\" targets a descendant (\".prose :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors.",
+          "hint": "Style the child component directly instead.",
+          "message": "app/info/page.tsx:71:16: skipped descendant-selector \"prose\": \"prose\" targets a descendant (\".prose :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors. fix: Style the child component directly instead."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 71,
+          "column": 16,
+          "reason": "descendant-selector",
+          "fix": "needs-lookup",
+          "class": "prose-lg",
+          "detail": "\"prose-lg\" targets a descendant (\".prose-lg :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors.",
+          "hint": "Style the child component directly instead.",
+          "message": "app/info/page.tsx:71:16: skipped descendant-selector \"prose-lg\": \"prose-lg\" targets a descendant (\".prose-lg :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors. fix: Style the child component directly instead."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 71,
+          "column": 16,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:prose-invert",
+          "detail": "\"dark:prose-invert\" applies only under an ancestor (\".dark:prose-invert:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/info/page.tsx:71:16: skipped parent-state \"dark:prose-invert\": \"dark:prose-invert\" applies only under an ancestor (\".dark:prose-invert:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 99,
+          "column": 14,
+          "reason": "styles-children",
+          "fix": "check-first",
+          "class": "divide-y",
+          "detail": "\"divide-y\" styles this element's children via \".divide-y > :not([hidden]) ~ :not([hidden])\".",
+          "hint": "Use gap on the parent, or move the style onto the child component.",
+          "message": "app/info/page.tsx:99:14: skipped styles-children \"divide-y\": \"divide-y\" styles this element's children via \".divide-y > :not([hidden]) ~ :not([hidden])\". fix: Use gap on the parent, or move the style onto the child component."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 99,
+          "column": 14,
+          "reason": "styles-children",
+          "fix": "check-first",
+          "class": "divide-slate-200",
+          "detail": "\"divide-slate-200\" styles this element's children via \".divide-slate-200 > :not([hidden]) ~ :not([hidden])\".",
+          "hint": "Use gap on the parent, or move the style onto the child component.",
+          "message": "app/info/page.tsx:99:14: skipped styles-children \"divide-slate-200\": \"divide-slate-200\" styles this element's children via \".divide-slate-200 > :not([hidden]) ~ :not([hidden])\". fix: Use gap on the parent, or move the style onto the child component."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 99,
+          "column": 14,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:divide-white/10",
+          "detail": "\"dark:divide-white/10\" applies only under an ancestor (\".dark:divide-white/10:is(.dark *) > :not([hidden]) ~ :not([hidden])\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/info/page.tsx:99:14: skipped parent-state \"dark:divide-white/10\": \"dark:divide-white/10\" applies only under an ancestor (\".dark:divide-white/10:is(.dark *) > :not([hidden]) ~ :not([hidden])\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 111,
+          "column": 25,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-200",
+          "detail": "\"dark:text-slate-200\" applies only under an ancestor (\".dark:text-slate-200:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/info/page.tsx:111:25: skipped parent-state \"dark:text-slate-200\": \"dark:text-slate-200\" applies only under an ancestor (\".dark:text-slate-200:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 112,
+          "column": 25,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-300",
+          "detail": "\"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/info/page.tsx:112:25: skipped parent-state \"dark:text-slate-300\": \"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 113,
+          "column": 25,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-400",
+          "detail": "\"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/info/page.tsx:113:25: skipped parent-state \"dark:text-slate-400\": \"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/info/page.tsx",
+          "line": 115,
+          "column": 27,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-500",
+          "detail": "\"dark:text-slate-500\" applies only under an ancestor (\".dark:text-slate-500:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/info/page.tsx:115:27: skipped parent-state \"dark:text-slate-500\": \"dark:text-slate-500\" applies only under an ancestor (\".dark:text-slate-500:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/layout.tsx",
+      "verdict": "partial",
+      "usages": 3,
+      "converted": 1,
+      "skipped": 2,
+      "source": "const styles = stylex.create({\n  el2: {\n    marginLeft: \"auto\",\n    marginRight: \"auto\",\n    maxWidth: {\n      default: \"36rem\",\n      \"@media (min-width: 1024px)\": \"42rem\",\n    },\n  },\n});",
+      "skips": [
+        {
+          "file": "app/layout.tsx",
+          "line": 110,
+          "column": 9,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:bg-[#0f0f12]",
+          "detail": "\"dark:bg-[#0f0f12]\" applies only under an ancestor (\".dark:bg-[#0f0f12]:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/layout.tsx:110:9: skipped parent-state \"dark:bg-[#0f0f12]\": \"dark:bg-[#0f0f12]\" applies only under an ancestor (\".dark:bg-[#0f0f12]:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/layout.tsx",
+          "line": 119,
+          "column": 21,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:border-white/10",
+          "detail": "\"dark:border-white/10\" applies only under an ancestor (\".dark:border-white/10:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/layout.tsx:119:21: skipped parent-state \"dark:border-white/10\": \"dark:border-white/10\" applies only under an ancestor (\".dark:border-white/10:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/layout.tsx",
+          "line": 119,
+          "column": 21,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-400",
+          "detail": "\"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/layout.tsx:119:21: skipped parent-state \"dark:text-slate-400\": \"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/page.tsx",
+      "verdict": "partial",
+      "usages": 15,
+      "converted": 5,
+      "skipped": 10,
+      "source": "const styles = stylex.create({\n  el1: {\n    paddingLeft: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n    paddingRight: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n  },\n  el8: {\n    paddingBottom: \"4rem\",\n    paddingTop: \"2.5rem\",\n  },\n  el9: {\n    marginBottom: \"2rem\",\n  },\n  el13: {\n    paddingBottom: \"4rem\",\n  },\n  el15: {\n    textDecorationLine: \"underline\",\n  },\n});",
+      "skips": [
+        {
+          "file": "app/page.tsx",
+          "line": 36,
+          "column": 16,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:border-white/10",
+          "detail": "\"dark:border-white/10\" applies only under an ancestor (\".dark:border-white/10:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:36:16: skipped parent-state \"dark:border-white/10\": \"dark:border-white/10\" applies only under an ancestor (\".dark:border-white/10:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 37,
+          "column": 13,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-50",
+          "detail": "\"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:37:13: skipped parent-state \"dark:text-slate-50\": \"dark:text-slate-50\" applies only under an ancestor (\".dark:text-slate-50:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 39,
+          "column": 17,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-400",
+          "detail": "\"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:39:17: skipped parent-state \"dark:text-slate-400\": \"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 43,
+          "column": 12,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-300",
+          "detail": "\"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:43:12: skipped parent-state \"dark:text-slate-300\": \"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 48,
+          "column": 11,
+          "reason": "marker-class",
+          "fix": "safe",
+          "class": "group",
+          "detail": "\"group\" marks this element so descendants or siblings can react to its state.",
+          "hint": "Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover').",
+          "message": "app/page.tsx:48:11: skipped marker-class \"group\": \"group\" marks this element so descendants or siblings can react to its state. fix: Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover')."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 48,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:bg-slate-100",
+          "detail": "\"dark:bg-slate-100\" applies only under an ancestor (\".dark:bg-slate-100:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:48:11: skipped parent-state \"dark:bg-slate-100\": \"dark:bg-slate-100\" applies only under an ancestor (\".dark:bg-slate-100:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 48,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-950",
+          "detail": "\"dark:text-slate-950\" applies only under an ancestor (\".dark:text-slate-950:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:48:11: skipped parent-state \"dark:text-slate-950\": \"dark:text-slate-950\" applies only under an ancestor (\".dark:text-slate-950:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 48,
+          "column": 11,
+          "reason": "descendant-selector",
+          "fix": "needs-lookup",
+          "class": "dark:hover:bg-slate-200",
+          "detail": "\"dark:hover:bg-slate-200\" targets a descendant (\".dark:hover:bg-slate-200:hover:is(.dark *)\"). StyleX hard-errors on descendant selectors.",
+          "hint": "Style the child component directly instead.",
+          "message": "app/page.tsx:48:11: skipped descendant-selector \"dark:hover:bg-slate-200\": \"dark:hover:bg-slate-200\" targets a descendant (\".dark:hover:bg-slate-200:hover:is(.dark *)\"). StyleX hard-errors on descendant selectors. fix: Style the child component directly instead."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 51,
+          "column": 34,
+          "reason": "sibling-state",
+          "fix": "needs-lookup",
+          "class": "group-hover:translate-x-1.5",
+          "detail": "\"group-hover:translate-x-1.5\" depends on a marked ancestor or sibling (\".group:hover .group-hover:translate-x-1.5\").",
+          "hint": "Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element.",
+          "message": "app/page.tsx:51:34: skipped sibling-state \"group-hover:translate-x-1.5\": \"group-hover:translate-x-1.5\" depends on a marked ancestor or sibling (\".group:hover .group-hover:translate-x-1.5\"). fix: Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 59,
+          "column": 14,
+          "reason": "styles-children",
+          "fix": "check-first",
+          "class": "divide-y",
+          "detail": "\"divide-y\" styles this element's children via \".divide-y > :not([hidden]) ~ :not([hidden])\".",
+          "hint": "Use gap on the parent, or move the style onto the child component.",
+          "message": "app/page.tsx:59:14: skipped styles-children \"divide-y\": \"divide-y\" styles this element's children via \".divide-y > :not([hidden]) ~ :not([hidden])\". fix: Use gap on the parent, or move the style onto the child component."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 59,
+          "column": 14,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:divide-white/10",
+          "detail": "\"dark:divide-white/10\" applies only under an ancestor (\".dark:divide-white/10:is(.dark *) > :not([hidden]) ~ :not([hidden])\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:59:14: skipped parent-state \"dark:divide-white/10\": \"dark:divide-white/10\" applies only under an ancestor (\".dark:divide-white/10:is(.dark *) > :not([hidden]) ~ :not([hidden])\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 74,
+          "column": 11,
+          "reason": "marker-class",
+          "fix": "safe",
+          "class": "group",
+          "detail": "\"group\" marks this element so descendants or siblings can react to its state.",
+          "hint": "Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover').",
+          "message": "app/page.tsx:74:11: skipped marker-class \"group\": \"group\" marks this element so descendants or siblings can react to its state. fix: Spread stylex.props(stylex.defaultMarker()) on this element; reacting elements use stylex.when.ancestor(':hover')."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 74,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:bg-slate-100",
+          "detail": "\"dark:bg-slate-100\" applies only under an ancestor (\".dark:bg-slate-100:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:74:11: skipped parent-state \"dark:bg-slate-100\": \"dark:bg-slate-100\" applies only under an ancestor (\".dark:bg-slate-100:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 74,
+          "column": 11,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-950",
+          "detail": "\"dark:text-slate-950\" applies only under an ancestor (\".dark:text-slate-950:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:74:11: skipped parent-state \"dark:text-slate-950\": \"dark:text-slate-950\" applies only under an ancestor (\".dark:text-slate-950:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 74,
+          "column": 11,
+          "reason": "descendant-selector",
+          "fix": "needs-lookup",
+          "class": "dark:hover:bg-slate-200",
+          "detail": "\"dark:hover:bg-slate-200\" targets a descendant (\".dark:hover:bg-slate-200:hover:is(.dark *)\"). StyleX hard-errors on descendant selectors.",
+          "hint": "Style the child component directly instead.",
+          "message": "app/page.tsx:74:11: skipped descendant-selector \"dark:hover:bg-slate-200\": \"dark:hover:bg-slate-200\" targets a descendant (\".dark:hover:bg-slate-200:hover:is(.dark *)\"). StyleX hard-errors on descendant selectors. fix: Style the child component directly instead."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 77,
+          "column": 33,
+          "reason": "sibling-state",
+          "fix": "needs-lookup",
+          "class": "group-hover:translate-x-2",
+          "detail": "\"group-hover:translate-x-2\" depends on a marked ancestor or sibling (\".group:hover .group-hover:translate-x-2\").",
+          "hint": "Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element.",
+          "message": "app/page.tsx:77:33: skipped sibling-state \"group-hover:translate-x-2\": \"group-hover:translate-x-2\" depends on a marked ancestor or sibling (\".group:hover .group-hover:translate-x-2\"). fix: Use stylex.when.ancestor()/siblingBefore() plus stylex.defaultMarker() on that element."
+        },
+        {
+          "file": "app/page.tsx",
+          "line": 82,
+          "column": 12,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-300",
+          "detail": "\"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/page.tsx:82:12: skipped parent-state \"dark:text-slate-300\": \"dark:text-slate-300\" applies only under an ancestor (\".dark:text-slate-300:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/posts/[slug]/page.tsx",
+      "verdict": "partial",
+      "usages": 6,
+      "converted": 2,
+      "skipped": 4,
+      "source": "const styles = stylex.create({\n  el1: {\n    overflowX: \"hidden\",\n    paddingLeft: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n    paddingRight: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n  },\n  el5: {\n    paddingTop: \"1.25rem\",\n    paddingBottom: \"1.25rem\",\n  },\n});",
+      "skips": [
+        {
+          "file": "app/posts/[slug]/page.tsx",
+          "line": 112,
+          "column": 15,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-100",
+          "detail": "\"dark:text-slate-100\" applies only under an ancestor (\".dark:text-slate-100:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/posts/[slug]/page.tsx:112:15: skipped parent-state \"dark:text-slate-100\": \"dark:text-slate-100\" applies only under an ancestor (\".dark:text-slate-100:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/posts/[slug]/page.tsx",
+          "line": 113,
+          "column": 17,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-400",
+          "detail": "\"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/posts/[slug]/page.tsx:113:17: skipped parent-state \"dark:text-slate-400\": \"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/posts/[slug]/page.tsx",
+          "line": 121,
+          "column": 17,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:text-slate-400",
+          "detail": "\"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/posts/[slug]/page.tsx:121:17: skipped parent-state \"dark:text-slate-400\": \"dark:text-slate-400\" applies only under an ancestor (\".dark:text-slate-400:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        },
+        {
+          "file": "app/posts/[slug]/page.tsx",
+          "line": 127,
+          "column": 20,
+          "reason": "descendant-selector",
+          "fix": "needs-lookup",
+          "class": "prose",
+          "detail": "\"prose\" targets a descendant (\".prose :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors.",
+          "hint": "Style the child component directly instead.",
+          "message": "app/posts/[slug]/page.tsx:127:20: skipped descendant-selector \"prose\": \"prose\" targets a descendant (\".prose :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors. fix: Style the child component directly instead."
+        },
+        {
+          "file": "app/posts/[slug]/page.tsx",
+          "line": 127,
+          "column": 20,
+          "reason": "descendant-selector",
+          "fix": "needs-lookup",
+          "class": "prose-lg",
+          "detail": "\"prose-lg\" targets a descendant (\".prose-lg :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors.",
+          "hint": "Style the child component directly instead.",
+          "message": "app/posts/[slug]/page.tsx:127:20: skipped descendant-selector \"prose-lg\": \"prose-lg\" targets a descendant (\".prose-lg :where(p):not(:where([class~=\"not-prose\"],[class~=\"not-prose\"] *))\"). StyleX hard-errors on descendant selectors. fix: Style the child component directly instead."
+        },
+        {
+          "file": "app/posts/[slug]/page.tsx",
+          "line": 127,
+          "column": 20,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:prose-invert",
+          "detail": "\"dark:prose-invert\" applies only under an ancestor (\".dark:prose-invert:is(.dark *)\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/posts/[slug]/page.tsx:127:20: skipped parent-state \"dark:prose-invert\": \"dark:prose-invert\" applies only under an ancestor (\".dark:prose-invert:is(.dark *)\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/posts/page.tsx",
+      "verdict": "partial",
+      "usages": 2,
+      "converted": 1,
+      "skipped": 1,
+      "source": "const styles = stylex.create({\n  el1: {\n    paddingLeft: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n    paddingRight: {\n      default: \"1.5rem\",\n      \"@media (min-width: 768px)\": \"0px\",\n    },\n  },\n});",
+      "skips": [
+        {
+          "file": "app/posts/page.tsx",
+          "line": 33,
+          "column": 16,
+          "reason": "styles-children",
+          "fix": "check-first",
+          "class": "divide-y",
+          "detail": "\"divide-y\" styles this element's children via \".divide-y > :not([hidden]) ~ :not([hidden])\".",
+          "hint": "Use gap on the parent, or move the style onto the child component.",
+          "message": "app/posts/page.tsx:33:16: skipped styles-children \"divide-y\": \"divide-y\" styles this element's children via \".divide-y > :not([hidden]) ~ :not([hidden])\". fix: Use gap on the parent, or move the style onto the child component."
+        },
+        {
+          "file": "app/posts/page.tsx",
+          "line": 33,
+          "column": 16,
+          "reason": "parent-state",
+          "fix": "needs-lookup",
+          "class": "dark:divide-white/10",
+          "detail": "\"dark:divide-white/10\" applies only under an ancestor (\".dark:divide-white/10:is(.dark *) > :not([hidden]) ~ :not([hidden])\").",
+          "hint": "For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker.",
+          "message": "app/posts/page.tsx:33:16: skipped parent-state \"dark:divide-white/10\": \"dark:divide-white/10\" applies only under an ancestor (\".dark:divide-white/10:is(.dark *) > :not([hidden]) ~ :not([hidden])\"). fix: For dark mode use stylex.createTheme(); otherwise stylex.when.ancestor() with a marker."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/robots.ts",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/sitemap.ts",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/template.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    }
+  ]
+}

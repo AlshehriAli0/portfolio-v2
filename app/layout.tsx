@@ -3,25 +3,12 @@ import "./assets/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import { imageUrl } from "@/lib/imageUrl";
 import { keywords } from "@/lib/keywords";
 import { Nav } from "./components/Nav";
 import { PrefetchProvider } from "./components/prefetch-provider";
 import TransitionProvider from "./components/TransitionProvider";
 import { ThemeProvider } from "./components/theme-provider";
-
-const SaansFont = localFont({
-  src: "./saans-font.woff2",
-  display: "swap",
-});
-
-const JetBrainsMonoFont = JetBrains_Mono({
-  display: "swap",
-  variable: "--font-monospace",
-  subsets: ["latin"],
-});
 
 export async function generateMetadata() {
   return {
@@ -91,8 +78,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: prevent dark mode flash
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}else{document.documentElement.style.colorScheme="light"}}catch(e){}})()`,
           }}
+        />
+        <link rel="preload" href="/fonts/saans.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link
+          rel="preload"
+          href="/fonts/jetbrains-mono-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
         <meta name="google-site-verification" content="Bi6gdlrmvQ1g0lpGqT81tmb889eL-vOmUt4nXy1Dzms" />
 
@@ -112,11 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className={clsx(
-          SaansFont.className,
-          JetBrainsMonoFont.variable,
-          "bg-slate-50 dark:bg-[#0f0f12] transition-colors"
-        )}
+        className={clsx("font-sans", "bg-slate-50 dark:bg-[#0f0f12] transition-colors")}
       >
         <ThemeProvider>
           <div className="max-w-xl lg:max-w-2xl mx-auto">

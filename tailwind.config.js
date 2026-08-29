@@ -48,6 +48,7 @@ module.exports = {
       },
       fontFamily: {
         mono: "var(--font-monospace)",
+        sans: "var(--font-sans)",
       },
       boxShadow: {
         project: `
