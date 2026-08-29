@@ -2,6 +2,8 @@ import * as stylex from "@stylexjs/stylex";
 import "./assets/globals.css";
 
 import { Analytics } from "@vercel/analytics/react";
+import { JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import type { Metadata } from "next";
 import { colors } from "@/app/tokens.stylex";
 import { imageUrl } from "@/lib/imageUrl";
@@ -10,6 +12,18 @@ import { Nav } from "./components/Nav";
 import { PrefetchProvider } from "./components/prefetch-provider";
 import TransitionProvider from "./components/TransitionProvider";
 import { ThemeProvider } from "./components/theme-provider";
+
+const SaansFont = localFont({
+  src: "./saans-font.woff2",
+  display: "swap",
+  variable: "--font-sans",
+});
+
+const JetBrainsMonoFont = JetBrains_Mono({
+  display: "swap",
+  variable: "--font-monospace",
+  subsets: ["latin"],
+});
 
 export async function generateMetadata() {
   return {
@@ -74,21 +88,13 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${SaansFont.variable} ${JetBrainsMonoFont.variable}`} suppressHydrationWarning>
       <head>
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: prevent dark mode flash
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}else{document.documentElement.style.colorScheme="light"}}catch(e){}})()`,
           }}
-        />
-        <link rel="preload" href="/fonts/saans.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link
-          rel="preload"
-          href="/fonts/jetbrains-mono-latin.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
         />
         <meta name="google-site-verification" content="Bi6gdlrmvQ1g0lpGqT81tmb889eL-vOmUt4nXy1Dzms" />
 

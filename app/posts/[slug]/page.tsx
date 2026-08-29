@@ -21,10 +21,11 @@ export async function generateStaticParams() {
 export const dynamic = "force-static";
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const post = getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   const parentMeta = await parent;
 
@@ -34,14 +35,14 @@ export async function generateMetadata(
     publisher: "Ali Alshehri",
     creator: "Ali Alshehri",
     alternates: {
-      canonical: `https://ali-sh.com/posts/${params.slug}`,
+      canonical: `https://ali-sh.com/posts/${slug}`,
     },
 
     openGraph: {
       ...parentMeta?.openGraph,
       title: post?.meta?.title || parentMeta?.openGraph?.title,
       description: post?.meta?.summary || parentMeta?.openGraph?.description,
-      url: `https://ali-sh.com/posts/${params.slug}`,
+      url: `https://ali-sh.com/posts/${slug}`,
       images: [
         {
           url: `https://ali-sh.com/api/og?title=${post?.meta?.title}`,
@@ -89,8 +90,9 @@ async function compileMdx(content: string, mdxComponents: Record<string, React.C
   return Component;
 }
 
-export default async function Post({ params }: { params: Params }) {
-  const post = getPostBySlug(params.slug);
+export default async function Post({ params }: { params: Promise<Params> }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) return notFound();
 
