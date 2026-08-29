@@ -1,6 +1,8 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Title } from "@/app/components/title";
+import { colors } from "@/app/tokens.stylex";
 import { getAllPosts } from "@/lib/articles";
 import { ArticleLink } from "./components/article-link";
 
@@ -32,31 +34,25 @@ export default async function Home() {
   });
 
   return (
-    <main className="px-6 md:px-0">
-      <section className="pb-14 border-b border-slate-300 dark:border-white/10 mb-14">
-        <h1 className="font-semibold text-4xl mb-4 text-slate-950 dark:text-slate-50">
+    <main {...stylex.props(styles.main)}>
+      <section {...stylex.props(styles.hero)}>
+        <h1 {...stylex.props(styles.heroTitle)}>
           {"HI, I'm Ali Alshehri."}
-          <span className="block text-slate-500 dark:text-slate-400 font-normal text-2xl pt-1">
-            A software engineer based in khobar.
-          </span>
+          <span {...stylex.props(styles.heroSubtitle)}>A software engineer based in khobar.</span>
         </h1>
-        <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl leading-normal">
+        <p {...stylex.props(styles.heroBody)}>
           I love building software that feels good to use, the kind people actually want to come back to.
         </p>
-        <Link
-          href="/info"
-          className="group bg-slate-950 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white dark:text-slate-950"
-          prefetch={true}
-        >
-          More Information <span className="inline-block group-hover:translate-x-1.5 transition-transform">→</span>
+        <Link href="/info" {...stylex.props(stylex.defaultMarker(), styles.cta)} prefetch={true}>
+          More Information <span {...stylex.props(styles.arrow, styles.arrowShort)}>→</span>
         </Link>
       </section>
 
-      <section className="pt-10 pb-16">
-        <Title as="h2" variant="secondary" className="mb-8">
+      <section {...stylex.props(styles.writing)}>
+        <Title as="h2" variant="secondary" style={styles.writingTitle}>
           Recent Writing
         </Title>
-        <div className="divide-y dark:divide-white/10">
+        <div>
           {posts.slice(0, 2).map(post => {
             return (
               <ArticleLink
@@ -69,19 +65,15 @@ export default async function Home() {
             );
           })}
         </div>
-        <Link
-          href="/posts"
-          className="group bg-slate-950 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white dark:text-slate-950"
-          prefetch={true}
-        >
-          View More Posts <span className="inline-block group-hover:translate-x-2 transition-transform">→</span>
+        <Link href="/posts" {...stylex.props(stylex.defaultMarker(), styles.cta)} prefetch={true}>
+          View More Posts <span {...stylex.props(styles.arrow, styles.arrowLong)}>→</span>
         </Link>
       </section>
 
-      <section className="pb-16">
-        <p className="text-slate-700 dark:text-slate-300 text-lg">
+      <section {...stylex.props(styles.outro)}>
+        <p {...stylex.props(styles.outroBody)}>
           You can find my personal projects on my{" "}
-          <Link href="https://github.com/AlshehriAli0" className="underline" prefetch={false}>
+          <Link href="https://github.com/AlshehriAli0" {...stylex.props(styles.inlineLink)} prefetch={false}>
             GitHub
           </Link>
           .
@@ -90,3 +82,91 @@ export default async function Home() {
     </main>
   );
 }
+
+const styles = stylex.create({
+  main: {
+    paddingLeft: { default: "1.5rem", "@media (min-width: 768px)": "0px" },
+    paddingRight: { default: "1.5rem", "@media (min-width: 768px)": "0px" },
+  },
+  hero: {
+    paddingBottom: "3.5rem",
+    marginBottom: "3.5rem",
+    borderBottomWidth: "1px",
+    borderBottomStyle: "solid",
+    borderBottomColor: colors.borderStrong,
+  },
+  heroTitle: {
+    marginBottom: "1rem",
+    fontSize: "2.25rem",
+    lineHeight: "2.5rem",
+    fontVariationSettings: '"wght" 600',
+    color: colors.heading,
+  },
+  heroSubtitle: {
+    display: "block",
+    paddingTop: "0.25rem",
+    fontSize: "1.5rem",
+    lineHeight: "2rem",
+    fontVariationSettings: '"wght" 400',
+    color: colors.muted,
+  },
+  heroBody: {
+    fontSize: { default: "1.125rem", "@media (min-width: 768px)": "1.25rem" },
+    lineHeight: { default: 1.5, "@media (min-width: 768px)": "1.75rem" },
+    color: colors.body,
+  },
+  cta: {
+    marginTop: "2rem",
+    display: "inline-block",
+    borderRadius: "9999px",
+    paddingLeft: "2rem",
+    paddingRight: "2rem",
+    paddingTop: "0.75rem",
+    paddingBottom: "0.75rem",
+    fontFamily: "var(--font-monospace)",
+    fontSize: "0.75rem",
+    lineHeight: "1rem",
+    fontVariationSettings: '"wght" 600',
+    color: colors.ctaText,
+    backgroundColor: { default: colors.ctaBg, ":hover": colors.ctaBgHover },
+    transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "150ms",
+  },
+  arrow: {
+    display: "inline-block",
+    transitionProperty: "transform",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "150ms",
+  },
+  arrowShort: {
+    transform: {
+      default: null,
+      [stylex.when.ancestor(":hover")]: "translate(0.375rem, 0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1)",
+    },
+  },
+  arrowLong: {
+    transform: {
+      default: null,
+      [stylex.when.ancestor(":hover")]: "translate(0.5rem, 0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1)",
+    },
+  },
+  writing: {
+    paddingTop: "2.5rem",
+    paddingBottom: "4rem",
+  },
+  writingTitle: {
+    marginBottom: "2rem",
+  },
+  outro: {
+    paddingBottom: "4rem",
+  },
+  outroBody: {
+    fontSize: "1.125rem",
+    lineHeight: "1.75rem",
+    color: colors.body,
+  },
+  inlineLink: {
+    textDecorationLine: "underline",
+  },
+});

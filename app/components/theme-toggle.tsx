@@ -1,17 +1,14 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
+import { colors } from "@/app/tokens.stylex";
 import { useTheme } from "./theme-provider";
 
 export function ThemeToggle() {
   const { theme, toggle } = useTheme();
 
   return (
-    <button
-      onClick={toggle}
-      aria-label="Toggle dark mode"
-      type="button"
-      className="relative w-[18px] h-[18px] text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-50 transition-colors"
-    >
+    <button onClick={toggle} aria-label="Toggle dark mode" type="button" {...stylex.props(styles.button)}>
       <svg
         aria-hidden="true"
         width="18"
@@ -22,7 +19,7 @@ export function ThemeToggle() {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className={`absolute inset-0 transition-all duration-[300ms] ${theme === "light" ? "opacity-100 rotate-0 scale-100 blur-0" : "opacity-0 -rotate-90 scale-0 blur-[4px]"}`}
+        {...stylex.props(styles.icon, theme === "light" ? styles.shown : styles.hiddenCCW)}
       >
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
       </svg>
@@ -36,7 +33,7 @@ export function ThemeToggle() {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className={`absolute inset-0 transition-all duration-[300ms] ${theme === "dark" ? "opacity-100 rotate-0 scale-100 blur-0" : "opacity-0 rotate-90 scale-0 blur-[4px]"}`}
+        {...stylex.props(styles.icon, theme === "dark" ? styles.shown : styles.hiddenCW)}
       >
         <circle cx="12" cy="12" r="5" />
         <line x1="12" y1="1" x2="12" y2="3" />
@@ -51,3 +48,37 @@ export function ThemeToggle() {
     </button>
   );
 }
+
+const styles = stylex.create({
+  button: {
+    position: "relative",
+    height: "18px",
+    width: "18px",
+    color: { default: colors.toggle, ":hover": colors.toggleHover },
+    transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "150ms",
+  },
+  icon: {
+    position: "absolute",
+    inset: "0px",
+    transitionProperty: "all",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "300ms",
+  },
+  shown: {
+    transform: "translate(0, 0) rotate(0deg) skewX(0) skewY(0) scaleX(1) scaleY(1)",
+    opacity: 1,
+    filter: "blur(0)",
+  },
+  hiddenCCW: {
+    transform: "translate(0, 0) rotate(-90deg) skewX(0) skewY(0) scaleX(0) scaleY(0)",
+    opacity: 0,
+    filter: "blur(4px)",
+  },
+  hiddenCW: {
+    transform: "translate(0, 0) rotate(90deg) skewX(0) skewY(0) scaleX(0) scaleY(0)",
+    opacity: 0,
+    filter: "blur(4px)",
+  },
+});

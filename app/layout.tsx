@@ -1,8 +1,9 @@
+import * as stylex from "@stylexjs/stylex";
 import "./assets/globals.css";
 
 import { Analytics } from "@vercel/analytics/react";
-import clsx from "clsx";
 import type { Metadata } from "next";
+import { colors } from "@/app/tokens.stylex";
 import { imageUrl } from "@/lib/imageUrl";
 import { keywords } from "@/lib/keywords";
 import { Nav } from "./components/Nav";
@@ -106,17 +107,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body
-        className={clsx("font-sans", "bg-slate-50 dark:bg-[#0f0f12] transition-colors")}
-      >
+      <body {...stylex.props(styles.body)}>
         <ThemeProvider>
-          <div className="max-w-xl lg:max-w-2xl mx-auto">
+          <div {...stylex.props(styles.container)}>
             <PrefetchProvider>
               <Nav />
               <TransitionProvider>{children}</TransitionProvider>
             </PrefetchProvider>
 
-            <footer className="px-6 md:px-0 border-t border-slate-200 dark:border-white/10 py-8 text-slate-700 dark:text-slate-400 font-mono text-xs tracking-tight flex justify-between">
+            <footer {...stylex.props(styles.footer)}>
               <p>
                 &copy; {new Date().getFullYear()} {"/"} Ali Alshehri
               </p>
@@ -129,3 +128,38 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
+
+const styles = stylex.create({
+  container: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    maxWidth: {
+      default: "36rem",
+      "@media (min-width: 1024px)": "42rem",
+    },
+  },
+  body: {
+    fontFamily: "var(--font-sans)",
+    backgroundColor: colors.bg,
+    transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "150ms",
+  },
+  footer: {
+    display: "flex",
+    justifyContent: "space-between",
+    borderTopWidth: "1px",
+    borderTopStyle: "solid",
+    borderTopColor: colors.border,
+    paddingLeft: { default: "1.5rem", "@media (min-width: 768px)": "0px" },
+    paddingRight: { default: "1.5rem", "@media (min-width: 768px)": "0px" },
+    paddingTop: "2rem",
+    paddingBottom: "2rem",
+    fontFamily: "var(--font-monospace)",
+    fontSize: "0.75rem",
+    lineHeight: "1rem",
+    letterSpacing: "-0.025em",
+    color: colors.footer,
+  },
+});

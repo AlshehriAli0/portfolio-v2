@@ -1,0 +1,229 @@
+{
+  "ok": true,
+  "tool": "tw2sx",
+  "tailwind": "3.4.17",
+  "entry": "/Users/ali/Developer/www/tailwind.config.js",
+  "summary": {
+    "files": 22,
+    "usages": 1,
+    "converted": 0,
+    "skipped": 1,
+    "byReason": {
+      "passed-in-classes": 1
+    },
+    "byFix": {
+      "check-first": 1
+    }
+  },
+  "files": [
+    {
+      "file": "app/api/og/route.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/api/posts/route.ts",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/Nav.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/Transition.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/TransitionProvider.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/article-link.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/code-block.tsx",
+      "verdict": "skipped",
+      "usages": 1,
+      "converted": 0,
+      "skipped": 1,
+      "skips": [
+        {
+          "file": "app/components/code-block.tsx",
+          "line": 41,
+          "column": 25,
+          "reason": "passed-in-classes",
+          "fix": "check-first",
+          "detail": "Variable \"className\" flows into a class string at line 41.",
+          "hint": "Give the component a \"style?: StyleXStylesWithout<{...}>\" prop and pass it last to stylex.props(); see the skill's references/component-api.md.",
+          "message": "app/components/code-block.tsx:41:25: skipped passed-in-classes: Variable \"className\" flows into a class string at line 41. fix: Give the component a \"style?: StyleXStylesWithout<{...}>\" prop and pass it last to stylex.props(); see the skill's references/component-api.md."
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/page-header.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/prefetch-provider.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/theme-provider.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/theme-toggle.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/components/title.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/contact/page.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/info/page.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/layout.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/page.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/posts/[slug]/page.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/posts/page.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/robots.ts",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/sitemap.ts",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/template.tsx",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    },
+    {
+      "file": "app/tokens.stylex.ts",
+      "verdict": "unchanged",
+      "usages": 0,
+      "converted": 0,
+      "skipped": 0,
+      "skips": [],
+      "mismatches": []
+    }
+  ]
+}

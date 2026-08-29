@@ -1,8 +1,10 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { PageHeader } from "@/app/components/page-header";
 import { Title } from "@/app/components/title";
+import { colors } from "@/app/tokens.stylex";
 
 export const metadata: Metadata = {
   alternates: {
@@ -66,53 +68,53 @@ export const dynamic = "force-static";
 
 export default async function InfoPage() {
   return (
-    <main className="px-6 md:px-0">
+    <main {...stylex.props(styles.main)}>
       <PageHeader title="Information" />
-      <section className="pb-8 prose prose-lg dark:prose-invert">
-        <p>Hey, I&apos;m Ali, a software engineer.</p>
-        <p>
+      <section {...stylex.props(styles.bio)}>
+        <p {...stylex.props(styles.bioP)}>Hey, I&apos;m Ali, a software engineer.</p>
+        <p {...stylex.props(styles.bioP)}>
           I&apos;ve worked across a lot of different projects over the years, web, mobile, and backend, building and
           scaling them through real challenges. That experience has shaped a lot of how I think about software.
         </p>
-        <p>
+        <p {...stylex.props(styles.bioP)}>
           These days I&apos;m mostly in the mobile world. I enjoy building native-feeling experiences on React Native
           and I&apos;ve been spending a good amount of time creating my own packages and contributing to libraries I use
           daily, including some major ones like react-native-screens.
         </p>
-        <p>
+        <p {...stylex.props(styles.bioP)}>
           I&apos;m genuinely excited about AI and where it&apos;s going. But I care just as much about the craft.
           Leveraging the best tools available is great, but quality and maintainability are things I won&apos;t trade
           away.
         </p>
 
-        <p>
+        <p {...stylex.props(styles.bioP)}>
           If you&apos;re interested in working together, feel free to reach out to me here:{" "}
-          <Link href="mailto:ali0alshehri@outlook.com">Ali0Alshehri@outlook.com</Link>.
+          <Link href="mailto:ali0alshehri@outlook.com" {...stylex.props(styles.bioLink)}>Ali0Alshehri@outlook.com</Link>.
         </p>
       </section>
 
       <section>
-        <Title as="h2" variant="secondary" className="mb-4 mt-8 ">
+        <Title as="h2" variant="secondary" style={styles.experienceTitle}>
           Experience
         </Title>
 
-        <div className="divide-y divide-slate-200 dark:divide-white/10">
+        <div>
           {experience.map(exp => {
             return (
-              <div className="flex gap-4 py-6" key={`${exp.company}-${exp.role}`}>
+              <div {...stylex.props(styles.row)} key={`${exp.company}-${exp.role}`}>
                 <Image
                   width={56}
                   height={56}
                   src={exp.logo}
                   alt={`${exp.company} logo`}
-                  className="w-14 h-14 rounded-xl"
+                  {...stylex.props(styles.logo)}
                 />
-                <div className="flex flex-col col-span-9">
-                  <span className="text-slate-800 dark:text-slate-200 text-xl font-semibold">{exp.company}</span>
-                  <span className="text-slate-700 dark:text-slate-300 text-lg">{exp.role}</span>
-                  <span className="block mt-4 text-slate-500 dark:text-slate-400 col-span-2 text-sm font-medium tracking-tighter font-mono">
+                <div {...stylex.props(styles.details)}>
+                  <span {...stylex.props(styles.company)}>{exp.company}</span>
+                  <span {...stylex.props(styles.role)}>{exp.role}</span>
+                  <span {...stylex.props(styles.dates)}>
                     {formatDate(exp.start)} → {exp.end ? formatDate(exp.end) : "Present"}
-                    <span className="ml-2 text-slate-400 dark:text-slate-500">
+                    <span {...stylex.props(styles.duration)}>
                       · {calcDuration(exp.start, exp.end)}
                     </span>
                   </span>
@@ -125,3 +127,85 @@ export default async function InfoPage() {
     </main>
   );
 }
+
+
+const styles = stylex.create({
+  main: {
+    paddingLeft: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+    paddingRight: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+  },
+  row: {
+    display: "flex",
+    gap: "1rem",
+    paddingTop: "1.5rem",
+    paddingBottom: "1.5rem",
+    // ponytail: was divide-y on the parent; the divider rides on the child instead
+    borderTopWidth: { default: "1px", ":first-child": "0px" },
+    borderTopStyle: "solid",
+    borderTopColor: colors.border,
+  },
+  details: {
+    gridColumn: "span 9 / span 9",
+    display: "flex",
+    flexDirection: "column",
+  },
+  // Was `prose prose-lg dark:prose-invert`. Only the paragraphs below are inside it,
+  // so the typography plugin's descendant rules are written out directly here.
+  bio: {
+    paddingBottom: "2rem",
+    maxWidth: "65ch",
+    fontSize: "1.125rem",
+    lineHeight: 1.7777778,
+    color: colors.prose,
+  },
+  bioP: {
+    marginTop: { default: "1.3333333em", ":first-child": "0px" },
+    marginBottom: { default: "1.3333333em", ":last-child": "0px" },
+  },
+  bioLink: {
+    color: colors.proseLink,
+    textDecorationLine: "underline",
+    fontVariationSettings: '"wght" 500',
+  },
+  experienceTitle: {
+    marginTop: "2rem",
+    marginBottom: "1rem",
+  },
+  logo: {
+    height: "3.5rem",
+    width: "3.5rem",
+    borderRadius: "0.75rem",
+  },
+  company: {
+    fontSize: "1.25rem",
+    lineHeight: "1.75rem",
+    fontVariationSettings: '"wght" 600',
+    color: colors.strong,
+  },
+  role: {
+    fontSize: "1.125rem",
+    lineHeight: "1.75rem",
+    color: colors.body,
+  },
+  dates: {
+    gridColumn: "span 2 / span 2",
+    marginTop: "1rem",
+    display: "block",
+    fontFamily: "var(--font-monospace)",
+    fontSize: "0.875rem",
+    lineHeight: "1.25rem",
+    fontVariationSettings: '"wght" 500',
+    letterSpacing: "-0.05em",
+    color: colors.muted,
+  },
+  duration: {
+    marginLeft: "0.5rem",
+    color: colors.faint,
+  },
+});

@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import { PageHeader } from "@/app/components/page-header";
 import { getAllPosts } from "@/lib/articles";
@@ -28,9 +29,9 @@ export default async function Page() {
   });
 
   return (
-    <main className="px-6 md:px-0">
+    <main {...stylex.props(styles.main)}>
       <PageHeader title="Writing" />
-      <section className="divide-y dark:divide-white/10">
+      <section>
         {filteredPosts.map(post => {
           return (
             <ArticleLink
@@ -54,3 +55,17 @@ export default async function Page() {
     </main>
   );
 }
+
+
+const styles = stylex.create({
+  main: {
+    paddingLeft: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+    paddingRight: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+  },
+});

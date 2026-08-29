@@ -1,7 +1,9 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/app/components/page-header";
 import { Title } from "@/app/components/title";
+import { colors } from "@/app/tokens.stylex";
 
 export const metadata: Metadata = {
   alternates: {
@@ -47,21 +49,21 @@ export const dynamic = "force-static";
 
 export default async function InfoPage() {
   return (
-    <main className="px-6 md:px-0">
+    <main {...stylex.props(styles.main)}>
       <PageHeader title="Contact" />
-      <section className="pb-8">
-        <p className="text-lg mb-6 dark:text-slate-300">
+      <section {...stylex.props(styles.section)}>
+        <p {...stylex.props(styles.intro)}>
           If you&apos;d like to get in touch, you can reach me using the following methods.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div {...stylex.props(styles.grid)}>
           {contact.map(contactMethod => {
             return (
-              <div className="flex flex-col" key={contactMethod.method}>
+              <div {...stylex.props(styles.cell)} key={contactMethod.method}>
                 <Title as="h2" variant="tertiary">
                   {contactMethod.method}
                 </Title>
-                <Link href={contactMethod.link} className="text-slate-700 dark:text-slate-300">
+                <Link href={contactMethod.link} {...stylex.props(styles.contactLink)}>
                   {contactMethod.label}
                 </Link>
               </div>
@@ -72,3 +74,41 @@ export default async function InfoPage() {
     </main>
   );
 }
+
+
+const styles = stylex.create({
+  main: {
+    paddingLeft: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+    paddingRight: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+  },
+  section: {
+    paddingBottom: "2rem",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: {
+      default: "repeat(1, minmax(0, 1fr))",
+      "@media (min-width: 768px)": "repeat(2, minmax(0, 1fr))",
+    },
+    gap: "1rem",
+  },
+  cell: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  intro: {
+    marginBottom: "1.5rem",
+    fontSize: "1.125rem",
+    lineHeight: "1.75rem",
+    color: colors.bodyInherited,
+  },
+  contactLink: {
+    color: colors.body,
+  },
+});

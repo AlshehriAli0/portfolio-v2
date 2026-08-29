@@ -1,6 +1,6 @@
 "use client";
 
-import clsx from "clsx";
+import * as stylex from "@stylexjs/stylex";
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
 import { useRef, useState } from "react";
 
@@ -37,24 +37,21 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   };
 
   return (
-    <div className="relative group">
+    <div {...stylex.props(stylex.defaultMarker(), styles.wrapper)}>
       <pre ref={preRef} className={className} {...props}>
         {children}
       </pre>
       <button
         onClick={handleCopy}
-        className="absolute top-2 right-2 p-2 rounded-md bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-200 opacity-0 group-hover:opacity-100 border border-slate-600/30 text-slate-300 hover:text-white z-10"
+        {...stylex.props(styles.copyButton)}
         aria-label="Copy code to clipboard"
         type="button"
       >
-        <div className="relative w-4 h-4">
+        <div {...stylex.props(styles.iconBox)}>
           {/* Copy Icon */}
           <svg
             aria-hidden="true"
-            className={clsx(
-              "absolute inset-0 w-4 h-4 text-slate-300 transition-all duration-150",
-              copied || isAnimating ? "opacity-0 scale-50 blur-sm" : "opacity-100 scale-100 blur-0"
-            )}
+            {...stylex.props(styles.icon, styles.iconCopy, copied || isAnimating ? styles.iconOut : styles.iconIn)}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -70,10 +67,7 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
           {/* Success Icon */}
           <svg
             aria-hidden="true"
-            className={clsx(
-              "absolute inset-0 w-4 h-4 text-green-400 transition-all duration-150",
-              copied ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-50 blur-sm"
-            )}
+            {...stylex.props(styles.icon, styles.iconSuccess, copied ? styles.iconIn : styles.iconOut)}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -85,3 +79,53 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
     </div>
   );
 }
+
+
+const styles = stylex.create({
+  wrapper: {
+    position: "relative",
+  },
+  copyButton: {
+    position: "absolute",
+    right: "0.5rem",
+    top: "0.5rem",
+    zIndex: 10,
+    borderRadius: "0.375rem",
+    borderWidth: "1px",
+    borderStyle: "solid",
+    borderColor: "rgb(71 85 105 / 0.3)",
+    backgroundColor: { default: "rgb(30 41 59 / 0.8)", ":hover": "rgb(51 65 85 / 0.8)" },
+    padding: "0.5rem",
+    color: { default: "rgb(203 213 225 / 1)", ":hover": "rgb(255 255 255 / 1)" },
+    opacity: { default: 0, [stylex.when.ancestor(":hover")]: 1 },
+    transitionProperty: "all",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "200ms",
+  },
+  iconBox: {
+    position: "relative",
+    height: "1rem",
+    width: "1rem",
+  },
+  icon: {
+    position: "absolute",
+    inset: "0px",
+    height: "1rem",
+    width: "1rem",
+    transitionProperty: "all",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "150ms",
+  },
+  iconCopy: { color: "rgb(203 213 225 / 1)" },
+  iconSuccess: { color: "rgb(74 222 128 / 1)" },
+  iconIn: {
+    transform: "translate(0, 0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1)",
+    opacity: 1,
+    filter: "blur(0)",
+  },
+  iconOut: {
+    transform: "translate(0, 0) rotate(0) skewX(0) skewY(0) scaleX(.5) scaleY(.5)",
+    opacity: 0,
+    filter: "blur(4px)",
+  },
+});

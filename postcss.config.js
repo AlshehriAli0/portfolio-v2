@@ -9,10 +9,10 @@ module.exports = {
         parserOpts: { plugins: ["typescript", "jsx"] },
         plugins: babelConfig.plugins,
       },
-      // ponytail: layers off while Tailwind is still in the build; flip true at the end
+      // ponytail: globals.css (preflight, @font-face) is unlayered and would outrank
+      // layered StyleX. Keep layers off while any unlayered CSS ships.
       useCSSLayers: false,
     },
-    tailwindcss: {},
     autoprefixer: {},
   },
 };

@@ -1,3 +1,6 @@
+import * as stylex from "@stylexjs/stylex";
+import { colors } from "@/app/tokens.stylex";
+import prose from "./prose.module.css";
 import { compile, run } from "@mdx-js/mdx";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
@@ -107,10 +110,10 @@ export default async function Post({ params }: { params: Params }) {
 
   return (
     <>
-      <main className="px-6 md:px-0 overflow-x-hidden">
+      <main {...stylex.props(styles.main)}>
         <section>
-          <h1 className="font-semibold tracking-tight text-4xl text-slate-900 dark:text-slate-100">{meta.title}</h1>
-          <span className="text-slate-500 dark:text-slate-400 text-sm tracking-tight font-mono block mt-4">
+          <h1 {...stylex.props(styles.title)}>{meta.title}</h1>
+          <span {...stylex.props(styles.meta, styles.metaFirst)}>
             Published on{" "}
             <time dateTime={post.date}>
               {new Intl.DateTimeFormat("en-GB", {
@@ -118,13 +121,13 @@ export default async function Post({ params }: { params: Params }) {
               }).format(new Date(post.date))}
             </time>
           </span>
-          <span className="text-slate-500 dark:text-slate-400 text-sm tracking-tight font-mono block mt-1">
+          <span {...stylex.props(styles.meta, styles.metaSecond)}>
             {readingTime} minute read
           </span>
         </section>
 
-        <section className="py-5">
-          <article className="prose prose-lg prose-slate dark:prose-invert text-justify w-full max-w-none">
+        <section {...stylex.props(styles.body)}>
+          <article className={prose.article}>
             <MdxContent />
           </article>
         </section>
@@ -134,3 +137,39 @@ export default async function Post({ params }: { params: Params }) {
     </>
   );
 }
+
+
+const styles = stylex.create({
+  main: {
+    overflowX: "hidden",
+    paddingLeft: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+    paddingRight: {
+      default: "1.5rem",
+      "@media (min-width: 768px)": "0px",
+    },
+  },
+  body: {
+    paddingTop: "1.25rem",
+    paddingBottom: "1.25rem",
+  },
+  title: {
+    fontSize: "2.25rem",
+    lineHeight: "2.5rem",
+    fontVariationSettings: '"wght" 600',
+    letterSpacing: "-0.025em",
+    color: colors.title,
+  },
+  meta: {
+    display: "block",
+    fontFamily: "var(--font-monospace)",
+    fontSize: "0.875rem",
+    lineHeight: "1.25rem",
+    letterSpacing: "-0.025em",
+    color: colors.muted,
+  },
+  metaFirst: { marginTop: "1rem" },
+  metaSecond: { marginTop: "0.25rem" },
+});
