@@ -1,6 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
 import type { GetStaticProps, PageConfig } from "next";
-import { Experience } from "@/components/experience";
 import { Page } from "@/components/page";
 import { Container, Rows, Rule, Section, TextLink } from "@/components/ui";
 import { getPostSummaries, type PostSummary } from "@/lib/articles";
@@ -13,10 +12,8 @@ export const config: PageConfig = { unstable_runtimeJS: false };
 
 type Props = { posts: PostSummary[] };
 
-// Regenerated daily (ISR) so the experience durations keep advancing without a rebuild.
 export const getStaticProps: GetStaticProps<Props> = async () => ({
   props: { posts: getPostSummaries() },
-  revalidate: 86400,
 });
 
 // One line, sized by ink: at weight 300 and -0.058em tracking the ink of "Ali Alshehri"
@@ -78,9 +75,6 @@ export default function Home({ posts }: Props) {
             </TextLink>
           </Section>
 
-          <Section id="work" label="Experience" tight>
-            <Experience />
-          </Section>
         </Container>
       </main>
     </Page>

@@ -124,7 +124,7 @@ This file indexes ${site.url}; every post also has a clean Markdown version at t
 
 ## Pages
 
-- [Home](${absoluteUrl("/")}): Introduction, latest writing and experience
+- [Home](${absoluteUrl("/")}): Introduction, latest writing and a short bio
 - [Info](${absoluteUrl("/info")}): About Ali, open-source work and experience
 - [Writing](${absoluteUrl("/posts")}): All posts, newest first
 - [Contact](${absoluteUrl("/contact")}): Email and profiles
