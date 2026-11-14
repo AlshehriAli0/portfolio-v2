@@ -89,8 +89,8 @@ const slideUp = stylex.keyframes({
 const thicken = stylex.keyframes({
   from: { fontVariationSettings: '"wght" calc(300 + var(--wdk))', letterSpacing: "-0.058em" },
   // Tighter tracking holds the heavier ink to the same 4.182em, so it never crosses the
-  // edge. Without it the ink grows 7.8% at 760 (measured), well past the column.
-  to: { fontVariationSettings: '"wght" calc(760 + var(--wdk))', letterSpacing: "-0.0877em" },
+  // edge (measured at 900). Without it the heavier ink runs well past the column.
+  to: { fontVariationSettings: '"wght" calc(900 + var(--wdk))', letterSpacing: "-0.0903em" },
 });
 
 const scrollDriven = "@supports (animation-timeline: scroll())";
@@ -124,7 +124,7 @@ const styles = stylex.create({
     animationTimingFunction: "linear",
     animationFillMode: "both",
     animationTimeline: "scroll(root)",
-    animationRange: "0 28svh",
+    animationRange: "0 22svh",
   },
   clip: {
     display: "block",
