@@ -15,6 +15,11 @@ export function Nav({ path }: { path: string }) {
   return (
     <>
       {/* Fades content out under the nav so its blended text never sits on body text. */}
+      {/* A plain solid band along the top edge, under the scrim (same colour, so it adds
+          nothing you can see). Newer iOS Safari tints its status bar from a fixed element
+          touching the top, and a solid unmasked one is what it reads, so the bar follows
+          the theme as it changes. */}
+      <div aria-hidden="true" {...stylex.props(styles.topEdge)} />
       <div aria-hidden="true" {...stylex.props(styles.scrim)} />
       <header {...stylex.props(styles.header)}>
         {/* data-nav and data-nav-link carry the underline handoff (globals.css). */}
@@ -76,6 +81,15 @@ const settle = stylex.keyframes({
 });
 
 const styles = stylex.create({
+  topEdge: {
+    position: "fixed",
+    insetInline: 0,
+    top: 0,
+    zIndex: 48,
+    height: "2.75rem",
+    pointerEvents: "none",
+    backgroundColor: colors.bg,
+  },
   // Solid behind the nav's text (its line box ends at 2.7rem), then a smoothstep fade:
   // a linear fade starts and stops at a kink, which reads as a hard band.
   scrim: {

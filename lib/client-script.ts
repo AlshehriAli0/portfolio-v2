@@ -53,17 +53,7 @@ function client(bg: Record<string, string>, islands: () => void) {
     root.classList.add("theme-switching");
     setTheme(current() === "dark" ? "light" : "dark");
     clearTimeout(switching);
-    switching = window.setTimeout(() => {
-      root.classList.remove("theme-switching");
-      // iOS 26 Safari ignores theme-color and tints its status bar from the page itself,
-      // but only re-samples on scroll. A 1px nudge once the colours have settled makes it
-      // pick up the new theme without a reload.
-      if (matchMedia("(pointer: coarse)").matches) {
-        const y = scrollY;
-        scrollTo(0, y > 0 ? y - 1 : y + 1);
-        requestAnimationFrame(() => scrollTo(0, y));
-      }
-    }, 400);
+    switching = window.setTimeout(() => root.classList.remove("theme-switching"), 400);
   };
 
   let timer = 0;
