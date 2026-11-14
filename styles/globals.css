@@ -156,6 +156,11 @@ table {
   outline-offset: 3px;
 }
 
+.theme-icons {
+  position: absolute;
+  inset: 0;
+}
+
 /* Theme toggle: the icon shows the theme you'd switch to, in pure CSS.
    No class means the OS decides, so mirror prefers-color-scheme. */
 :root.dark .theme-icon-moon,
@@ -202,10 +207,57 @@ table {
 ::view-transition-old(root) {
   animation: none;
 }
+/* Naming the animation drops the UA's second one, which blends the new snapshot with
+   plus-lighter: over an opaque old page that washes it out to white before the swap. */
 ::view-transition-new(root) {
-  mix-blend-mode: normal;
-  animation-duration: 240ms;
-  animation-timing-function: cubic-bezier(0.33, 0, 0.2, 1);
+  animation: vt-fade-in 240ms cubic-bezier(0.33, 0, 0.2, 1);
+}
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Theme switch (lib/client-script.ts sets .vt-theme for its length): one crossfade of the
+   whole page. Every CSS transition is off, so no element fades its own colour on top. */
+:root.vt-theme *,
+:root.vt-theme ::before,
+:root.vt-theme ::after {
+  transition: none !important;
+}
+:root.vt-theme::view-transition-new(root) {
+  animation-duration: 360ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* The icon leaves the page snapshot and morphs on its own layer: the old one turns away,
+   shrinks and blurs out as the new one turns in. Its layer keeps the nav's `difference`
+   blend, so it inverts the crossfading page beneath it as the live icon would. */
+:root.vt-theme .theme-icons {
+  view-transition-name: theme-icon;
+}
+:root.vt-theme::view-transition-group(theme-icon) {
+  animation: none;
+  mix-blend-mode: difference;
+}
+:root.vt-theme::view-transition-old(theme-icon) {
+  animation: vt-icon-out 300ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+:root.vt-theme::view-transition-new(theme-icon) {
+  animation: vt-icon-in 300ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@keyframes vt-icon-out {
+  to {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.6);
+    filter: blur(4px);
+  }
+}
+@keyframes vt-icon-in {
+  from {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.6);
+    filter: blur(4px);
+  }
 }
 
 /* The clicked post title morphs into the post header: the new title scales from the

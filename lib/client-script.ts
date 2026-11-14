@@ -3,7 +3,7 @@ import { themeBg } from "./site";
 /**
  * The site's entire client-side JavaScript, inlined at the end of <body>. Pages ship
  * no framework runtime, so this is plain event delegation:
- * - [data-theme-toggle]: switch theme (a short crossfade where View Transitions exist)
+ * - [data-theme-toggle]: switch theme (one crossfade where View Transitions exist)
  * - [data-copy]: copy the email address on Contact
  * - the post title you clicked morphs into the post header (cross-document View Transition)
  * - hover prefetch for browsers without Speculation Rules
@@ -42,6 +42,23 @@ function client(bg: Record<string, string>) {
     }
   };
 
+  // While .vt-theme is on, globals.css turns off every CSS transition and gives the
+  // icon its own View Transition layer, so the switch is one crossfade plus the icon morph.
+  let switching: unknown;
+  const toggleTheme = () => {
+    const next = current() === "dark" ? "light" : "dark";
+    root.classList.add("vt-theme");
+    const transition = d.startViewTransition?.(() => setTheme(next));
+    switching = transition;
+    if (!transition) setTheme(next);
+    // Without View Transitions, reading offsetWidth applies the new colours before
+    // transitions come back on. A second click skips the running transition, so only
+    // the latest one turns the class off.
+    (transition ? transition.finished : Promise.resolve(root.offsetWidth)).then(
+      () => switching === transition && root.classList.remove("vt-theme")
+    );
+  };
+
   let timer = 0;
   const copy = (button: Element) => {
     const text = button.getAttribute("data-copy");
@@ -68,12 +85,7 @@ function client(bg: Record<string, string>) {
 
   d.addEventListener("click", event => {
     const target = event.target instanceof Element ? event.target : null;
-    if (target?.closest("[data-theme-toggle]")) {
-      const next = current() === "dark" ? "light" : "dark";
-      if (d.startViewTransition) d.startViewTransition(() => setTheme(next));
-      else setTheme(next);
-      return;
-    }
+    if (target?.closest("[data-theme-toggle]")) return toggleTheme();
     const copyButton = target?.closest("[data-copy]");
     if (copyButton) copy(copyButton);
   });

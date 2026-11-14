@@ -6,13 +6,16 @@ import { colors, motion } from "@/styles/tokens.stylex";
 export function ThemeToggle() {
   return (
     <button type="button" data-theme-toggle="" aria-label="Toggle color theme" {...stylex.props(styles.button)}>
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="theme-icon-moon" {...iconProps}>
-        <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" />
-      </svg>
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="theme-icon-sun" {...iconProps}>
-        <circle cx="12" cy="12" r="4.2" />
-        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5" />
-      </svg>
+      {/* .theme-icons is the icon's own layer during the theme View Transition (globals.css). */}
+      <span className="theme-icons">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="theme-icon-moon" {...iconProps}>
+          <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" />
+        </svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="theme-icon-sun" {...iconProps}>
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5" />
+        </svg>
+      </span>
     </button>
   );
 }
