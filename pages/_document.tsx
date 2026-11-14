@@ -24,12 +24,19 @@ export default class SiteDocument extends Document {
     const initial = await ctx.defaultGetInitialProps(ctx);
     // <body> and the skip link render outside <Main>, so add their classes explicitly.
     const shell = `class="${stylex.props(styles.body).className} ${stylex.props(styles.skip).className}"`;
-    const css = pruneCss(builtCss(), initial.html + shell);
+    const pruned = pruneCss(builtCss(), initial.html + shell);
+    // The @font-face rules get a <style> of their own, identical on every page, so a soft
+    // navigation (lib/client-script.ts) keeps it. Swapping it with the page CSS would make
+    // Chrome reload the faces and draw one frame of every word in the fallback font.
+    const fontFaces = pruned.match(/@font-face\s*{[^}]*}/g) ?? [];
+    const css = fontFaces.reduce((rest, face) => rest.replace(face, ""), pruned);
     return {
       ...initial,
       styles: (
         <>
           {initial.styles}
+          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: our own compiled CSS */}
+          <style data-fonts="" dangerouslySetInnerHTML={{ __html: fontFaces.join("") }} />
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: our own compiled CSS, pruned to this page */}
           <style dangerouslySetInnerHTML={{ __html: css }} />
         </>
