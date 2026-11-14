@@ -87,10 +87,11 @@ const styles = stylex.create({
     position: "fixed",
     insetInline: 0,
     top: 0,
-    zIndex: 48,
-    // A hairline: at the top of the page the scrim sits 3rem up, so a taller band would
-    // show its instant switch against the easing page for a moment.
-    height: "1px",
+    // Safari only samples a fixed element at least 6px tall and full width (smaller ones
+    // are skipped), and it's the topmost layer so Safari reads it, not the masked scrim.
+    // It sits above the nav text's line, right under Safari's own bar.
+    zIndex: 51,
+    height: "6px",
     pointerEvents: "none",
     backgroundColor: colors.bg,
   },
