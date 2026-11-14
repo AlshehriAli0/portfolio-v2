@@ -3,7 +3,7 @@ import { join } from "node:path";
 import postcss, { type AtRule } from "postcss";
 
 // Toggled on <html> at runtime by the theme script, so never in the static markup.
-const RUNTIME_CLASSES = ["dark", "light", "vt", "theme-switching"];
+const RUNTIME_CLASSES = ["dark", "light", "theme-switching"];
 // Set by the client script (data-copied), by islands as you use them (data-state, data-theme,
 // data-pulse, aria-*) or by the browser (open, on a folded code block's <details>), so they can
 // be missing from the static markup.

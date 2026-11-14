@@ -176,7 +176,6 @@ function client(bg: Record<string, string>, islands: () => void) {
       // Focus lands on the new page's <main> (tabIndex -1), so screen readers and the
       // keyboard start there; the new <title> is already in place.
       main.focus({ preventScroll: true });
-      root.classList.add("vt");
       islands();
     };
     // An instant swap, like a client-side router: no View Transition (its snapshot made the

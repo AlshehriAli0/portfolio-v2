@@ -184,12 +184,6 @@ table {
   }
 }
 
-/* Title slide-ins are an entrance for a hard load; after a soft navigation they'd only
-   replay (the client script sets .vt). StyleX raises its own specificity, hence !important. */
-.vt [data-slide] {
-  animation: none !important;
-}
-
 /* Theme switch (lib/client-script.ts sets .theme-switching for its length): every colour
    eases to the new theme with plain CSS transitions, the same in every browser. No View
    Transition: its snapshot breaks the nav's `difference` blend (Safari mangles the icon,
