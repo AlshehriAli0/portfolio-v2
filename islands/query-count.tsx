@@ -2,15 +2,18 @@ import * as stylex from "@stylexjs/stylex";
 import { useState } from "react";
 import { defineIsland } from "@/lib/island";
 import { colors, fonts, motion } from "@/styles/tokens.stylex";
-import { Caption, Figure, fixed, Panel, RangeField, Result } from "./ui";
+import { Caption, Figure, fixed, Panel, RangeField, Result, vars } from "./ui";
 
 // The post's example fetches 100 users. The loop awaits one photo query per user.
 const MIN = 1;
 const MAX = 1000;
 const DEFAULT_USERS = 100;
-// Marks drawn per row; the rest are counted as "+ N more". The "before" row always renders
-// every slot, so it keeps its height whatever the count.
-const MARKS = 60;
+// One mark stands for this many queries; the last one fills in proportion to the rest.
+const PER_MARK = 10;
+// Enough slots for the most "before" queries (MAX + 1, as queriesBefore counts), all always
+// laid out, so the row keeps its height whatever the count. At 8px a mark plus a 3px gap,
+// they fit two rows in the post column at 1440 and wrap to four on a phone.
+const SLOTS = Math.ceil((MAX + 1) / PER_MARK);
 const ID = "query-count";
 const CAPTION = "Counts follow from the code above: one query for the users, then one for each user’s photo.";
 // One database round trip, app server to database and back: a typical figure within one
@@ -33,21 +36,24 @@ const wait = (queries: number) => {
 
 const total = (queries: number) => `${count(queries, "query", "queries")} · ${wait(queries)}`;
 
+/** Full marks for each 10 queries, then one mark filled to the remainder (55 is 5½ marks). */
 function Marks({ count, slots }: { count: number; slots: number }) {
-  const more = count - MARKS;
-  // Only a full row can overflow; it always holds its "+ N more" line, empty or not.
-  const overflows = slots === MARKS;
+  const full = Math.floor(count / PER_MARK);
+  const rest = (count % PER_MARK) / PER_MARK;
   return (
-    <span aria-hidden="true" {...stylex.props(styles.marksRow)}>
-      <span {...stylex.props(styles.marks)}>
-        {Array.from({ length: slots }, (_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: fixed slots, never reordered
-          <span key={i} data-state={i < count ? "on" : "off"} {...stylex.props(styles.mark)} />
-        ))}
-      </span>
-      {overflows ? (
-        <span {...stylex.props(styles.more)}>{more > 0 ? `+ ${more.toLocaleString("en-US")} more` : ""}</span>
-      ) : null}
+    <span aria-hidden="true" {...stylex.props(styles.marks)}>
+      {Array.from({ length: slots }, (_, i) => {
+        const state = i < full ? "on" : i === full && rest > 0 ? "part" : "off";
+        return (
+          <span
+            // biome-ignore lint/suspicious/noArrayIndexKey: fixed slots, never reordered
+            key={i}
+            data-state={state}
+            style={state === "part" ? vars({ "--fill": rest }) : undefined}
+            {...stylex.props(styles.mark)}
+          />
+        );
+      })}
     </span>
   );
 }
@@ -86,8 +92,11 @@ function QueryCount() {
       <Caption>{RTT_NOTE}</Caption>
 
       <Result spacing="groups">
-        <Line label="Before" queries={before} slots={MARKS} />
+        <Line label="Before" queries={before} slots={SLOTS} />
         <Line label="After" queries={1} slots={1} />
+        <span aria-hidden="true" {...stylex.props(styles.legend)}>
+          <span data-state="on" {...stylex.props(styles.mark)} /> = {PER_MARK} queries
+        </span>
       </Result>
 
       <Caption>{CAPTION}</Caption>
@@ -145,40 +154,39 @@ const styles = stylex.create({
     display: "grid",
     gap: "0.5rem",
   },
-  // The marks, then the "+ N more" count on its own line, so the label never sits
-  // beside a wrapped row.
-  marksRow: {
-    display: "grid",
-    gap: "0.375rem",
-  },
   marks: {
     display: "flex",
     flexWrap: "wrap",
-    gap: "0.25rem",
-    flexGrow: 1,
+    gap: "0.1875rem",
     minWidth: 0,
   },
   // Every slot is always laid out; a mark only fades and grows from its baseline, so moving
-  // the slider never reflows the row. Leaving marks go faster (100ms) than arriving ones (160ms).
+  // the slider never reflows the row. The partial mark scales from its left edge to --fill.
+  // Leaving marks go faster (100ms) than arriving ones (160ms).
   mark: {
     display: "block",
-    width: "0.375rem",
+    flexShrink: 0,
+    width: "0.5rem",
     height: "1rem",
     backgroundColor: colors.fg,
-    transformOrigin: "bottom",
+    transformOrigin: "left bottom",
     opacity: { default: 1, ':is([data-state="off"])': 0 },
-    transform: { default: "none", ':is([data-state="off"])': { default: "scaleY(0.4)", [REDUCE]: "none" } },
+    transform: {
+      default: "none",
+      ':is([data-state="part"])': "scaleX(var(--fill))",
+      ':is([data-state="off"])': { default: "scaleY(0.4)", [REDUCE]: "none" },
+    },
     transitionProperty: { default: "opacity, transform", [REDUCE]: "none" },
     transitionDuration: { default: "160ms", ':is([data-state="off"])': "100ms" },
     transitionTimingFunction: motion.outUi,
   },
-  // Always one line tall, empty or not, so the panel never changes height.
-  more: {
-    minHeight: "1rem",
-    fontFamily: fonts.mono,
+  // The key under the rows, in the caption's dim size.
+  legend: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.375rem",
     fontSize: "0.8125rem",
     lineHeight: "1rem",
-    fontVariantNumeric: "tabular-nums",
     color: colors.dim,
   },
 });
