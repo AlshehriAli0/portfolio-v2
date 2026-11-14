@@ -4,10 +4,10 @@ import postcss, { type AtRule } from "postcss";
 
 // Toggled on <html> at runtime by the theme script, so never in the static markup.
 const RUNTIME_CLASSES = ["dark", "light", "vt", "vt-theme"];
-// Set by the client script (data-copied, data-hover), by islands as you use them (data-state, data-theme,
+// Set by the client script (data-copied), by islands as you use them (data-state, data-theme,
 // data-pulse, aria-*) or by the browser (open, on a folded code block's <details>), so they can
 // be missing from the static markup.
-const RUNTIME_ATTRIBUTES = /^(data-copied|data-hover|data-state|data-theme|data-pulse|hidden|open|aria-.*)$/;
+const RUNTIME_ATTRIBUTES = /^(data-copied|data-state|data-theme|data-pulse|hidden|open|aria-.*)$/;
 const CONTAINERS = new Set(["media", "supports", "container", "layer"]);
 // `:not(…)`, allowing one level of nested parentheses inside it.
 const NEGATION = /:not\((?:[^()]|\([^()]*\))*\)/g;
