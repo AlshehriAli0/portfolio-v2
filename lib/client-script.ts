@@ -101,17 +101,38 @@ function client(bg: Record<string, string>) {
       title.style.setProperty("view-transition-class", "post-title");
     }
   };
+  // The nav link you pressed or hovered rides over in a 5s cookie, set on pointerdown
+  // and again on pageswap. A prerendered page starts on a clone of sessionStorage taken
+  // when the prerender began, so a value stored at click time can miss it; cookies are
+  // read live. Not the Cookie Store API: it is async and Chromium-only.
+  const navCookie = (href?: string | null) => {
+    // biome-ignore lint/suspicious/noDocumentCookie: sync, and read by a prerendered page
+    d.cookie = `nav=${href ?? ""};path=/;max-age=${href ? 5 : 0};samesite=lax`;
+  };
+  d.addEventListener("pointerdown", event => {
+    const link = event.target instanceof Element ? event.target.closest("[data-nav-link]") : null;
+    if (link) navCookie(link.getAttribute("href"));
+  });
+  // data-hover stands in for :hover (globals.css, drawn without a transition, the page
+  // keeping the pointer cursor) until the first pointer move, when the real :hover takes
+  // over in the same frame. Runs on pagereveal and on prerender activation, whichever
+  // comes first once the page is shown; the cookie is cleared on the first read.
+  const carryHover = () => {
+    const href =
+      !(d as Document & { prerendering?: boolean }).prerendering && /(?:^|; )nav=([^;]+)/.exec(d.cookie)?.[1];
+    if (!href) return;
+    navCookie();
+    const link = d.querySelector(`[data-nav-link][href="${href}"]`);
+    link?.setAttribute("data-hover", "");
+    d.addEventListener("pointermove", () => link?.removeAttribute("data-hover"), { once: true });
+  };
   type Swap = Event & { viewTransition: unknown; activation?: { entry?: { url?: string } } };
   type Nav = { activation?: { from?: { url?: string } } };
   addEventListener("pageswap", event => {
     const e = event as Swap;
     if (e.viewTransition) morph(e.activation?.entry?.url);
     // The new page has no :hover until the pointer moves, so carry the hovered nav link over.
-    try {
-      sessionStorage.nav = d.querySelector("[data-nav-link]:is(:hover,:active)")?.getAttribute("href");
-    } catch {
-      // storage blocked: the new page waits for the pointer to move
-    }
+    navCookie(d.querySelector("[data-nav-link]:is(:hover,:active)")?.getAttribute("href"));
   });
   // A View Transition already brought this page in, so .vt stops the title slide-ins replaying.
   addEventListener("pagereveal", event => {
@@ -119,19 +140,12 @@ function client(bg: Record<string, string>) {
       root.classList.add("vt");
       morph((window as unknown as { navigation?: Nav }).navigation?.activation?.from?.url);
     }
-    // data-hover stands in for :hover (globals.css, drawn without a transition) until the
-    // first pointer move, when the real :hover takes over in the same frame.
-    try {
-      const link = d.querySelector(`[data-nav-link][href="${sessionStorage.nav}"]`);
-      link?.setAttribute("data-hover", "");
-      d.addEventListener("pointermove", () => link?.removeAttribute("data-hover"), { once: true });
-    } catch {
-      // storage blocked: no hover to carry over
-    }
+    carryHover();
   });
 
   // A page prerendered before a theme switch on this one would open in the old theme.
   d.addEventListener("prerenderingchange", () => {
+    carryHover();
     try {
       const saved = localStorage.getItem("theme");
       if (saved && !root.classList.contains(saved)) setTheme(saved);
