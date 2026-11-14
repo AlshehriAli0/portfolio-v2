@@ -12,7 +12,7 @@ The file name is the island's only name: the MDX tag, the bundle, ids (`${ID}-us
 ## Rules
 
 - No effects. Keep state narrow and derive everything else during render. Timers start in event handlers.
-- Never swap StyleX classes by state. Set `data-state` or a custom property and style that. Active and filled states use `colors.fg`; no accent colour.
+- Never swap StyleX classes by state. Set `data-state` or a custom property and style that. Active and filled states use `colors.fg`. Colours come only from `colors` in `@/styles/tokens.stylex` (roles defined in `styles/palette.ts`); the build fails on a colour literal anywhere else.
 - Keep every `stylex.props` call static: local styles only, values known at render through `vars()`, variants through attributes. Dynamic styles, `xstyle` and imported style objects ship StyleX's runtime (about 0.7 KB). `Figure` takes `xstyle` because it renders only on the server.
 - A no-JS `fallback` is required: plain HTML for `@media (scripting: none)`, never hydrated.
 - Results go in `<Result>` (an `<output aria-live="polite">`). Every input has a label. No motion without a reduced-motion path.

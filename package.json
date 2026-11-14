@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "bun scripts/build-islands.ts && next dev",
-    "build": "bun scripts/build-islands.ts && next build",
+    "dev": "bun scripts/check-colors.ts && bun scripts/build-islands.ts && next dev",
+    "build": "bun scripts/check-colors.ts && bun scripts/build-islands.ts && next build",
     "start": "next start",
     "lint": "biome check .",
     "biome:check": "biome check .",
