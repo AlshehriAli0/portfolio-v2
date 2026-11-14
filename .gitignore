@@ -38,3 +38,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agent skills installed locally with `npx skills add` (Claude Code + Codex)
+.agents/
+skills-lock.json
+.claude/skills/*
+!.claude/skills/migrating-tailwind-to-stylex/
