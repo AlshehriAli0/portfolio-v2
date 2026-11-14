@@ -43,5 +43,8 @@
     "postcss": "^8.4.38"
   },
   "packageManager": "bun",
-  "node": ">=20"
+  "node": ">=20",
+  "engines": {
+    "node": "24.x"
+  }
 }
