@@ -62,13 +62,6 @@ export default function InfoPage() {
                   </a>
                   .
                 </p>
-                <p {...stylex.props(styles.p)}>
-                  If you’d like to work together, reach me at{" "}
-                  <a href={`mailto:${site.email}`} {...stylex.props(styles.inline)}>
-                    {site.email}
-                  </a>
-                  .
-                </p>
               </div>
             }
           />
