@@ -1,59 +1,22 @@
-import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
+import { ogImageResponse } from "@/lib/og";
 
-export async function GET(req: NextRequest) {
+// The template reads its fonts from disk.
+export const runtime = "nodejs";
+
+const MAX_TITLE_LENGTH = 140;
+
+// GET /api/og?title=<post title>&date=<ISO date, optional>&min=<reading minutes, optional>
+// Without a title it falls back to the site card.
+export function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const postTitle = searchParams.get("title");
-
-  return new ImageResponse(
-    <div
-      style={{
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        backgroundImage: `url(https://ali-sh.com/og-bg.png)`,
-      }}
-    >
-      <div
-        style={{
-          marginLeft: 160,
-          marginRight: 190,
-          fontSize: 55,
-          fontFamily: "saans-font",
-          letterSpacing: "-0.05em",
-          color: "white",
-          lineHeight: "80px",
-          whiteSpace: "pre-wrap",
-        }}
-      >
-        Ali Alshehri
-      </div>
-
-      <div
-        style={{
-          width: "80%",
-          marginLeft: 150,
-          marginRight: 190,
-          marginTop: -10,
-          display: "flex",
-          fontSize: 80,
-          fontFamily: "saans-font",
-          letterSpacing: "-0.05em",
-          fontWeight: 900,
-          color: "white",
-          whiteSpace: "pre-wrap",
-          lineHeight: "75px",
-        }}
-      >
-        {`${postTitle} - Blog Post`}
-      </div>
-    </div>,
-    {
-      width: 1200,
-      height: 630,
-    }
-  );
+  const title = searchParams.get("title")?.trim().slice(0, MAX_TITLE_LENGTH);
+  if (!title) return ogImageResponse({ kind: "home" });
+  const minutes = Number(searchParams.get("min"));
+  return ogImageResponse({
+    kind: "post",
+    title,
+    date: searchParams.get("date") ?? undefined,
+    minutes: Number.isInteger(minutes) && minutes > 0 && minutes < 1000 ? minutes : undefined,
+  });
 }
