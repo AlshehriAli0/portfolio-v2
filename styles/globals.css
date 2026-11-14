@@ -143,8 +143,8 @@ table {
 }
 
 ::selection {
-  background: var(--c-accent);
-  color: var(--c-accent-ink);
+  background: var(--c-highlight);
+  color: var(--c-fg);
 }
 
 #main:focus {

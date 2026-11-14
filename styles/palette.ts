@@ -23,11 +23,14 @@ export const palette = {
   line: { light: "rgba(11, 11, 11, 0.12)", dark: "rgba(236, 235, 230, 0.1)" },
   /** Stronger rules: underlines, borders of controls. */
   lineStrong: { light: "rgba(11, 11, 11, 0.28)", dark: "rgba(236, 235, 230, 0.22)" },
-  /** Single accent, used as a fill (never as small text on paper); text on it uses accentInk. */
-  accent: { light: "#d4ff3a", dark: "#d4ff3a" },
-  accentInk: { light: "#0b0b0b", dark: "#0b0b0b" },
-  /** Soft fill behind highlighted code chars. */
-  highlight: { light: "rgba(11, 11, 11, 0.08)", dark: "rgba(236, 235, 230, 0.1)" },
+  /**
+   * The one emphatic fill: ink on paper, paper on ink, the same inversion as active
+   * buttons and segmented controls. Text on it uses accentInk (about 18:1 either theme).
+   */
+  accent: { light: "#0b0b0b", dark: "#ecebe6" },
+  accentInk: { light: "#f2f0ea", dark: "#0a0a0a" },
+  /** Soft fill behind text that stays `fg`: selection, prose link hover, highlighted code chars. */
+  highlight: { light: "rgba(11, 11, 11, 0.12)", dark: "rgba(236, 235, 230, 0.16)" },
   /** Fainter wash for a whole highlighted code line. */
   tint: { light: "rgba(11, 11, 11, 0.045)", dark: "rgba(236, 235, 230, 0.05)" },
   /** Scroll shadows on code blocks and tables. */

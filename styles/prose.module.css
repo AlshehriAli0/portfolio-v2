@@ -103,11 +103,10 @@
   transition-duration: 160ms;
   transition-timing-function: var(--ease);
 }
-/* Fine pointers only: on touch the lime fill would stay stuck on after a tap. */
+/* Fine pointers only: on touch the fill would stay stuck on after a tap. */
 @media (hover: hover) and (pointer: fine) {
   .article a:hover {
-    background-color: var(--c-accent);
-    color: var(--c-accent-ink);
+    background-color: var(--c-highlight);
     text-decoration-color: transparent;
   }
 }
@@ -131,7 +130,7 @@
 @media (hover: hover) and (pointer: fine) {
   .article a:hover :not(pre) > code {
     background-color: transparent;
-    border-color: var(--c-line-strong);
+    border-color: var(--line-strong);
     color: inherit;
   }
 }
