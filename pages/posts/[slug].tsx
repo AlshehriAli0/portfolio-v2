@@ -80,7 +80,7 @@ export default function Post({ post, html, older, newer }: Props) {
                 All writing
               </TextLink>
             </div>
-            <h1 data-morph="" {...stylex.props(styles.title, styles.morph(`post-${post.slug}`))}>
+            <h1 {...stylex.props(styles.title)}>
               {post.title}
             </h1>
             <div {...stylex.props(styles.subhead)}>
@@ -164,7 +164,6 @@ const styles = stylex.create({
     paddingBottom: "clamp(4rem, 8vw, 6rem)",
     color: colors.fg,
   },
-  morph: (name: string) => ({ viewTransitionName: name, viewTransitionClass: "post-title" }),
   header: {
     display: "grid",
     gridTemplateColumns: { default: "minmax(0, 1fr)", [WIDE]: "repeat(12, minmax(0, 1fr))" },

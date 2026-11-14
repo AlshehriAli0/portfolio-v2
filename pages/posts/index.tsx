@@ -33,7 +33,6 @@ export default function PostsPage({ posts }: Props) {
                 summary: p.summary,
                 meta: `${formatDay(p.date)} \u00b7 ${p.minutes}\u00a0min`,
                 href: p.href,
-                morph: `post-${p.slug}`,
               }))}
             />
           </div>

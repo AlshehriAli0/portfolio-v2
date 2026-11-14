@@ -177,8 +177,6 @@ type RowData = {
   summary?: string;
   meta?: string;
   href?: string;
-  /** view-transition-name to share with the destination's title (set by the client script on navigation) */
-  morph?: string;
 };
 
 /**
@@ -196,7 +194,6 @@ export function Rows({ rows, size = "md", ruled = true }: { rows: RowData[]; siz
           <>
             <span {...stylex.props(styles.rowMain)}>
               <span
-                data-morph={row.morph}
                 {...stylex.props(
                   styles.rowTitle,
                   size === "lg" && styles.rowTitleLg,

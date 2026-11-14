@@ -58,7 +58,6 @@ export default function Home({ posts }: Props) {
                     title: p.title,
                     meta: `${formatDay(p.date)} · ${p.minutes}\u00a0min`,
                     href: p.href,
-                    morph: `post-${p.slug}`,
                   }))}
                 />
               </section>
