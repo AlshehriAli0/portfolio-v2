@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
+import type { ReactNode } from "react";
 import { nav } from "@/lib/site";
 import { colors, layout } from "@/styles/tokens.stylex";
 import { ThemeToggle } from "./theme-toggle";
@@ -21,9 +22,9 @@ export function Nav({ path }: { path: string }) {
             href="/"
             aria-current={path === "/" ? "page" : undefined}
             aria-label="Ali Alshehri, home"
-            {...stylex.props(styles.text, styles.underline, styles.brand, path === "/" ? styles.linkOn : null)}
+            {...stylex.props(stylex.defaultMarker(), styles.text, styles.brand)}
           >
-            <span>Ali Sh</span>
+            <Underlined on={path === "/"}>Ali Sh</Underlined>
           </a>
           <nav aria-label="Primary" {...stylex.props(styles.right)}>
             <ul {...stylex.props(styles.list)}>
@@ -34,9 +35,9 @@ export function Nav({ path }: { path: string }) {
                     <a
                       href={href}
                       aria-current={path === href ? "page" : active ? "true" : undefined}
-                      {...stylex.props(styles.text, styles.underline, styles.link, active ? styles.linkOn : null)}
+                      {...stylex.props(stylex.defaultMarker(), styles.text, styles.link)}
                     >
-                      {label}
+                      <Underlined on={active}>{label}</Underlined>
                     </a>
                   </li>
                 );
@@ -47,6 +48,20 @@ export function Nav({ path }: { path: string }) {
         </div>
       </header>
     </>
+  );
+}
+
+/**
+ * The label with a bar under it that draws in from the left on hover and leaves to the
+ * right, the old site's nav effect. A transform, so it never moves the layout. The
+ * current page keeps its bar.
+ */
+function Underlined({ on, children }: { on: boolean; children: ReactNode }) {
+  return (
+    <span {...stylex.props(styles.label)}>
+      {children}
+      <span aria-hidden="true" {...stylex.props(styles.bar, on && styles.barOn)} />
+    </span>
   );
 }
 
@@ -112,20 +127,26 @@ const styles = stylex.create({
     paddingInline: "0.5rem",
     marginInline: "-0.5rem",
   },
-  // An underline marks where you are; hover previews it (the name included).
-  underline: {
-    textDecorationLine: "underline",
-    textDecorationThickness: "1px",
-    textUnderlineOffset: "0.4em",
-    textDecorationColor: {
-      default: "transparent",
-      ":hover": "rgb(255 255 255 / 0.5)",
-      ":focus-visible": "rgb(255 255 255 / 0.5)",
+  label: { position: "relative" },
+  bar: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: "-0.3em",
+    height: "1px",
+    backgroundColor: "currentColor",
+    transformOrigin: { default: "right", [stylex.when.ancestor(":hover")]: "left", [stylex.when.ancestor(":focus-visible")]: "left" },
+    transform: {
+      default: "scaleX(0)",
+      [stylex.when.ancestor(":hover")]: "scaleX(1)",
+      [stylex.when.ancestor(":focus-visible")]: "scaleX(1)",
     },
-    transitionProperty: "text-decoration-color",
-    transitionDuration: { default: "250ms", ":hover": "0ms" },
+    transitionProperty: "transform",
+    transitionDuration: { default: "350ms", "@media (prefers-reduced-motion: reduce)": "0ms" },
+    transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
   },
-  linkOn: {
-    textDecorationColor: { default: "currentColor", ":hover": "currentColor" },
+  // The current page's bar stays drawn.
+  barOn: {
+    transform: { default: "scaleX(1)", [stylex.when.ancestor(":hover")]: "scaleX(1)" },
   },
 });
