@@ -87,34 +87,69 @@ const styles = stylex.create({
     // Without scroll timelines: a short fade that ends on the frame rule at 4.5rem, so
     // it never covers the top of the page at rest.
     height: { default: "4.5rem", [SCROLL_TIMELINE]: "7.5rem" },
-    backgroundImage: {
+    // A solid fill shaped by an alpha mask, not a colour gradient: the fill is a plain
+    // colour, so it eases with the theme switch like everything else (gradients can't
+    // transition). The mask reads only alpha; currentColor is just an opaque stand-in.
+    backgroundColor: colors.bg,
+    maskImage: {
       default: `linear-gradient(
-        ${colors.bg} 2.75rem,
-        color-mix(in srgb, ${colors.bg} 97.2%, transparent) 2.925rem,
-        color-mix(in srgb, ${colors.bg} 89.6%, transparent) 3.1rem,
-        color-mix(in srgb, ${colors.bg} 78.4%, transparent) 3.275rem,
-        color-mix(in srgb, ${colors.bg} 64.8%, transparent) 3.45rem,
-        color-mix(in srgb, ${colors.bg} 50.0%, transparent) 3.625rem,
-        color-mix(in srgb, ${colors.bg} 35.2%, transparent) 3.8rem,
-        color-mix(in srgb, ${colors.bg} 21.6%, transparent) 3.975rem,
-        color-mix(in srgb, ${colors.bg} 10.4%, transparent) 4.15rem,
-        color-mix(in srgb, ${colors.bg} 2.8%, transparent) 4.325rem,
+        currentColor 2.75rem,
+        color-mix(in srgb, currentColor 97.2%, transparent) 2.925rem,
+        color-mix(in srgb, currentColor 89.6%, transparent) 3.1rem,
+        color-mix(in srgb, currentColor 78.4%, transparent) 3.275rem,
+        color-mix(in srgb, currentColor 64.8%, transparent) 3.45rem,
+        color-mix(in srgb, currentColor 50.0%, transparent) 3.625rem,
+        color-mix(in srgb, currentColor 35.2%, transparent) 3.8rem,
+        color-mix(in srgb, currentColor 21.6%, transparent) 3.975rem,
+        color-mix(in srgb, currentColor 10.4%, transparent) 4.15rem,
+        color-mix(in srgb, currentColor 2.8%, transparent) 4.325rem,
         transparent 4.5rem
       )`,
       // With them: a longer, softer fade, held 3rem up at the top of the page (where
       // only the empty frame sits under it) and settled into place over the first 3rem
       // of scroll. A transform on the scroll timeline, so it runs on the compositor.
       [SCROLL_TIMELINE]: `linear-gradient(
-        ${colors.bg} 2.75rem,
-        color-mix(in srgb, ${colors.bg} 97.2%, transparent) 3.225rem,
-        color-mix(in srgb, ${colors.bg} 89.6%, transparent) 3.7rem,
-        color-mix(in srgb, ${colors.bg} 78.4%, transparent) 4.175rem,
-        color-mix(in srgb, ${colors.bg} 64.8%, transparent) 4.65rem,
-        color-mix(in srgb, ${colors.bg} 50.0%, transparent) 5.125rem,
-        color-mix(in srgb, ${colors.bg} 35.2%, transparent) 5.6rem,
-        color-mix(in srgb, ${colors.bg} 21.6%, transparent) 6.075rem,
-        color-mix(in srgb, ${colors.bg} 10.4%, transparent) 6.55rem,
-        color-mix(in srgb, ${colors.bg} 2.8%, transparent) 7.025rem,
+        currentColor 2.75rem,
+        color-mix(in srgb, currentColor 97.2%, transparent) 3.225rem,
+        color-mix(in srgb, currentColor 89.6%, transparent) 3.7rem,
+        color-mix(in srgb, currentColor 78.4%, transparent) 4.175rem,
+        color-mix(in srgb, currentColor 64.8%, transparent) 4.65rem,
+        color-mix(in srgb, currentColor 50.0%, transparent) 5.125rem,
+        color-mix(in srgb, currentColor 35.2%, transparent) 5.6rem,
+        color-mix(in srgb, currentColor 21.6%, transparent) 6.075rem,
+        color-mix(in srgb, currentColor 10.4%, transparent) 6.55rem,
+        color-mix(in srgb, currentColor 2.8%, transparent) 7.025rem,
+        transparent 7.5rem
+      )`,
+    },
+    WebkitMaskImage: {
+      default: `linear-gradient(
+        currentColor 2.75rem,
+        color-mix(in srgb, currentColor 97.2%, transparent) 2.925rem,
+        color-mix(in srgb, currentColor 89.6%, transparent) 3.1rem,
+        color-mix(in srgb, currentColor 78.4%, transparent) 3.275rem,
+        color-mix(in srgb, currentColor 64.8%, transparent) 3.45rem,
+        color-mix(in srgb, currentColor 50.0%, transparent) 3.625rem,
+        color-mix(in srgb, currentColor 35.2%, transparent) 3.8rem,
+        color-mix(in srgb, currentColor 21.6%, transparent) 3.975rem,
+        color-mix(in srgb, currentColor 10.4%, transparent) 4.15rem,
+        color-mix(in srgb, currentColor 2.8%, transparent) 4.325rem,
+        transparent 4.5rem
+      )`,
+      // With them: a longer, softer fade, held 3rem up at the top of the page (where
+      // only the empty frame sits under it) and settled into place over the first 3rem
+      // of scroll. A transform on the scroll timeline, so it runs on the compositor.
+      [SCROLL_TIMELINE]: `linear-gradient(
+        currentColor 2.75rem,
+        color-mix(in srgb, currentColor 97.2%, transparent) 3.225rem,
+        color-mix(in srgb, currentColor 89.6%, transparent) 3.7rem,
+        color-mix(in srgb, currentColor 78.4%, transparent) 4.175rem,
+        color-mix(in srgb, currentColor 64.8%, transparent) 4.65rem,
+        color-mix(in srgb, currentColor 50.0%, transparent) 5.125rem,
+        color-mix(in srgb, currentColor 35.2%, transparent) 5.6rem,
+        color-mix(in srgb, currentColor 21.6%, transparent) 6.075rem,
+        color-mix(in srgb, currentColor 10.4%, transparent) 6.55rem,
+        color-mix(in srgb, currentColor 2.8%, transparent) 7.025rem,
         transparent 7.5rem
       )`,
     },
@@ -134,7 +169,6 @@ const styles = stylex.create({
     mixBlendMode: "difference",
     pointerEvents: "none",
     // Its own View Transition layer, so soft navigations leave it still (globals.css).
-    viewTransitionName: "site-nav",
   },
   inner: {
     display: "flex",
