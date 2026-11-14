@@ -186,14 +186,9 @@ function client(bg: Record<string, string>, islands: () => void) {
       root.classList.add("vt");
       islands();
     };
-    // No View Transition: it snapshots the page, and the nav (blended with `difference`
-    // over the content) flashes against the snapshot. The content fades out, swaps and
-    // fades back in on its own; the nav is never touched, so it keeps :hover and its cursor.
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !page.animate) return swap();
-    await page.animate({ opacity: [1, 0] }, { duration: 90, easing: "ease-in" }).finished.catch(() => 0);
-    if (id !== latest) return;
+    // An instant swap, like a client-side router: no View Transition (its snapshot made the
+    // blended nav flash) and no fade (fading through an empty page reads as a flash too).
     swap();
-    page.animate({ opacity: [0, 1], transform: ["translateY(4px)", "none"] }, { duration: 200, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
   };
 
   d.addEventListener("click", event => {
