@@ -19,7 +19,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => ({
 
 export default function PostsPage({ posts }: Props) {
   return (
-    <Page path="/posts" title="Writing" description={DESCRIPTION} jsonLd={blog(posts, DESCRIPTION)} cta="none">
+    <Page path="/posts" title="Writing" description={DESCRIPTION} jsonLd={blog(posts, DESCRIPTION)}>
       <main id="main" tabIndex={-1}>
         <Container>
           <PageTitle title="Writing" em={2.764} lsb={0.012} lede={copy.writingLede} />

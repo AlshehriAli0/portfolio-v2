@@ -18,7 +18,6 @@ export default function ContactPage() {
   return (
     <Page
       path="/contact"
-      cta="none"
       socialLinks={false}
       title="Contact"
       description={DESCRIPTION}

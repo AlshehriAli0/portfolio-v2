@@ -63,7 +63,6 @@ export default function Post({ post, html, older, newer }: Props) {
       imageAlt={post.title}
       article={{ published: post.date, modified: post.updated, markdown: `${post.href}.md` }}
       jsonLd={blogPosting(post)}
-      cta="quiet"
     >
       {lead ? (
         <Head>
