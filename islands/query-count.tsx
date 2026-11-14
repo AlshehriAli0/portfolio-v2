@@ -13,11 +13,25 @@ const DEFAULT_USERS = 100;
 const MARKS = 60;
 const ID = "query-count";
 const CAPTION = "Counts follow from the code above: one query for the users, then one for each user’s photo.";
+// One database round trip, app server to database and back: a typical figure within one
+// region. The queries run one after another, so the waits add up.
+const RTT_MS = 20;
+const RTT_NOTE = `At ${RTT_MS}\u00a0ms per database round trip (an example, not a measurement).`;
+// The widest total, "1,001 queries · 20.02 s", so every total keeps one width.
+const TOTAL_WIDTH = 23;
 
 /** The post's "before" code runs one query for the users, then one per user. */
 export const queriesBefore = (users: number) => users + 1;
 
 const count = (n: number, one: string, many: string) => `${n.toLocaleString("en-US")} ${n === 1 ? one : many}`;
+
+/** Milliseconds under a second, seconds to two decimals from there. */
+const wait = (queries: number) => {
+  const ms = queries * RTT_MS;
+  return ms < 1000 ? `${ms}\u00a0ms` : `${(ms / 1000).toFixed(2)}\u00a0s`;
+};
+
+const total = (queries: number) => `${count(queries, "query", "queries")} · ${wait(queries)}`;
 
 function Marks({ count, slots }: { count: number; slots: number }) {
   const more = count - MARKS;
@@ -44,7 +58,7 @@ function Line({ label, queries, slots }: { label: string; queries: number; slots
     <span {...stylex.props(styles.row)}>
       <span {...stylex.props(styles.head)}>
         <span {...stylex.props(styles.key)}>{label}</span>
-        <span {...stylex.props(styles.total)}>{fixed(count(queries, "query", "queries"), 13)}</span>
+        <span {...stylex.props(styles.total)}>{fixed(total(queries), TOTAL_WIDTH)}</span>
       </span>
       <Marks count={queries} slots={slots} />
     </span>
@@ -65,9 +79,11 @@ function QueryCount() {
         min={MIN}
         max={MAX}
         step={1}
-        valueText={`${count(users, "user", "users")}, ${count(before, "query", "queries")} before, 1 after`}
+        valueText={`${count(users, "user", "users")}: ${total(before)} before, ${total(1)} after`}
         onValue={setUsers}
       />
+
+      <Caption>{RTT_NOTE}</Caption>
 
       <Result spacing="groups">
         <Line label="Before" queries={before} slots={MARKS} />
@@ -79,15 +95,15 @@ function QueryCount() {
   );
 }
 
-/** The counts at three sizes, for readers without JavaScript. Server-only. */
+/** The counts and waits at three sizes, for readers without JavaScript. Server-only. */
 function QueryCountText() {
   return (
-    <Figure caption={CAPTION} xstyle={styles.fallback}>
+    <Figure caption={`${CAPTION} ${RTT_NOTE}`} xstyle={styles.fallback}>
       {[10, 100, 1000].map(n => (
         <p
           key={n}
           {...stylex.props(styles.line)}
-        >{`${n.toLocaleString("en-US")} users: ${queriesBefore(n).toLocaleString("en-US")} queries before, 1 after.`}</p>
+        >{`${count(n, "user", "users")}: ${total(queriesBefore(n))} before, ${total(1)} after.`}</p>
       ))}
     </Figure>
   );
@@ -108,7 +124,8 @@ const styles = stylex.create({
     fontSize: "0.875rem",
     color: colors.dim,
   },
-  // Right-aligned tabular digits, so the count changes in place as the slider moves.
+  // Right-aligned tabular digits padded to one width, so the count and wait change in place
+  // as the slider moves. They update instantly: a fade on every drag step would only flicker.
   total: {
     fontFamily: fonts.mono,
     fontSize: "0.875rem",
