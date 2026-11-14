@@ -133,7 +133,7 @@ const styles = stylex.create({
     color: colors.blend,
     mixBlendMode: "difference",
     pointerEvents: "none",
-    // Its own View Transition layer, so page changes leave it still (globals.css).
+    // Its own View Transition layer, so soft navigations leave it still (globals.css).
     viewTransitionName: "site-nav",
   },
   inner: {

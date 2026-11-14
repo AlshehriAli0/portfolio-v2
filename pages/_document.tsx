@@ -56,7 +56,7 @@ export default class SiteDocument extends Document {
           {profiles.map(href => (
             <link key={href} rel="me" href={href} />
           ))}
-          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: hover-prerender for instant navigation */}
+          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: prefetch for the full loads soft navigation falls back to */}
           <script type="speculationrules" dangerouslySetInnerHTML={{ __html: speculationRules }} />
         </InlineCssHead>
         <body id="top" {...stylex.props(styles.body)}>

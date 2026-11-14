@@ -80,7 +80,9 @@ export default function Post({ post, html, older, newer }: Props) {
                 All writing
               </TextLink>
             </div>
-            <h1 {...stylex.props(styles.title, styles.morph(`post-${post.slug}`))}>{post.title}</h1>
+            <h1 data-morph="" {...stylex.props(styles.title, styles.morph(`post-${post.slug}`))}>
+              {post.title}
+            </h1>
             <div {...stylex.props(styles.subhead)}>
               <p {...stylex.props(styles.byline)}>
                 <time dateTime={post.date}>{formatDay(post.date)}</time>

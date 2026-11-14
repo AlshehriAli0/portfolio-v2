@@ -181,29 +181,31 @@ table {
   }
 }
 
-/* Page navigations are cross-document View Transitions: a quick crossfade, and any
-   element sharing a view-transition-name (post titles) morphs between pages. */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
   }
 }
 
+/* Soft navigations (lib/client-script.ts) swap the page inside a View Transition: a quick
+   crossfade, and the post title you clicked morphs into the post header. */
 ::view-transition-group(*) {
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Title slide-ins are an entrance for a hard load. After a View Transition the
-   crossfade has already brought the page in, so they'd only replay (the client
-   script sets .vt on pagereveal). StyleX raises its own specificity, hence !important. */
+/* Title slide-ins are an entrance for a hard load. After a soft navigation the
+   crossfade brings the page in, so they'd only replay (the client script sets .vt).
+   StyleX raises its own specificity, hence !important. */
 .vt [data-slide] {
   animation: none !important;
 }
 
-/* The nav (site-nav, components/nav.tsx) is one static bar across pages: its own layer,
-   out of the root crossfade, with the new page's nav shown at once. The layer keeps the
-   bar's `difference` blend over the page beneath. */
+/* Soft navigations scope their transition to the page content where the browser can, so
+   the nav sits outside it. Elsewhere it's a document-wide transition, and the nav
+   (site-nav, components/nav.tsx) takes its own layer: out of the root crossfade, showing
+   the live nav at once so the underline handoff plays. The layer keeps the bar's
+   `difference` blend over the page beneath. */
 ::view-transition-group(site-nav) {
   animation: none;
   mix-blend-mode: difference;

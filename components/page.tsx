@@ -106,8 +106,11 @@ export function Page({
         )}
       </Head>
       <Nav path={path} />
-      {children}
-      <Footer sayHello={sayHello} socialLinks={socialLinks} />
+      {/* What soft navigation swaps (lib/client-script.ts); the nav stays. */}
+      <div data-page="">
+        {children}
+        <Footer sayHello={sayHello} socialLinks={socialLinks} />
+      </div>
     </>
   );
 }
