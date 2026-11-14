@@ -6,7 +6,6 @@ import { colors, motion } from "@/styles/tokens.stylex";
 export function ThemeToggle() {
   return (
     <button type="button" data-theme-toggle="" aria-label="Toggle color theme" {...stylex.props(styles.button)}>
-      {/* .theme-icons is the icon's own layer during the theme View Transition (globals.css). */}
       <span className="theme-icons">
         <svg aria-hidden="true" viewBox="0 0 24 24" className="theme-icon-moon" {...iconProps}>
           <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" />
@@ -32,7 +31,8 @@ const iconProps = {
     position: "absolute",
     inset: 0,
     margin: "auto",
-    transition: "opacity 150ms cubic-bezier(0.23, 1, 0.32, 1), transform 240ms cubic-bezier(0.23, 1, 0.32, 1)",
+    transition:
+      "opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 320ms cubic-bezier(0.23, 1, 0.32, 1), filter 260ms cubic-bezier(0.23, 1, 0.32, 1)",
   },
 } as const;
 

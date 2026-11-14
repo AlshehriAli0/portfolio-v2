@@ -41,21 +41,14 @@ function client(bg: Record<string, string>, islands: () => void) {
     }
   };
 
-  // While .vt-theme is on, globals.css turns off every CSS transition and gives the
-  // icon its own View Transition layer, so the switch is one crossfade plus the icon morph.
-  let switching: unknown;
+  // While .theme-switching is on, globals.css eases every colour to the new theme and the
+  // icon morphs; it comes off once that's done, so hover transitions are normal again.
+  let switching = 0;
   const toggleTheme = () => {
-    const next = current() === "dark" ? "light" : "dark";
-    root.classList.add("vt-theme");
-    const transition = d.startViewTransition?.(() => setTheme(next));
-    switching = transition;
-    if (!transition) setTheme(next);
-    // Without View Transitions, reading offsetWidth applies the new colours before
-    // transitions come back on. A second click skips the running transition, so only
-    // the latest one turns the class off.
-    (transition ? transition.finished : Promise.resolve(root.offsetWidth)).then(
-      () => switching === transition && root.classList.remove("vt-theme")
-    );
+    root.classList.add("theme-switching");
+    setTheme(current() === "dark" ? "light" : "dark");
+    clearTimeout(switching);
+    switching = window.setTimeout(() => root.classList.remove("theme-switching"), 360);
   };
 
   let timer = 0;
