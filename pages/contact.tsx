@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import type { PageConfig } from "next";
 import { Page } from "@/components/page";
-import { Container, Label, PageTitle, Rows, Rule } from "@/components/ui";
+import { Container, Label, PageTitle, Rows } from "@/components/ui";
 import { site, socials } from "@/lib/site";
 import { webPage } from "@/lib/structured-data";
 
@@ -25,9 +25,8 @@ export default function ContactPage() {
     >
       <main id="main" tabIndex={-1}>
         <Container>
-          <PageTitle title="Contact" em={3.153} lsb={0.039} />
+          <PageTitle title="Contact" lsb={0.039} />
 
-          <Rule />
           {/* The page's one job, so the address itself is the headline. */}
           <section aria-labelledby="email-label" {...stylex.props(styles.email)}>
             <h2 id="email-label">

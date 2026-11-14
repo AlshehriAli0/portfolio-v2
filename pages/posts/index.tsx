@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import type { GetStaticProps, PageConfig } from "next";
 import { Page } from "@/components/page";
-import { Container, PageTitle, Rows, Rule } from "@/components/ui";
+import { Container, PageTitle, Rows } from "@/components/ui";
 import { getPostSummaries, type PostSummary } from "@/lib/articles";
 import { copy, formatDay } from "@/lib/site";
 import { blog } from "@/lib/structured-data";
@@ -22,8 +22,7 @@ export default function PostsPage({ posts }: Props) {
     <Page path="/posts" title="Writing" description={DESCRIPTION} jsonLd={blog(posts, DESCRIPTION)}>
       <main id="main" tabIndex={-1}>
         <Container>
-          <PageTitle title="Writing" em={2.764} lsb={0.012} lede={copy.writingLede} />
-          <Rule />
+          <PageTitle title="Writing" lsb={0.012} lede={copy.writingLede} />
           <div {...stylex.props(styles.list)}>
             <Rows
               size="lg"

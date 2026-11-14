@@ -1,5 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { colors, fonts, layout, motion } from "@/styles/tokens.stylex";
 
 const slideUp = stylex.keyframes({
@@ -50,6 +50,7 @@ export function Section({
   aside,
   id,
   tight = false,
+  ruled = true,
   children,
 }: {
   label: string;
@@ -57,11 +58,13 @@ export function Section({
   id?: string;
   /** For a hairline list: it starts just under the label instead of a full step down. */
   tight?: boolean;
+  /** `false` when a rule already sits above it (the PageTitle's). */
+  ruled?: boolean;
   children: ReactNode;
 }) {
   return (
     <section id={id} aria-labelledby={id ? `${id}-label` : undefined} {...stylex.props(styles.section)}>
-      <Rule />
+      {ruled ? <Rule /> : null}
       <header {...stylex.props(styles.sectionHead, tight && styles.sectionHeadTight)}>
         <h2 id={id ? `${id}-label` : undefined} {...stylex.props(styles.label, styles.heading)}>
           {label}
@@ -115,24 +118,22 @@ export function TextLink({
 }
 
 /**
- * Page title: the frame rule, then one word set large. `em` is the width of the word's
- * ink in ems, so on narrow screens the size is solved for the column and the last glyph
- * lands on its edge. It's capped so the page's content always starts on the first screen.
+ * Page title: the frame rule, one word set large, then the hero rule. Every page shares
+ * one geometry, and only the title's box sets it: the cap top sits a fixed step under the
+ * frame rule and the hero rule a fixed step under the title's box, whatever comes beside it.
  *
- * Every page shares one geometry: the title's cap top sits a fixed step under the rule, the
- * `lede` (and any `side` content after it) starts with its cap height on that same line, and
- * the rule below comes a fixed step after whichever ends lower. Side by side on wide screens,
- * stacked below otherwise, a fixed step under the title.
+ * Wide screens set the `lede` (and any `side` content after it) beside the title, with its
+ * cap height on the title's cap top. That field never adds height, so it has to fit within
+ * the title's box. Stacked, it moves under the hero rule as the page's first block and
+ * closes on a rule of its own, like a section.
  */
 export function PageTitle({
   title,
-  em,
   lsb,
   lede,
   side,
 }: {
   title: string;
-  em: number;
   /** left side bearing of the first glyph, in em, so its stem sits on the grid line */
   lsb: number;
   /** the first line of the field beside the title */
@@ -140,12 +141,10 @@ export function PageTitle({
   /** anything that follows the lede */
   side?: ReactNode;
 }) {
-  // cqw is the header's own width, so a classic scrollbar can't push the word past the edge.
-  const size = `min(calc(100cqw / ${em}), 15rem)`;
   return (
     <header {...stylex.props(styles.pageHead)}>
       <Rule />
-      <div {...stylex.props(styles.titleRow)} style={{ "--title": size } as CSSProperties}>
+      <div {...stylex.props(styles.titleRow)}>
         <h1 {...stylex.props(styles.pageTitle, styles.fit(lsb))}>
           <span {...stylex.props(styles.clip)}>
             <span data-slide="" {...stylex.props(styles.slide)}>
@@ -153,10 +152,16 @@ export function PageTitle({
             </span>
           </span>
         </h1>
+        <div {...stylex.props(styles.heroRule)}>
+          <Rule />
+        </div>
         {lede ? (
           <div {...stylex.props(styles.side)}>
             <p {...stylex.props(styles.lede, side ? styles.ledeMore : null)}>{lede}</p>
             {side}
+            <div {...stylex.props(styles.sideRule)}>
+              <Rule />
+            </div>
           </div>
         ) : null}
       </div>
@@ -182,15 +187,7 @@ type RowData = {
  * its siblings (see `.rows` in globals.css) and nudges its arrow. Pure CSS.
  */
 /** `ruled={false}` drops the top hairline when a crosshair Rule already sits above the list. */
-export function Rows({
-  rows,
-  size = "md",
-  ruled = true,
-}: {
-  rows: RowData[];
-  size?: "md" | "lg";
-  ruled?: boolean;
-}) {
+export function Rows({ rows, size = "md", ruled = true }: { rows: RowData[]; size?: "md" | "lg"; ruled?: boolean }) {
   return (
     <ul {...withClass("rows", ruled && styles.rows)}>
       {rows.map(row => {
@@ -388,19 +385,39 @@ const styles = stylex.create({
   pageHead: {
     containerType: "inline-size",
     paddingTop: "4.5rem",
-    paddingBottom: "clamp(2.25rem, 3vw, 3rem)",
   },
+  // Wide: title and field side by side, the hero rule under both. Stacked: title, hero
+  // rule, then the field. The row gap is the step from the title's box to the hero rule,
+  // and the same step from the hero rule to the field.
   titleRow: {
+    // One size for every title: the one that fits the longest, "Contact" (3.153em of ink),
+    // to the column, capped at 15rem. cqw is the header's own width, so a classic
+    // scrollbar can't push the word past the edge. Every page then shares one cap top
+    // and one hero rule at every width.
+    "--title": "min(calc(100cqw / 3.153), 15rem)",
     display: "grid",
     gridTemplateColumns: { default: "minmax(0, 1fr)", [wide]: "auto minmax(0, 1fr)" },
+    gridTemplateAreas: { default: '"title" "rule" "side"', [wide]: '"title side" "rule rule"' },
     alignItems: "start",
     columnGap: "clamp(2rem, 5vw, 5rem)",
-    rowGap: "1.25rem",
+    rowGap: "clamp(2.25rem, 3vw, 3rem)",
     paddingTop: "clamp(1.75rem, 4vw, 3.5rem)",
   },
+  heroRule: {
+    gridArea: "rule",
+  },
+  // Wide, a zero-height track item: the title alone sets the row, and the field's content
+  // (sized to fit within the title's box) paints from its cap top down.
   side: {
+    gridArea: "side",
     justifySelf: { default: "stretch", [wide]: "end" },
     width: { default: "auto", [wide]: "min(100%, 34rem)" },
+    height: { default: "auto", [wide]: 0 },
+  },
+  // Stacked, the field ends a section's step above a rule of its own.
+  sideRule: {
+    display: { default: "block", [wide]: "none" },
+    paddingTop: "clamp(4.5rem, 10vw, 8.5rem)",
   },
   // Line-height 0.8: the box runs from the cap top to the descender line, so a "g" never
   // reaches the rule and every title ends the same distance under its baseline.

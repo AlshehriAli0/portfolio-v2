@@ -29,7 +29,6 @@ export default function NotFound({ posts }: Props) {
         <Container>
           <PageTitle
             title="Lost"
-            em={1.588}
             lsb={0.077}
             lede="This page doesn’t exist. Try one of these instead."
             side={
@@ -52,7 +51,7 @@ export default function NotFound({ posts }: Props) {
           />
 
           {/* Most broken links point at a post, so the posts themselves are one step away. */}
-          <Section id="recent" label="Recent posts" tight>
+          <Section id="recent" label="Recent posts" tight ruled={false}>
             <Rows
               rows={posts.slice(0, 3).map(p => ({
                 key: p.slug,
@@ -68,22 +67,28 @@ export default function NotFound({ posts }: Props) {
   );
 }
 
+const wide = "@media (min-width: 1024px)";
+
 const styles = stylex.create({
+  // Two columns beside the title, so the four links fit within its box; one stacked.
   list: {
-    borderTopWidth: "1px",
-    borderColor: colors.line,
+    display: "grid",
+    gridTemplateColumns: { default: "minmax(0, 1fr)", [wide]: "repeat(2, minmax(0, 1fr))" },
+    columnGap: "2rem",
   },
   way: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "baseline",
     paddingBlock: "0.85rem",
-    borderBottomWidth: "1px",
-    borderColor: colors.line,
     fontSize: "1.0625rem",
     cursor: "pointer",
   },
+  // Each link carries both hairlines; the -1px lets a row's top line sit on the one above.
   item: {
+    borderBlockWidth: "1px",
+    borderColor: colors.line,
+    marginBottom: "-1px",
     transitionProperty: "opacity",
     transitionDuration: "250ms",
   },

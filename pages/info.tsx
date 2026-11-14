@@ -40,33 +40,30 @@ export default function InfoPage() {
               a separate About band under it only added a rule and two gaps. */}
           <PageTitle
             title="Info"
-            em={1.374}
             lsb={0.077}
             lede={copy.infoLede}
             side={
-              <div {...stylex.props(styles.bio)}>
-                <p {...stylex.props(styles.p)}>
-                  {/* KeepTogether takes one phrase, so each package name gets its own half. */}
-                  <KeepTogether
-                    text={`Outside of work, I contribute to open-source libraries like ${screens.name} (${screens.downloads}), `}
-                    phrase={screens.name}
-                  />
-                  <KeepTogether
-                    text={`${healthkit.name} (${healthkit.downloads}) and many others, and maintain a few packages of my own. `}
-                    phrase={healthkit.name}
-                  />
-                  It’s all on{" "}
-                  <a href={github.href} target="_blank" rel="noreferrer" {...stylex.props(styles.inline)}>
-                    GitHub
-                    <span className="sr-only"> (opens in new tab)</span>
-                  </a>
-                  .
-                </p>
-              </div>
+              <p {...stylex.props(styles.p)}>
+                {/* KeepTogether takes one phrase, so each package name gets its own half. */}
+                <KeepTogether
+                  text={`Outside of work, I contribute to open-source libraries like ${screens.name} (${screens.downloads}), `}
+                  phrase={screens.name}
+                />
+                <KeepTogether
+                  text={`${healthkit.name} (${healthkit.downloads}) and many others, and maintain a few packages of my own. `}
+                  phrase={healthkit.name}
+                />
+                It’s all on{" "}
+                <a href={github.href} target="_blank" rel="noreferrer" {...stylex.props(styles.inline)}>
+                  GitHub
+                  <span className="sr-only"> (opens in new tab)</span>
+                </a>
+                .
+              </p>
             }
           />
 
-          <Section id="work" label="Experience" tight>
+          <Section id="work" label="Experience" tight ruled={false}>
             <Experience />
           </Section>
         </Container>
@@ -76,11 +73,6 @@ export default function InfoPage() {
 }
 
 const styles = stylex.create({
-  bio: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.75rem",
-  },
   p: {
     fontSize: "1.0625rem",
     lineHeight: 1.55,
