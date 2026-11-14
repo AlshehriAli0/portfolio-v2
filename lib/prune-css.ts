@@ -11,6 +11,9 @@ const RUNTIME_ATTRIBUTES = /^(data-copied|data-hover|data-state|data-theme|data-
 const CONTAINERS = new Set(["media", "supports", "container", "layer"]);
 // `:not(…)`, allowing one level of nested parentheses inside it.
 const NEGATION = /:not\((?:[^()]|\([^()]*\))*\)/g;
+// A View Transition pseudo-element's argument (`::view-transition-old(.post-title)`) names
+// a transition name or class, never a class in the markup.
+const VT_ARGUMENT = /(::view-transition-[a-z-]+)\([^)]*\)/g;
 
 let compiled: string | null = null;
 
@@ -54,7 +57,7 @@ export function pruneCss(css: string, html: string) {
     const parent = rule.parent as AtRule | undefined;
     if (parent?.type === "atrule" && parent.name.endsWith("keyframes")) return;
     // A class or attribute inside :not() only has to be absent, so it never decides whether a rule can match.
-    const kept = rule.selectors.filter(selector => present(selector.replace(NEGATION, "")));
+    const kept = rule.selectors.filter(selector => present(selector.replace(NEGATION, "").replace(VT_ARGUMENT, "$1")));
     if (kept.length === 0) rule.remove();
     else rule.selectors = kept;
   });
