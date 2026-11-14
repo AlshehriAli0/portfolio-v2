@@ -2,7 +2,7 @@ import { palette } from "@/styles/palette";
 
 export const site = {
   name: "Ali Alshehri",
-  url: "https://ali-sh.com",
+  url: "https://www.ali-sh.com",
   email: "ali0alshehri@outlook.com",
   handle: "@alicantcode",
   role: "Software Engineer",

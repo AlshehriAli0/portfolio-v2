@@ -4,7 +4,7 @@ This is the personal portfolio and blog of Ali Alshehri, a software engineer bas
 
 ## Visit the Portfolio
 
-Check out the live site at [ali-sh.com](https://ali-sh.com)
+Check out the live site at [ali-sh.com](https://www.ali-sh.com)
 
 ## Features
 
