@@ -28,7 +28,7 @@ const NAME_SIZE = "calc(100cqw / 4.182)";
 
 export default function Home({ posts }: Props) {
   return (
-    <Page path="/" jsonLd={[webPage("/", `${site.name} — ${site.role}`, site.description)]}>
+    <Page path="/" sayHello jsonLd={[webPage("/", `${site.name} — ${site.role}`, site.description)]}>
       <main id="main" tabIndex={-1}>
         <Container>
           <section {...stylex.props(styles.hero)} aria-label="Intro">

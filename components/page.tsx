@@ -19,6 +19,8 @@ type PageProps = {
   jsonLd?: Record<string, unknown>[];
   /** For pages that shouldn't be indexed (the 404). */
   noindex?: boolean;
+  /** The footer's big "Say hello"; only Home sets it. */
+  sayHello?: boolean;
   /** The footer's social links; Contact lists them itself. */
   socialLinks?: boolean;
   children: ReactNode;
@@ -36,6 +38,7 @@ export function Page({
   article,
   jsonLd = [],
   noindex = false,
+  sayHello = false,
   socialLinks = true,
   children,
 }: PageProps) {
@@ -104,7 +107,7 @@ export function Page({
       </Head>
       <Nav path={path} />
       {children}
-      <Footer socialLinks={socialLinks} />
+      <Footer sayHello={sayHello} socialLinks={socialLinks} />
     </>
   );
 }
