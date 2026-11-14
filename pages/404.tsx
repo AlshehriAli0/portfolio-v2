@@ -24,7 +24,7 @@ const ways = [
 
 export default function NotFound({ posts }: Props) {
   return (
-    <Page path="/404" title="Not found" description="This page doesn’t exist." noindex>
+    <Page path="/404" title="Not found" description="This page doesn’t exist." noindex cta="none">
       <main id="main" tabIndex={-1}>
         <Container>
           <PageTitle

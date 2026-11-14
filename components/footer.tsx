@@ -3,12 +3,30 @@ import { site, socials } from "@/lib/site";
 import { colors, fonts, motion } from "@/styles/tokens.stylex";
 import { Container, Label, Rule, TextLink } from "./ui";
 
-/** The Contact page already shows the address and every link, so there it's just the © line. */
-export function Footer({ onContact = false }: { onContact?: boolean }) {
+export type FooterCta = "large" | "quiet" | "none";
+
+/**
+ * The call to action set per page (see Page): the big "Say hello" on Home and Info, one
+ * quiet line after a post, none where it would only repeat (Writing, the 404, Contact).
+ * Contact also lists every link itself, so it drops the socials and keeps the © line.
+ */
+export function Footer({ cta, socialLinks }: { cta: FooterCta; socialLinks: boolean }) {
   return (
     <footer>
       <Container>
-        {onContact ? null : (
+        {cta === "quiet" ? (
+          <div {...stylex.props(styles.quiet)}>
+            <Rule />
+            <p {...stylex.props(styles.quietLine)}>
+              <span {...stylex.props(styles.dim)}>Enjoyed this?</span>
+              <TextLink href={`mailto:${site.email}`}>Say hello</TextLink>
+              <a href={`mailto:${site.email}`} {...stylex.props(styles.quietEmail)}>
+                {site.email}
+              </a>
+            </p>
+          </div>
+        ) : null}
+        {cta === "large" ? (
           <div {...stylex.props(styles.top)}>
             <Rule />
             <div {...stylex.props(styles.inner)}>
@@ -22,10 +40,10 @@ export function Footer({ onContact = false }: { onContact?: boolean }) {
               <p {...stylex.props(styles.email)}>{site.email}</p>
             </div>
           </div>
-        )}
+        ) : null}
 
         <div {...stylex.props(styles.bottom)}>
-          {onContact ? null : (
+          {socialLinks ? (
             <ul {...stylex.props(styles.links)}>
               {socials
                 .filter(s => s.label !== "Email")
@@ -37,7 +55,7 @@ export function Footer({ onContact = false }: { onContact?: boolean }) {
                   </li>
                 ))}
             </ul>
-          )}
+          ) : null}
           <Label style={styles.dim}>© {new Date().getFullYear()} Ali Alshehri</Label>
         </div>
       </Container>
@@ -59,6 +77,32 @@ const styles = stylex.create({
     flexDirection: "column",
     gap: "1.25rem",
     paddingTop: "1.25rem",
+  },
+  // One line at reading size after a post: a question, the link and the address, wrapping
+  // as a unit on a phone.
+  quiet: {
+    paddingBottom: "clamp(3rem, 6vw, 4.5rem)",
+  },
+  quietLine: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "baseline",
+    columnGap: "0.75rem",
+    rowGap: "0.25rem",
+    paddingTop: "1.25rem",
+    fontSize: "1.0625rem",
+  },
+  quietEmail: {
+    fontFamily: fonts.mono,
+    fontSize: "0.875rem",
+    color: colors.dim,
+    textDecorationLine: "underline",
+    textDecorationThickness: "1px",
+    textUnderlineOffset: "0.25em",
+    textDecorationColor: { default: colors.line, ":hover": colors.lineStrong },
+    transitionProperty: "text-decoration-color",
+    transitionDuration: "200ms",
+    overflowWrap: "anywhere",
   },
   // Spans the column by ink, like the name: at weight 330 and -0.065em tracking the ink
   // of "Say hello" is 3.340em (the "S" starts 0.0265em in), and the half-size arrow's

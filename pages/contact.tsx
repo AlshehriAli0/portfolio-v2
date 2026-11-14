@@ -18,6 +18,8 @@ export default function ContactPage() {
   return (
     <Page
       path="/contact"
+      cta="none"
+      socialLinks={false}
       title="Contact"
       description={DESCRIPTION}
       jsonLd={[webPage("/contact", `Contact — ${site.name}`, DESCRIPTION, "ContactPage")]}

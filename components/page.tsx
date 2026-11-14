@@ -2,7 +2,7 @@ import Head from "next/head";
 import type { ReactNode } from "react";
 import { absoluteUrl, site } from "@/lib/site";
 import { DEFAULT_IMAGE, graph } from "@/lib/structured-data";
-import { Footer } from "./footer";
+import { Footer, type FooterCta } from "./footer";
 import { Nav } from "./nav";
 
 type Article = { published: string; modified: string; markdown: string };
@@ -19,6 +19,10 @@ type PageProps = {
   jsonLd?: Record<string, unknown>[];
   /** For pages that shouldn't be indexed (the 404). */
   noindex?: boolean;
+  /** The footer's call to action: the big "Say hello" (default), one quiet line, or none. */
+  cta?: FooterCta;
+  /** The footer's social links; Contact lists them itself. */
+  socialLinks?: boolean;
   children: ReactNode;
 };
 
@@ -34,6 +38,8 @@ export function Page({
   article,
   jsonLd = [],
   noindex = false,
+  cta = "large",
+  socialLinks = true,
   children,
 }: PageProps) {
   const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.role}`;
@@ -101,7 +107,7 @@ export function Page({
       </Head>
       <Nav path={path} />
       {children}
-      <Footer onContact={path === "/contact"} />
+      <Footer cta={cta} socialLinks={socialLinks} />
     </>
   );
 }
