@@ -6,7 +6,6 @@ import { themeBg } from "./site";
  * - [data-theme-toggle]: switch theme (one crossfade where View Transitions exist)
  * - [data-copy]: copy the email address on Contact
  * - page links swap the next page in (soft navigation), so the nav is never rebuilt
- * - the post title you clicked morphs into the post header (View Transition)
  */
 function client(bg: Record<string, string>, islands: () => void) {
   const d = document;
@@ -90,16 +89,6 @@ function client(bg: Record<string, string>, islands: () => void) {
     if (copyButton) copy(copyButton);
   });
 
-  // Only the post title you clicked (or came back from) joins the View Transition;
-  // naming every row would make the others ghost over the new page.
-  const rowTitle = (doc: ParentNode, path: string) => doc.querySelector<HTMLElement>(`a[href="${path}"] [data-morph]`);
-  const morph = (title: HTMLElement | null) => {
-    if (title) {
-      title.style.viewTransitionName = title.dataset.morph ?? "";
-      title.style.setProperty("view-transition-class", "post-title");
-    }
-  };
-
   // Soft navigation: page links fetch the next page and swap in its content ([data-page]:
   // <main> and the footer) and its per-page head (tags, pruned CSS), so the nav stays the
   // same nodes and keeps its :hover and cursor. Anything unexpected falls back to a full load.
@@ -163,8 +152,6 @@ function client(bg: Record<string, string>, islands: () => void) {
     const content = next.querySelector("[data-page]");
     const main = content?.querySelector("main");
     if (!page || !content || !main) return full();
-    // The page on screen: on back and forward, location has already moved on.
-    const from = shown;
     if (y === undefined) scrolls.set(entry, scrollY);
     const swap = () => {
       // Only the tags that differ: re-adding the viewport tag would abort the transition.
@@ -197,23 +184,16 @@ function client(bg: Record<string, string>, islands: () => void) {
       // keyboard start there; the new <title> is already in place.
       main.focus({ preventScroll: true });
       root.classList.add("vt");
-      morph(rowTitle(d, from));
       islands();
     };
-    // A post row and its post's title morph in a document-wide transition. Any other page
-    // change is scoped to the page content where supported: a document-wide one hit-tests
-    // everything as <html> while it runs, so the nav would lose :hover and its cursor. A
-    // scoped one aborts at random over a named element, so titles leave its snapshot.
-    const pair = rowTitle(d, url.pathname) || rowTitle(next, from);
-    for (const title of page.querySelectorAll<HTMLElement>("[data-morph]")) {
-      title.style.viewTransitionName = pair && !title.closest("a") ? "" : "none";
-    }
-    morph(rowTitle(d, url.pathname));
-    const scoped = page as Element & { startViewTransition?: Document["startViewTransition"] };
-    const transition =
-      !pair && scoped.startViewTransition ? scoped.startViewTransition(swap) : d.startViewTransition?.(swap);
-    if (transition) transition.ready.catch(() => 0);
-    else swap();
+    // No View Transition: it snapshots the page, and the nav (blended with `difference`
+    // over the content) flashes against the snapshot. The content fades out, swaps and
+    // fades back in on its own; the nav is never touched, so it keeps :hover and its cursor.
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !page.animate) return swap();
+    await page.animate({ opacity: [1, 0] }, { duration: 90, easing: "ease-in" }).finished.catch(() => 0);
+    if (id !== latest) return;
+    swap();
+    page.animate({ opacity: [0, 1], transform: ["translateY(4px)", "none"] }, { duration: 200, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
   };
 
   d.addEventListener("click", event => {
