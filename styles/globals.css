@@ -184,6 +184,13 @@ table {
   }
 }
 
+/* The fading copy of the old page (soft navigation, lib/client-script.ts) holds still:
+   cloning restarts every animation, so its title would slide in again. */
+[data-ghost],
+[data-ghost] * {
+  animation: none !important;
+}
+
 /* Theme switch (lib/client-script.ts sets .theme-switching for its length). No View
    Transition: its snapshot breaks the nav's `difference` blend (Safari mangles the icon,
    Chrome flashes the bar), so this is plain CSS and runs the same in every browser.

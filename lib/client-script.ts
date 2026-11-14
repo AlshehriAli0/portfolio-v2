@@ -151,8 +151,10 @@ function client(bg: Record<string, string>, islands: () => void) {
       const fresh = [...next.head.querySelectorAll("[data-next-head], style")];
       for (const el of d.head.querySelectorAll("[data-next-head], style")) {
         const same = fresh.findIndex(tag => tag.isEqualNode(el));
-        if (same < 0) el.remove();
-        else fresh.splice(same, 1);
+        // The old page's CSS stays until its ghost has faded out (below).
+        if (same >= 0) fresh.splice(same, 1);
+        else if (el.tagName === "STYLE") stale.push(el);
+        else el.remove();
       }
       d.head.append(...fresh);
       page.replaceChildren(...content.childNodes);
@@ -178,9 +180,34 @@ function client(bg: Record<string, string>, islands: () => void) {
       main.focus({ preventScroll: true });
       islands();
     };
-    // An instant swap, like a client-side router: no View Transition (its snapshot made the
-    // blended nav flash) and no fade (fading through an empty page reads as a flash too).
+    // A crossfade without a View Transition (its snapshot made the blended nav flash): a copy
+    // of the old content, fixed where it was, fades out over the new page while its title
+    // slides in. The copy sits under the nav, so the nav is never touched.
+    const stale: Element[] = [];
+    const ghost = page.cloneNode(true) as HTMLElement;
+    for (const el of ghost.querySelectorAll("[id], [data-island]")) el.removeAttribute("id"), el.removeAttribute("data-island");
+    ghost.removeAttribute("data-page");
+    ghost.setAttribute("data-ghost", "");
+    ghost.inert = true;
+    Object.assign(ghost.style, {
+      position: "fixed",
+      top: `${-scrollY}px`,
+      left: "0",
+      right: "0",
+      zIndex: "48",
+      pointerEvents: "none",
+      background: getComputedStyle(d.body).backgroundColor,
+    });
+    const motion = !matchMedia("(prefers-reduced-motion: reduce)").matches && ghost.animate;
+    if (motion) d.body.append(ghost);
     swap();
+    const done = () => {
+      ghost.remove();
+      for (const el of stale) el.remove();
+    };
+    if (motion)
+      ghost.animate({ opacity: [1, 0] }, { duration: 260, easing: "cubic-bezier(0.4, 0, 0.2, 1)" }).finished.then(done, done);
+    else done();
   };
 
   d.addEventListener("click", event => {
