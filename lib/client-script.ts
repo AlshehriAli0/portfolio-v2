@@ -114,6 +114,16 @@ function client(bg: Record<string, string>) {
     }
   });
 
+  // A page prerendered before a theme switch on this one would open in the old theme.
+  d.addEventListener("prerenderingchange", () => {
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved && !root.classList.contains(saved)) setTheme(saved);
+    } catch {
+      // storage blocked: the page keeps the theme it rendered with
+    }
+  });
+
   // Chromium prerenders on hover via Speculation Rules; everyone else gets a prefetch.
   if (!HTMLScriptElement.supports?.("speculationrules")) {
     const seen = new Set<string>();
@@ -144,11 +154,28 @@ export const clientScript = `(${client.toString()})(${JSON.stringify(themeBg)});
 // Runs in <head> after the theme-color tags, so a saved theme sets them before first paint too.
 export const themeScript = `try{var t=localStorage.getItem("theme"),b=${JSON.stringify(themeBg)};if(b[t]){document.documentElement.classList.add(t);for(var m of document.querySelectorAll("meta[name=theme-color]"))m.content=b[t]}}catch(e){}`;
 
-export const speculationRules = JSON.stringify({
-  prerender: [
-    {
-      where: { and: [{ href_matches: "/*" }, { not: { href_matches: "/api/*" } }] },
-      eagerness: "moderate",
-    },
+// Same-site page links, never the page you're on.
+const pages = {
+  and: [
+    { href_matches: "/*" },
+    { not: { href_matches: "/api/*" } },
+    { not: { selector_matches: "[aria-current=page]" } },
   ],
+};
+
+/**
+ * Chromium's intent ladder, cheapest first:
+ * - prefetch the nav's few links as soon as the page loads (static HTML, a few KB each)
+ * - prefetch any other page link on the first sign of intent (eager: a brief hover, or on
+ *   mobile a link that settles in the viewport)
+ * - prerender on a deliberate hover (moderate: about 200ms) or on pointerdown
+ * Chrome turns prerendering off while DevTools automation is attached
+ * (PrerenderingDisabledByDevTools), so a CDP-driven browser only ever shows the prefetch.
+ */
+export const speculationRules = JSON.stringify({
+  prefetch: [
+    { where: { selector_matches: "header a:not([aria-current=page])" }, eagerness: "immediate" },
+    { where: pages, eagerness: "eager" },
+  ],
+  prerender: [{ where: pages, eagerness: "moderate" }],
 });
