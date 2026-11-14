@@ -17,14 +17,16 @@ export function Nav({ path }: { path: string }) {
       {/* Fades content out under the nav so its blended text never sits on body text. */}
       <div aria-hidden="true" {...stylex.props(styles.scrim)} />
       <header {...stylex.props(styles.header)}>
-        <div {...stylex.props(styles.inner)}>
+        {/* data-nav and data-nav-link carry the underline handoff (globals.css). */}
+        <div data-nav="" {...stylex.props(styles.inner)}>
           <a
             href="/"
             aria-current={path === "/" ? "page" : undefined}
             aria-label="Ali Alshehri, home"
-            {...stylex.props(stylex.defaultMarker(), styles.text, styles.brand)}
+            data-nav-link=""
+            {...stylex.props(styles.text, styles.brand)}
           >
-            <Underlined on={path === "/"}>Ali Sh</Underlined>
+            <Underlined>Ali Sh</Underlined>
           </a>
           <nav aria-label="Primary" {...stylex.props(styles.right)}>
             <ul {...stylex.props(styles.list)}>
@@ -35,9 +37,10 @@ export function Nav({ path }: { path: string }) {
                     <a
                       href={href}
                       aria-current={path === href ? "page" : active ? "true" : undefined}
-                      {...stylex.props(stylex.defaultMarker(), styles.text, styles.link)}
+                      data-nav-link=""
+                      {...stylex.props(styles.text, styles.link)}
                     >
-                      <Underlined on={active}>{label}</Underlined>
+                      <Underlined>{label}</Underlined>
                     </a>
                   </li>
                 );
@@ -52,15 +55,15 @@ export function Nav({ path }: { path: string }) {
 }
 
 /**
- * The label with a bar under it that draws in from the left on hover and leaves to the
- * right, the old site's nav effect. A transform, so it never moves the layout. The
- * current page keeps its bar.
+ * The label with its underline. The current page (aria-current) keeps its bar drawn and
+ * retracts it toward another link while that one is hovered; `.nav-bar` in globals.css, since
+ * the direction needs sibling-order selectors StyleX can't express.
  */
-function Underlined({ on, children }: { on: boolean; children: ReactNode }) {
+function Underlined({ children }: { children: ReactNode }) {
   return (
     <span {...stylex.props(styles.label)}>
       {children}
-      <span aria-hidden="true" {...stylex.props(styles.bar, on && styles.barOn)} />
+      <span aria-hidden="true" className="nav-bar" />
     </span>
   );
 }
@@ -173,25 +176,4 @@ const styles = stylex.create({
     marginInline: "-0.5rem",
   },
   label: { position: "relative" },
-  bar: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: "-0.3em",
-    height: "1px",
-    backgroundColor: "currentColor",
-    transformOrigin: { default: "right", [stylex.when.ancestor(":hover")]: "left", [stylex.when.ancestor(":focus-visible")]: "left" },
-    transform: {
-      default: "scaleX(0)",
-      [stylex.when.ancestor(":hover")]: "scaleX(1)",
-      [stylex.when.ancestor(":focus-visible")]: "scaleX(1)",
-    },
-    transitionProperty: "transform",
-    transitionDuration: { default: "350ms", "@media (prefers-reduced-motion: reduce)": "0ms" },
-    transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
-  },
-  // The current page's bar stays drawn.
-  barOn: {
-    transform: { default: "scaleX(1)", [stylex.when.ancestor(":hover")]: "scaleX(1)" },
-  },
 });
