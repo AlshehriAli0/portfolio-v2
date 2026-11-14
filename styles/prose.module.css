@@ -1,0 +1,407 @@
+/* Escape hatch for MDX output this page never renders itself (StyleX can't target
+   descendants). Palette mirrors app/tokens.stylex.ts; light-dark() follows the
+   `color-scheme` set on <html>, so theme switches need no re-render. */
+
+.article {
+  --fg: light-dark(#0b0b0b, #ecebe6);
+  --body: color-mix(in oklab, var(--fg) 86%, light-dark(#f2f0ea, #0a0a0a));
+  --dim: light-dark(#5f5d56, #8d8c86);
+  --faint: light-dark(#a3a097, #4c4b47);
+  --raised: light-dark(#e9e6de, #131312);
+  --line: light-dark(rgb(11 11 11 / 0.12), rgb(236 235 230 / 0.1));
+  --line-strong: light-dark(rgb(11 11 11 / 0.28), rgb(236 235 230 / 0.22));
+  --accent: #d4ff3a;
+  --accent-ink: #0b0b0b;
+  --mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  counter-reset: post-figure;
+  min-width: 0;
+  font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
+  line-height: 1.65;
+  letter-spacing: -0.006em;
+  color: var(--body);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+/* ---- Flow ---------------------------------------------------------------- */
+
+.article > * {
+  margin-block: 0;
+}
+.article > * + * {
+  margin-block-start: 1.3em;
+}
+.article > :first-child,
+.article > style:first-child + * {
+  margin-block-start: 0;
+}
+/* Code, figures and tables get the full 42rem column and scroll in place if wider.
+   Running text is held to about 70 characters. */
+.article > * {
+  max-width: 42rem;
+}
+.article > :is(p, ul, ol, blockquote, h2, h3, h4) {
+  max-width: 31em;
+}
+
+/* ---- Headings ------------------------------------------------------------ */
+
+.article :is(h2, h3, h4) {
+  color: var(--fg);
+  font-variation-settings: "wght" calc(560 + var(--wdk));
+  font-weight: 560;
+  text-wrap: balance;
+  scroll-margin-top: 6rem;
+}
+.article > :is(h2, h3, h4) {
+  margin-block-start: 2.4em;
+}
+.article > :is(h2, h3, h4) + * {
+  margin-block-start: 0.75em;
+}
+.article h2 {
+  font-size: 1.625em;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+.article h3 {
+  font-size: 1.3125em;
+  line-height: 1.2;
+  letter-spacing: -0.024em;
+}
+.article h4 {
+  font-size: 1.0625em;
+  line-height: 1.35;
+  letter-spacing: -0.014em;
+  font-variation-settings: "wght" calc(600 + var(--wdk));
+  font-weight: 600;
+}
+.article :is(h2, h3, h4) :is(strong, b) {
+  font-variation-settings: inherit;
+  font-weight: inherit;
+}
+
+/* ---- Inline -------------------------------------------------------------- */
+
+.article :is(strong, b) {
+  color: var(--fg);
+  font-variation-settings: "wght" 600;
+  font-weight: 600;
+}
+.article em {
+  font-synthesis: style;
+}
+.article a {
+  color: var(--fg);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.22em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition-property: background-color, color, text-decoration-color;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease);
+}
+/* Fine pointers only: on touch the lime fill would stay stuck on after a tap. */
+@media (hover: hover) and (pointer: fine) {
+  .article a:hover {
+    background-color: var(--accent);
+    color: var(--accent-ink);
+    text-decoration-color: transparent;
+  }
+}
+
+/* Inline code (rehype-pretty-code wraps it in span[data-rehype-pretty-code-figure]) */
+.article :not(pre) > code {
+  padding: 0.1em 0.36em;
+  border: 1px solid var(--line);
+  background-color: var(--raised);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 0.9em;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.article :is(h2, h3, h4, a) :not(pre) > code {
+  font-size: 0.86em;
+}
+@media (hover: hover) and (pointer: fine) {
+  .article a:hover :not(pre) > code {
+    background-color: transparent;
+    border-color: rgb(11 11 11 / 0.2);
+    color: inherit;
+  }
+}
+
+/* ---- Lists --------------------------------------------------------------- */
+
+.article :is(ul, ol) {
+  padding-inline-start: 1.375em;
+}
+.article ul {
+  list-style-type: "\2013\00a0\00a0";
+}
+.article ol {
+  list-style-type: decimal-leading-zero;
+}
+.article li + li,
+.article li > :is(ul, ol) {
+  margin-block-start: 0.5em;
+}
+.article li > p + p {
+  margin-block-start: 0.75em;
+}
+.article li::marker {
+  color: var(--faint);
+}
+.article ol > li::marker {
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.8em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Blocks -------------------------------------------------------------- */
+
+.article blockquote {
+  padding-inline-start: 1.25em;
+  border-inline-start: 2px solid var(--line-strong);
+  color: var(--fg);
+}
+.article blockquote > * + * {
+  margin-block-start: 0.75em;
+}
+
+.article hr {
+  height: 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.article > hr {
+  margin-block: 3.5em;
+}
+
+/* Paragraph holding a Markdown image (see PostImage) */
+.article > p:has(> [data-post-figure]) {
+  margin-block: 2.25em;
+}
+
+/* ---- Tables (wrapped by PostTable so wide tables scroll in place) -------- */
+
+/* Scroll shadows: the cover gradients scroll with the content (local) and hide the
+   shadows (scroll) once you reach an edge, so a shadow only shows where more is hidden. */
+.article [data-code-block] pre,
+.tableWrap {
+  --cover: var(--surface, light-dark(#f2f0ea, #0a0a0a));
+  --shade: light-dark(rgb(11 11 11 / 0.18), rgb(0 0 0 / 0.7));
+  background:
+    linear-gradient(to right, var(--cover) 40%, transparent) left / 3rem 100% no-repeat local,
+    linear-gradient(to left, var(--cover) 40%, transparent) right / 3rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--shade), transparent) left / 1rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--shade), transparent) right / 1rem 100% no-repeat scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.article [data-code-block] pre {
+  --surface: var(--raised);
+}
+
+.tableWrap {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-top: 1px solid var(--line-strong);
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.article > .tableWrap {
+  margin-block: 2.25em;
+}
+.tableWrap table {
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125em;
+  line-height: 1.45;
+}
+.tableWrap th {
+  padding: 0.9rem 1.5rem 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-align: start;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.tableWrap td {
+  padding: 0.75rem 1.5rem 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+.tableWrap :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+.tableWrap td:first-child {
+  color: var(--fg);
+}
+
+/* ---- Code blocks (frame + header are StyleX in CodeBlock) ---------------- */
+
+.article > [data-rehype-pretty-code-figure] {
+  margin-block: 2em;
+}
+.article pre {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.article pre > code {
+  display: grid;
+  width: max-content;
+  min-width: 100%;
+  font-size: inherit;
+}
+/* 0.875rem plus the 2px highlight border puts the code on the language label's 1rem edge. */
+.article pre [data-line] {
+  padding-inline: 0.875rem;
+  border-inline-start: 2px solid transparent;
+}
+.article pre [data-highlighted-line] {
+  border-inline-start-color: var(--accent);
+  background-color: light-dark(rgb(11 11 11 / 0.045), rgb(236 235 230 / 0.05));
+}
+.article pre [data-highlighted-chars] {
+  background-color: light-dark(rgb(11 11 11 / 0.08), rgb(236 235 230 / 0.1));
+  box-shadow: 0 0 0 2px light-dark(rgb(11 11 11 / 0.08), rgb(236 235 230 / 0.1));
+}
+.article pre > code[data-line-numbers] {
+  counter-reset: line;
+}
+.article pre > code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 2ch;
+  margin-inline-end: 1.25rem;
+  color: var(--dim);
+  text-align: end;
+}
+
+/* ---- Folded code blocks (CodeBlock: a head <pre>, then <details data-fold>) ---------- */
+
+/* The head shows the first lines; the rest of the code continues inside the details with no
+   gap between them (padding in CodeBlock). Closed, a fade over the head's last lines leads
+   into the summary. */
+.article details[data-fold] {
+  display: flex;
+  flex-direction: column;
+  interpolate-size: allow-keywords;
+}
+/* The summary sits after the code (order), so it reads as "the rest is here". */
+.article details[data-fold] > summary {
+  order: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 44px;
+  padding-inline: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--fg);
+  font-size: 0.8125rem;
+  list-style: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.article details[data-fold] > summary::-webkit-details-marker {
+  display: none;
+}
+.article details[data-fold]:not([open]) > summary::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(100% + 1px);
+  height: 4rem;
+  background: linear-gradient(to bottom, transparent, var(--raised));
+  pointer-events: none;
+}
+.article details[data-fold] > summary:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+.article details[data-fold] > summary:active {
+  opacity: 0.6;
+}
+.article details[data-fold] [data-fold-label] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  text-decoration-color: var(--line-strong);
+}
+@media (hover: hover) and (pointer: fine) {
+  .article details[data-fold] > summary:hover [data-fold-label] {
+    text-decoration-color: currentColor;
+  }
+}
+.article details[data-fold][open] [data-fold-label="closed"],
+.article details[data-fold]:not([open]) [data-fold-label="open"] {
+  display: none;
+}
+/* A drawn chevron: points down while closed, up while open. */
+.article [data-fold-chevron] {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-top: -0.25rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+.article details[data-fold][open] [data-fold-chevron] {
+  margin-top: 0.25rem;
+  transform: rotate(-135deg);
+}
+
+/* Where ::details-content exists, the rest of the code grows open from zero height (emil: a
+   measured-height accordion is the one layout animation worth its cost; it only moves what is
+   below the block). Opening 240ms, closing faster at 180ms, both ease-out so they answer the
+   click at once. content-visibility switches discretely at the right end of each run. Under
+   reduced motion it opens at once. */
+@supports selector(::details-content) {
+  @media (prefers-reduced-motion: no-preference) {
+    .article details[data-fold]::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        content-visibility 180ms allow-discrete;
+    }
+    .article details[data-fold][open]::details-content {
+      block-size: auto;
+      transition-duration: 240ms;
+    }
+    .article [data-fold-chevron] {
+      transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+}
+
+/* Last, so it wins over the static weights above. */
+/* Body text reaches 18px at about 776px wide; from there it takes the dark-mode
+   compensation (see --wdk in globals.css), bold included. */
+@media (min-width: 48.5rem) {
+  .article {
+    font-variation-settings: "wght" calc(400 + var(--wdk));
+  }
+  .article :is(strong, b) {
+    font-variation-settings: "wght" calc(600 + var(--wdk));
+  }
+}

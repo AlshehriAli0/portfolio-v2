@@ -1,0 +1,282 @@
+@stylex;
+
+/* Minimal reset. Everything visual lives in StyleX. */
+:root {
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Links and buttons give their own press feedback (opacity or scale), so the
+     grey tap flash would only double it. */
+  -webkit-tap-highlight-color: transparent;
+  tab-size: 4;
+}
+:root.light {
+  color-scheme: light;
+}
+:root.dark {
+  color-scheme: dark;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border: 0 solid;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-padding-top: 5rem;
+  line-height: 1.5;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: "wght" 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+  hanging-punctuation: first allow-end;
+  overflow-x: clip;
+  scrollbar-gutter: stable;
+}
+
+/* Light text on ink reads heavier than the same weight on paper, so text of 18px and
+   up is set 20 units lighter in dark mode: those styles use
+   "wght" calc(<weight> + var(--wdk)). Smaller text keeps its weight (never under
+   400), where thinning would cost legibility. Only the variation axis moves, so the
+   fallback font's weight never changes with the theme. */
+:root {
+  --wdk: 0;
+}
+:root.dark {
+  --wdk: -20;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --wdk: -20;
+  }
+}
+
+body {
+  min-height: 100svh;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+b,
+strong {
+  font-weight: 600;
+  font-variation-settings: "wght" 600;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 1em;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  vertical-align: middle;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* No double-tap-to-zoom wait on taps. */
+a,
+button {
+  touch-action: manipulation;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/* Wins over a StyleX display value, so toggling `hidden` from the script always hides. */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+::selection {
+  background: #d4ff3a;
+  color: #0b0b0b;
+}
+
+#main:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Theme toggle: the icon shows the theme you'd switch to, in pure CSS.
+   No class means the OS decides, so mirror prefers-color-scheme. */
+:root.dark .theme-icon-moon,
+:root.light .theme-icon-sun,
+:root:not(.dark, .light) .theme-icon-sun {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.dark, .light) .theme-icon-sun {
+    opacity: 1;
+    transform: none;
+  }
+  :root:not(.dark, .light) .theme-icon-moon {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.6);
+  }
+}
+
+/* Page navigations are cross-document View Transitions: a quick crossfade, and any
+   element sharing a view-transition-name (post titles) morphs between pages. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-group(*) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Title slide-ins are an entrance for a hard load. After a View Transition the
+   crossfade has already brought the page in, so they'd only replay (the client
+   script sets .vt on pagereveal). StyleX raises its own specificity, hence !important. */
+.vt [data-slide] {
+  animation: none !important;
+}
+
+/* The page (and the theme) crossfades by fading the new snapshot in over the old one,
+   which holds still. With both fading at once, mid-way neither is opaque and the
+   page dims for a moment. */
+::view-transition-old(root) {
+  animation: none;
+}
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation-duration: 240ms;
+  animation-timing-function: cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+/* The clicked post title morphs into the post header: the new title scales from the
+   old one's box, so there's no double image from the weight difference. */
+::view-transition-old(.post-title) {
+  animation: none;
+  opacity: 0;
+}
+::view-transition-new(.post-title) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Separate rule: a browser without View Transitions would drop the whole list above. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* The copy button swaps its label on data-copied, set by the client script. */
+/* The outgoing label lifts and blurs out; the incoming one rises from below. */
+[data-copy-label] {
+  grid-area: 1 / 1;
+  transition-property: opacity, transform, filter;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+[data-copy-label="done"],
+[data-copy-label="failed"] {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(2px);
+}
+[data-copied] [data-copy-label="idle"] {
+  opacity: 0;
+  transform: translateY(-4px);
+  filter: blur(2px);
+}
+[data-copied="ok"] [data-copy-label="done"],
+[data-copied="failed"] [data-copy-label="failed"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Hairline lists: hovering a linked row quietly dims the others. Rows without a
+   link aren't targets, so hovering one changes nothing. */
+@media (hover: hover) and (pointer: fine) {
+  .rows:has(.row > a:hover) .row:not(:has(> a:hover)) {
+    opacity: 0.4;
+  }
+  .rows .row:has(> a:hover) {
+    transition-duration: 0s;
+  }
+}
+
+/* Every link dims while pressed, so a tap always answers. Links styled in
+   StyleX add a 200ms release on top. */
+:where(a):active {
+  opacity: 0.6;
+}
