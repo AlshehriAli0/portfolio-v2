@@ -5,26 +5,28 @@ import { colors, fonts, motion } from "@/styles/tokens.stylex";
 import { Caption, Figure, fixed, Panel, RangeField, Result, vars } from "./ui";
 
 // The post's example fetches 100 users. The loop awaits one photo query per user.
+// 999 users is 1,000 queries with the users query, so the max lands on exactly 100 marks.
 const MIN = 1;
-const MAX = 1000;
+const MAX = 999;
 const DEFAULT_USERS = 100;
 // One mark stands for this many queries; the last one fills in proportion to the rest.
 const PER_MARK = 10;
-// Enough slots for the most "before" queries (MAX + 1, as queriesBefore counts), all always
-// laid out, so the row keeps its height whatever the count. At 8px a mark plus a 3px gap,
-// they fit two rows in the post column at 1440 and wrap to four on a phone.
-const SLOTS = Math.ceil((MAX + 1) / PER_MARK);
+// One slot per mark at the max, all always laid out, so the panel keeps its height whatever
+// the count: 100 slots fill two rows of 50 columns, or four of 25 in a narrow column.
+const SLOTS = queriesBefore(MAX) / PER_MARK;
 const ID = "query-count";
 const CAPTION = "Counts follow from the code above: one query for the users, then one for each user’s photo.";
 // One database round trip, app server to database and back: a typical figure within one
 // region. The queries run one after another, so the waits add up.
 const RTT_MS = 20;
 const RTT_NOTE = `At ${RTT_MS}\u00a0ms per database round trip (an example, not a measurement).`;
-// The widest total, "1,001 queries · 20.02 s", so every total keeps one width.
+// The widest total, "1,000 queries · 20.00 s", so every total keeps one width.
 const TOTAL_WIDTH = 23;
 
 /** The post's "before" code runs one query for the users, then one per user. */
-export const queriesBefore = (users: number) => users + 1;
+export function queriesBefore(users: number) {
+  return users + 1;
+}
 
 const count = (n: number, one: string, many: string) => `${n.toLocaleString("en-US")} ${n === 1 ? one : many}`;
 
@@ -41,7 +43,7 @@ function Marks({ count, slots }: { count: number; slots: number }) {
   const full = Math.floor(count / PER_MARK);
   const rest = (count % PER_MARK) / PER_MARK;
   return (
-    <span aria-hidden="true" {...stylex.props(styles.marks)}>
+    <span aria-hidden="true" {...stylex.props(styles.grid)}>
       {Array.from({ length: slots }, (_, i) => {
         const state = i < full ? "on" : i === full && rest > 0 ? "part" : "off";
         return (
@@ -94,8 +96,11 @@ function QueryCount() {
       <Result spacing="groups">
         <Line label="Before" queries={before} slots={SLOTS} />
         <Line label="After" queries={1} slots={1} />
-        <span aria-hidden="true" {...stylex.props(styles.legend)}>
-          <span data-state="on" {...stylex.props(styles.mark)} /> = {PER_MARK} queries
+        <span aria-hidden="true" {...stylex.props(styles.contain)}>
+          <span {...stylex.props(styles.grid, styles.legend)}>
+            <span data-state="on" {...stylex.props(styles.mark)} />
+            <span {...stylex.props(styles.legendText)}>= {PER_MARK} queries</span>
+          </span>
         </span>
       </Result>
 
@@ -119,6 +124,8 @@ function QueryCountText() {
 }
 
 const REDUCE = "@media (prefers-reduced-motion: reduce)";
+// From here 50 columns stay at least about 6px wide. Each row is its own query container.
+const wideRow = "@container (min-width: 28rem)";
 
 const styles = stylex.create({
   // A label and its count on one line, over the marks.
@@ -153,10 +160,19 @@ const styles = stylex.create({
   row: {
     display: "grid",
     gap: "0.5rem",
+    containerType: "inline-size",
   },
-  marks: {
-    display: "flex",
-    flexWrap: "wrap",
+  // The legend's own query container, so it picks the same columns as the rows.
+  contain: {
+    display: "block",
+    containerType: "inline-size",
+  },
+  // Every row of marks (and the legend) shares one grid: 50 equal columns, 25 in a narrow
+  // column, so 100 marks fill whole rows edge to edge and a mark is the same width in
+  // every row. Sized from the panel's width, not the viewport's.
+  grid: {
+    display: "grid",
+    gridTemplateColumns: { default: "repeat(25, minmax(0, 1fr))", [wideRow]: "repeat(50, minmax(0, 1fr))" },
     gap: "0.1875rem",
     minWidth: 0,
   },
@@ -165,8 +181,6 @@ const styles = stylex.create({
   // Leaving marks go faster (100ms) than arriving ones (160ms).
   mark: {
     display: "block",
-    flexShrink: 0,
-    width: "0.5rem",
     height: "1rem",
     backgroundColor: colors.fg,
     transformOrigin: "left bottom",
@@ -182,12 +196,15 @@ const styles = stylex.create({
   },
   // The key under the rows, in the caption's dim size.
   legend: {
-    display: "flex",
     alignItems: "center",
-    gap: "0.375rem",
     fontSize: "0.8125rem",
     lineHeight: "1rem",
     color: colors.dim,
+  },
+  legendText: {
+    gridColumn: "2 / -1",
+    marginLeft: "0.1875rem",
+    whiteSpace: "nowrap",
   },
 });
 
