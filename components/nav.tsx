@@ -15,11 +15,13 @@ export function Nav({ path }: { path: string }) {
   return (
     <>
       {/* Fades content out under the nav so its blended text never sits on body text. */}
-      {/* A plain solid band along the top edge, under the scrim (same colour, so it adds
-          nothing you can see). Newer iOS Safari tints its status bar from a fixed element
-          touching the top, and a solid unmasked one is what it reads, so the bar follows
-          the theme as it changes. */}
-      <div aria-hidden="true" {...stylex.props(styles.topEdge)} />
+      {/* Safari 26+ ignores theme-color and tints its status bar from a fixed element with
+          a background touching the top edge, updating as that colour changes. This plain
+          band is that surface. It switches colour instantly (globals.css, [data-tint]):
+          Safari reads the colour when it changes, not mid-transition, so an eased band
+          would leave the bar on the old theme. The scrim above it eases, so you never see
+          the band itself. */}
+      <div aria-hidden="true" data-tint="" {...stylex.props(styles.topEdge)} />
       <div aria-hidden="true" {...stylex.props(styles.scrim)} />
       <header {...stylex.props(styles.header)}>
         {/* data-nav and data-nav-link carry the underline handoff (globals.css). */}
@@ -86,7 +88,9 @@ const styles = stylex.create({
     insetInline: 0,
     top: 0,
     zIndex: 48,
-    height: "2.75rem",
+    // A hairline: at the top of the page the scrim sits 3rem up, so a taller band would
+    // show its instant switch against the easing page for a moment.
+    height: "1px",
     pointerEvents: "none",
     backgroundColor: colors.bg,
   },

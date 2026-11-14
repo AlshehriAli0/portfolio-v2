@@ -214,6 +214,11 @@ table {
   :root.theme-switching .theme-icons svg {
     transition: none !important;
   }
+  /* The status-bar tint surface (components/nav.tsx) changes at once, so Safari reads
+     the final colour; the scrim above it does the visible easing. */
+  :root.theme-switching [data-tint] {
+    transition: none !important;
+  }
   :root.theme-switching.dark .theme-icon-sun,
   :root.theme-switching.light .theme-icon-moon {
     animation: theme-icon-in 320ms cubic-bezier(0.23, 1, 0.32, 1) both;
