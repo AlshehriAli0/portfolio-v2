@@ -48,7 +48,7 @@ function client(bg: Record<string, string>, islands: () => void) {
     root.classList.add("theme-switching");
     setTheme(current() === "dark" ? "light" : "dark");
     clearTimeout(switching);
-    switching = window.setTimeout(() => root.classList.remove("theme-switching"), 360);
+    switching = window.setTimeout(() => root.classList.remove("theme-switching"), 400);
   };
 
   let timer = 0;
