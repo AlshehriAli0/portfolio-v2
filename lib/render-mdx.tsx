@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
 import remarkSmartypants from "remark-smartypants";
+import { lightDark } from "@/styles/palette";
 import { mdxComponents } from "./mdx-components";
 
 type HastNode = {
@@ -108,8 +109,8 @@ export async function renderMdx(source: string) {
       [
         rehypePrettyCode,
         {
-          // Dual theme: tokens carry both colors as CSS vars and prose.module.css picks
-          // one with light-dark(), so switching theme needs no re-highlight.
+          // Dual theme: tokens carry both colors and classifyTokens() writes them as one
+          // per-theme value, so switching theme needs no re-highlight.
           theme: { light: "github-light", dark: "github-dark" },
           keepBackground: false,
           defaultLang: "plaintext",
@@ -146,7 +147,9 @@ function classifyTokens(html: string) {
     });
 
   const value = (style: string, key: string) => style.match(new RegExp(`--shiki-${key}:([^;]+)`))?.[1];
-  const color = (style: string) => `color:light-dark(${value(style, "light")},${value(style, "dark")})`;
+  // Syntax colours come from the Shiki themes, not the palette; only the light/dark pairing is shared.
+  const color = (style: string) =>
+    `color:${lightDark(value(style, "light") ?? "inherit", value(style, "dark") ?? "inherit")}`;
   const [base] = [...classes]
     .filter(([style]) => !style.includes("font-style"))
     .sort(([, a], [, b]) => b.count - a.count)

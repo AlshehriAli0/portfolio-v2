@@ -1,3 +1,5 @@
+import { palette } from "@/styles/palette";
+
 export const site = {
   name: "Ali Alshehri",
   url: "https://ali-sh.com",
@@ -37,8 +39,8 @@ export const openSource = [
   },
 ] as const;
 
-/** Page background per theme: `colors.bg` in styles/tokens.stylex.ts, for the theme-color meta tags. */
-export const themeBg = { light: "#f2f0ea", dark: "#0a0a0a" } as const;
+/** Page background per theme, for the theme-color meta tags, the theme script and the manifest. */
+export const themeBg = palette.bg;
 
 export const socials = [
   { label: "Email", value: "ali0alshehri@outlook.com", href: "mailto:ali0alshehri@outlook.com" },

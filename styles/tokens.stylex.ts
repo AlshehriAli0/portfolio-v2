@@ -1,17 +1,26 @@
 import * as stylex from "@stylexjs/stylex";
 
-// One token carries both palettes via light-dark(); the theme script flips
-// `color-scheme` on <html>, so nothing has to re-render to change theme.
+// Values live in styles/palette.ts. Each token points at the custom property that
+// pages/_app.tsx declares from it; those pick a light or dark value from the
+// `color-scheme` the theme script sets on <html>, so nothing re-renders to change theme.
+// StyleX needs literals here, so keep the names in step with cssVar() in palette.ts.
 export const colors = stylex.defineVars({
-  bg: "light-dark(#f2f0ea, #0a0a0a)",
-  raised: "light-dark(#e9e6de, #131312)",
-  fg: "light-dark(#0b0b0b, #ecebe6)",
-  dim: "light-dark(#5f5d56, #8d8c86)",
-  line: "light-dark(rgb(11 11 11 / 0.12), rgb(236 235 230 / 0.1))",
-  lineStrong: "light-dark(rgb(11 11 11 / 0.28), rgb(236 235 230 / 0.22))",
-  // single accent, used as a fill (never as small text on paper)
-  accent: "#d4ff3a",
-  accentInk: "#0b0b0b",
+  bg: "var(--c-bg)",
+  raised: "var(--c-raised)",
+  fg: "var(--c-fg)",
+  dim: "var(--c-dim)",
+  faint: "var(--c-faint)",
+  line: "var(--c-line)",
+  lineStrong: "var(--c-line-strong)",
+  // The one emphatic fill (ink/paper inversion); text on it is accentInk.
+  accent: "var(--c-accent)",
+  accentInk: "var(--c-accent-ink)",
+  highlight: "var(--c-highlight)",
+  tint: "var(--c-tint)",
+  shadow: "var(--c-shadow)",
+  // White for the nav's `mix-blend-mode: difference` (see palette.ts).
+  blend: "var(--c-blend)",
+  blendHover: "var(--c-blend-hover)",
 });
 
 export const fonts = stylex.defineVars({

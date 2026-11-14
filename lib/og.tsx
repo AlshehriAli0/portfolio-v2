@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { palette } from "@/styles/palette";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -10,12 +11,13 @@ const NAME = "Ali Alshehri";
 const ROLE = "Software engineer";
 const HANDLE = "@alicantcode";
 
+// The cards are dark, like the site's first impression.
 const color = {
-  bg: "#0a0a0a",
-  fg: "#ecebe6",
-  dim: "#8d8c86",
-  faint: "#4c4b47",
-  hairline: "rgba(236,235,230,0.1)",
+  bg: palette.bg.dark,
+  fg: palette.fg.dark,
+  dim: palette.dim.dark,
+  faint: palette.faint.dark,
+  hairline: palette.line.dark,
 };
 
 // Grid, in px. The frame sits INSET from every edge, split into a header band,

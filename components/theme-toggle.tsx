@@ -1,5 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
-import { motion } from "@/styles/tokens.stylex";
+import { colors, motion } from "@/styles/tokens.stylex";
 
 // Plain markup: lib/client-script.ts handles the click, and the icons swap via CSS
 // (`.theme-icon-*` in globals.css), so nothing re-renders.
@@ -43,7 +43,7 @@ const styles = stylex.create({
     // The nav blends with `difference`, so a faint white fill reads as a tint on either theme.
     backgroundColor: {
       default: "transparent",
-      "@media (hover: hover) and (pointer: fine)": { default: "transparent", ":hover": "rgb(255 255 255 / 0.1)" },
+      "@media (hover: hover) and (pointer: fine)": { default: "transparent", ":hover": colors.blendHover },
     },
     transitionProperty: "transform, background-color",
     transitionDuration: "120ms, 200ms",

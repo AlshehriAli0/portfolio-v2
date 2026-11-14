@@ -82,7 +82,8 @@ const styles = stylex.create({
     insetInline: 0,
     top: 0,
     zIndex: 50,
-    color: "#fff",
+    // White under `difference` inverts what's beneath: ink on paper, paper on ink.
+    color: colors.blend,
     mixBlendMode: "difference",
     pointerEvents: "none",
   },

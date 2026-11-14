@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import localFont from "next/font/local";
+import { paletteCss } from "@/styles/palette";
 
 // Subset to ASCII plus the few symbols the site uses. Saans stays variable (300-900)
 // for the weight animations; the mono is a single static 500 instance (5 KB).
@@ -19,13 +20,14 @@ const mono = localFont({
   fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
 });
 
-const fontVars = `:root{--font-sans:${sans.style.fontFamily};--font-mono:${mono.style.fontFamily}}`;
+// Font families and the colour palette as :root custom properties (one tag, never pruned).
+const rootVars = `:root{--font-sans:${sans.style.fontFamily};--font-mono:${mono.style.fontFamily}}${paletteCss}`;
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: font family variables */}
-      <style dangerouslySetInnerHTML={{ __html: fontVars }} />
+      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: font and colour variables */}
+      <style dangerouslySetInnerHTML={{ __html: rootVars }} />
       <Component {...pageProps} />
     </>
   );
