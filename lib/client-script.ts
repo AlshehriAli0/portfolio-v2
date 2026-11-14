@@ -6,6 +6,7 @@ import { themeBg } from "./site";
  * - [data-theme-toggle]: switch theme (one crossfade where View Transitions exist)
  * - [data-copy]: copy the email address on Contact
  * - the post title you clicked morphs into the post header (cross-document View Transition)
+ * - the nav link you clicked stays hovered on the new page until the pointer moves
  * - hover prefetch for browsers without Speculation Rules
  */
 function client(bg: Record<string, string>) {
@@ -105,12 +106,27 @@ function client(bg: Record<string, string>) {
   addEventListener("pageswap", event => {
     const e = event as Swap;
     if (e.viewTransition) morph(e.activation?.entry?.url);
+    // The new page has no :hover until the pointer moves, so carry the hovered nav link over.
+    try {
+      sessionStorage.nav = d.querySelector("[data-nav-link]:is(:hover,:active)")?.getAttribute("href");
+    } catch {
+      // storage blocked: the new page waits for the pointer to move
+    }
   });
   // A View Transition already brought this page in, so .vt stops the title slide-ins replaying.
   addEventListener("pagereveal", event => {
     if ((event as Swap).viewTransition) {
       root.classList.add("vt");
       morph((window as unknown as { navigation?: Nav }).navigation?.activation?.from?.url);
+    }
+    // data-hover stands in for :hover (globals.css, drawn without a transition) until the
+    // first pointer move, when the real :hover takes over in the same frame.
+    try {
+      const link = d.querySelector(`[data-nav-link][href="${sessionStorage.nav}"]`);
+      link?.setAttribute("data-hover", "");
+      d.addEventListener("pointermove", () => link?.removeAttribute("data-hover"), { once: true });
+    } catch {
+      // storage blocked: no hover to carry over
     }
   });
 
