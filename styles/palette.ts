@@ -53,7 +53,13 @@ export const lightDark = (light: string, dark: string) => (light === dark ? ligh
 /** `lineStrong` → `--c-line-strong`. */
 export const cssVar = (role: ColorRole) => `--c-${role.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)}`;
 
-/** Every role as a custom property on :root, so nothing needs a re-render to change theme. */
-export const paletteCss = `:root{${(Object.keys(palette) as ColorRole[])
-  .map(role => `${cssVar(role)}:${lightDark(palette[role].light, palette[role].dark).replace(/,\s+/g, ",")}`)
-  .join(";")}}`;
+/**
+ * Every role as a custom property with a concrete colour per theme: light by default, dark
+ * when the OS asks for it (unless the toggle chose light) or the toggle chose dark. Plain
+ * values, not light-dark(): with light-dark() the declared colour never changes on a toggle,
+ * only how it resolves, so anything watching the background (Safari tints its bars from
+ * the page background) never sees the switch.
+ */
+const vars = (theme: "light" | "dark") =>
+  (Object.keys(palette) as ColorRole[]).map(role => `${cssVar(role)}:${palette[role][theme]}`).join(";");
+export const paletteCss = `:root{${vars("light")}}@media (prefers-color-scheme:dark){:root:not(.light){${vars("dark")}}}:root.dark{${vars("dark")}}`;
