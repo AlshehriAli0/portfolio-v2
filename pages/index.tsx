@@ -69,7 +69,10 @@ export default function Home({ posts }: Props) {
           </section>
 
           <Section id="about" label="About">
-            <p {...stylex.props(styles.statement)}>{copy.about}</p>
+            <p {...stylex.props(styles.statement)}>
+              <span {...stylex.props(styles.statementLead)}>{aboutLead}</span>
+              {aboutRest}
+            </p>
             <TextLink href="/info" style={styles.more}>
               More about me
             </TextLink>
@@ -99,6 +102,12 @@ const thicken = stylex.keyframes({
 
 const scrollDriven = "@supports (animation-timeline: scroll())";
 const WIDE = "@media (min-width: 1024px)";
+
+// The statement's first sentence leads in the text colour; the rest follows in dim.
+const [aboutLead, aboutRest] = (() => {
+  const end = copy.about.indexOf(". ") + 1;
+  return [copy.about.slice(0, end), copy.about.slice(end)];
+})();
 
 const styles = stylex.create({
   hero: {
@@ -178,14 +187,20 @@ const styles = stylex.create({
   small: {
     fontSize: "0.9375rem",
   },
+  // A lead paragraph, not display type: two sentences read at about 45 characters a
+  // line (38ch), 22px on phones up to 32px at 1440, with leading loose enough for five
+  // lines and the slight negative tracking text this size wants.
   statement: {
-    maxWidth: "20em",
-    fontSize: "clamp(1.75rem, 4.1vw, 4rem)",
-    // Display tracking and leading tighten only once the size is display-sized.
-    lineHeight: { default: 1.12, [WIDE]: 1.06 },
-    letterSpacing: { default: "-0.028em", [WIDE]: "-0.04em" },
-    fontVariationSettings: '"wght" calc(380 + var(--wdk))',
+    maxWidth: "38ch",
+    color: colors.dim,
+    fontSize: "clamp(1.375rem, 1rem + 1.1vw, 2rem)",
+    lineHeight: { default: 1.4, [WIDE]: 1.34 },
+    letterSpacing: "-0.015em",
+    fontVariationSettings: '"wght" calc(420 + var(--wdk))',
     textWrap: "pretty",
+  },
+  statementLead: {
+    color: colors.fg,
   },
   more: {
     marginTop: "clamp(1.5rem, 3vw, 2.5rem)",
