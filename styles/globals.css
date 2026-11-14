@@ -3,6 +3,8 @@
 /* Minimal reset. Everything visual lives in StyleX. */
 :root {
   color-scheme: light dark;
+  /* Safari tints its toolbar and status bar from the page's own background too. */
+  background-color: var(--c-bg);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   /* Links and buttons give their own press feedback (opacity or scale), so the

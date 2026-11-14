@@ -32,8 +32,13 @@ function client(bg: Record<string, string>, islands: () => void) {
     root.classList.remove("light", "dark");
     root.classList.add(theme);
     label();
-    // Both tags (light and dark media) take the chosen theme, so the browser UI follows the toggle.
-    for (const meta of d.querySelectorAll<HTMLMetaElement>("meta[name=theme-color]")) meta.content = bg[theme] ?? "";
+    // iOS Safari only re-tints the status bar for a new theme-color tag, not an edited one,
+    // so the per-scheme tags give way to one fresh tag for the chosen theme.
+    for (const meta of d.querySelectorAll("meta[name=theme-color]")) meta.remove();
+    const meta = d.createElement("meta");
+    meta.name = "theme-color";
+    meta.content = bg[theme] ?? "";
+    d.head.append(meta);
     try {
       localStorage.setItem("theme", theme);
     } catch {
@@ -249,7 +254,7 @@ const islandLoader = `()=>{const l=document.querySelectorAll("[data-island]");if
 export const clientScript = `(${client.toString()})(${JSON.stringify(themeBg)},${islandLoader});`;
 
 // Runs in <head> after the theme-color tags, so a saved theme sets them before first paint too.
-export const themeScript = `try{var t=localStorage.getItem("theme"),b=${JSON.stringify(themeBg)};if(b[t]){document.documentElement.classList.add(t);for(var m of document.querySelectorAll("meta[name=theme-color]"))m.content=b[t]}}catch(e){}`;
+export const themeScript = `try{var t=localStorage.getItem("theme"),b=${JSON.stringify(themeBg)};if(b[t]){document.documentElement.classList.add(t);for(var m of document.querySelectorAll("meta[name=theme-color]"))m.remove();m=document.createElement("meta");m.name="theme-color";m.content=b[t];document.head.append(m)}}catch(e){}`;
 
 // Same-site page links, never the page you're on.
 const pages = {
