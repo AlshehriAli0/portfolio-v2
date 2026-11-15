@@ -1,7 +1,7 @@
 /**
  * The site's only colour values. Every other file reads a role from here:
  * - CSS (StyleX tokens, prose.module.css, globals.css) uses the `--c-*` custom properties
- *   that `paletteCss` declares on :root (inlined by pages/_app.tsx).
+ *   that `paletteCss` declares on :root (inlined at the top of <head> by pages/_document.tsx).
  * - JS that needs a raw value (theme-color meta, the theme script, the manifest, OG images)
  *   imports `palette` directly.
  * scripts/check-colors.ts fails the build on a colour literal anywhere else.
@@ -60,6 +60,22 @@ export const cssVar = (role: ColorRole) => `--c-${role.replace(/[A-Z]/g, c => `-
  * only how it resolves, so anything watching the background (Safari tints its bars from
  * the page background) never sees the switch.
  */
-const vars = (theme: "light" | "dark") =>
-  (Object.keys(palette) as ColorRole[]).map(role => `${cssVar(role)}:${palette[role][theme]}`).join(";");
-export const paletteCss = `:root{${vars("light")}}@media (prefers-color-scheme:dark){:root:not(.light){${vars("dark")}}}:root.dark{${vars("dark")}}`;
+const roles = Object.keys(palette) as ColorRole[];
+const vars = (theme: "light" | "dark") => roles.map(role => `${cssVar(role)}:${palette[role][theme]}`).join(";");
+
+/**
+ * The theme switch transitions the palette itself, once, on :root. Registered as colours,
+ * the properties interpolate, and every element reading them changes in the same frame.
+ * Transitioning each element's own colour instead staggered in Safari: WebKit runs nested
+ * transitions of an inherited property one after another, so text that inherits its colour
+ * lagged behind (WebKit bugs 46041, 153843). lib/client-script.ts sets .theme-switching for
+ * the length of the switch.
+ */
+const registered = roles
+  .map(role => `@property ${cssVar(role)}{syntax:"<color>";inherits:true;initial-value:transparent}`)
+  .join("");
+const themeSwitch = `@media (prefers-reduced-motion:no-preference){:root.theme-switching{transition:${roles
+  .map(role => `${cssVar(role)} 360ms cubic-bezier(0.4,0,0.2,1)`)
+  .join(",")}}}`;
+
+export const paletteCss = `${registered}:root{${vars("light")}}@media (prefers-color-scheme:dark){:root:not(.light){${vars("dark")}}}:root.dark{${vars("dark")}}${themeSwitch}`;
