@@ -23,8 +23,10 @@ const color = {
 // Grid, in px. The frame sits INSET from every edge, split into a header band,
 // a body, and a footer band. The header and footer are cut into three equal cells.
 const INSET = 40;
-const BAND = 52;
-const PAD = 24;
+// Bands and labels are sized for the card as feeds show it, at 40-50% scale: 26px
+// labels land around 11-13px there, the smallest size that still reads.
+const BAND = 76;
+const PAD = 32;
 const FRAME_W = OG_SIZE.width - INSET * 2;
 const CELL_W = FRAME_W / 3;
 const COLS = [INSET, INSET + CELL_W, INSET + CELL_W * 2, OG_SIZE.width - INSET];
@@ -32,7 +34,9 @@ const ROWS = [INSET, INSET + BAND, OG_SIZE.height - INSET - BAND, OG_SIZE.height
 const BODY_H = ROWS[2] - ROWS[1];
 const TEXT_W = FRAME_W - PAD * 2;
 
-const MONO_SIZE = 15;
+const MONO_SIZE = 26;
+// Space between the big type (post title or home name) and the footer band.
+const TITLE_GAP = PAD + 8;
 const DISPLAY_LEADING = 0.92;
 
 // Same tracking as the post title on the site, a touch tighter at poster sizes.
@@ -78,9 +82,10 @@ function lineCount(words: string[], size: number, maxWidth: number) {
 const MAX_TITLE_SIZE = 128;
 const MIN_TITLE_SIZE = 52;
 // The home card stacks the name like the site's hero: two light lines, 0.75 apart
-// (no descenders). "Alshehri" is 3.12em wide, so 322px spans ~94% of the text column,
-// and two lines fit between the top rule and the footer band.
-const HOME_NAME_SIZE = 322;
+// (no descenders). It sits the same distance above the footer band as a post title, with
+// the same space again below the top rule, which sets the size: "Alshehri" (3.12em) at
+// 256px spans ~76% of the text column.
+const HOME_NAME_SIZE = 256;
 const HOME_LEADING = 0.75;
 const MAX_TITLE_LINES = 3;
 // Three lines at full size would crowd the header band, so cap the block height.
@@ -115,7 +120,7 @@ function Mono({ children, color: tone = color.dim }: { children: React.ReactNode
         alignItems: "center",
         fontFamily: "Mono",
         fontSize: MONO_SIZE,
-        letterSpacing: MONO_SIZE * 0.06,
+        letterSpacing: MONO_SIZE * 0.04,
         textTransform: "uppercase",
         color: tone,
         lineHeight: 1,
@@ -198,7 +203,7 @@ function PostTitle({ title }: { title: string }) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
-        paddingBottom: PAD + 8,
+        paddingBottom: TITLE_GAP,
       }}
     >
       <div
@@ -238,7 +243,7 @@ function HomeName() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
-        paddingBottom: 0,
+        paddingBottom: TITLE_GAP,
         fontFamily: "Saans",
         fontWeight: 300,
         fontSize: HOME_NAME_SIZE,
