@@ -27,7 +27,8 @@ const nextConfig = {
   headers: async () => [
     // Pages: the site changes rarely, so a return visit within a day renders from the
     // browser cache with no network; for a month after that, Chrome and Firefox show the
-    // cached copy and refresh it in the background. A reload always fetches fresh. Hashed assets and islands keep their own immutable caching.
+    // cached copy and refresh it in the background. A reload always fetches fresh.
+    // Hashed assets and islands keep their own immutable caching.
     {
       source: "/:path((?!_next/|islands/|api/).*)",
       headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=2592000" }],
