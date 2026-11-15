@@ -19,8 +19,7 @@ export const ids = {
 export const DEFAULT_IMAGE = `${site.url}/opengraph-image`;
 
 /** Card for a post, the same one its og:image uses. */
-export const postImage = (p: PostSummary) =>
-  `${site.url}/api/og?title=${encodeURIComponent(p.title)}&date=${p.date}&min=${p.minutes}`;
+export const postImage = (p: PostSummary) => `${site.url}/og/${p.slug}.png`;
 
 const ref = (id: string) => ({ "@id": id });
 
