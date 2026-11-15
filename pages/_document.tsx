@@ -51,6 +51,8 @@ export default class SiteDocument extends Document {
               browser picks its own dark or light canvas from color-scheme before any CSS,
               and the palette and the stored theme apply before <body> is read. */}
           <meta name="color-scheme" content="light dark" />
+          {/* Soft navigation only swaps in pages from this same deploy (lib/client-script.ts). */}
+          <meta name="build" content={this.props.__NEXT_DATA__.buildId} />
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: the colour palette (one tag, never pruned) */}
           <style
             data-palette=""

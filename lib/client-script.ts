@@ -161,13 +161,22 @@ function client(bg: Record<string, string>, islands: () => void) {
     const url = new URL(href);
     const id = ++latest;
     const full = () => (y === undefined ? location.assign(href) : location.reload());
+    const path = url.pathname + url.search;
     let next: Document;
     try {
-      next = new DOMParser().parseFromString(await load(url.pathname + url.search), "text/html");
+      next = new DOMParser().parseFromString(await load(path), "text/html");
     } catch {
       return full();
     }
     if (id !== latest) return;
+    // A page cached from another deploy: its CSS was built for other markup, so swapping it
+    // in mixes two versions. Refresh it in the HTTP cache and load it in full instead.
+    const build = (doc: Document) => doc.querySelector("meta[name=build]")?.getAttribute("content");
+    if (build(next) !== build(d)) {
+      cache.delete(path);
+      await fetch(path, { cache: "no-cache" }).catch(() => {});
+      return full();
+    }
     const page = d.querySelector("[data-page]");
     const content = next.querySelector("[data-page]");
     const main = content?.querySelector("main");
