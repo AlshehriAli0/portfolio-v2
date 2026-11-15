@@ -25,6 +25,13 @@ const nextConfig = {
   experimental: { reactCompiler: { panicThreshold: "all_errors" } },
   // Island modules are content-hashed by scripts/build-islands.ts (the manifest isn't).
   headers: async () => [
+    // Pages: a return visit within 5 minutes renders from the browser cache with no
+    // network; after that, Chrome and Firefox show the cached copy and refresh it in the
+    // background. Hashed assets and islands keep their own immutable caching.
+    {
+      source: "/:path((?!_next/|islands/|api/).*)",
+      headers: [{ key: "Cache-Control", value: "public, max-age=300, stale-while-revalidate=86400" }],
+    },
     {
       source: "/islands/:file([\\w-]+\\.js)",
       headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
