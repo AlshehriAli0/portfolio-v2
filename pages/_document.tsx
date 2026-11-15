@@ -104,6 +104,8 @@ const styles = stylex.create({
     color: colors.accentInk,
     fontFamily: fonts.mono,
     fontSize: "0.75rem",
-    transform: { default: "translateY(-200%)", ":focus-visible": "none" },
+    // Clipped away, not moved off-screen: Safari draws the page above the viewport under
+    // its status bar, so a link parked up there would show through.
+    clipPath: { default: "inset(50%)", ":focus-visible": "none" },
   },
 });
