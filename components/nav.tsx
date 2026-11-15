@@ -168,7 +168,14 @@ const styles = stylex.create({
     color: colors.blend,
     mixBlendMode: "difference",
     pointerEvents: "none",
-    // Its own View Transition layer, so soft navigations leave it still (globals.css).
+    // Taller than the viewport, so Safari 26+ doesn't take it for a toolbar. Safari tints
+    // its top bar from a full-width fixed bar touching the top edge, but freezes that
+    // colour after the first tap or scroll, so a theme switch wouldn't reach it until a
+    // reload. A fixed layer over 105% of the viewport height doesn't count as a toolbar,
+    // so Safari tints from the page background instead, which it reads on every frame.
+    // See LocalFrameView::fixedContainerEdges and Page::canSampleTopFixedContainerEdge
+    // in WebKit.
+    height: "120lvh",
   },
   inner: {
     display: "flex",
