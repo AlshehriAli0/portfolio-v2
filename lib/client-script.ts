@@ -90,8 +90,8 @@ function client(bg: Record<string, string>, islands: () => void) {
   // Soft navigation: page links fetch the next page and swap in its content ([data-page]:
   // <main> and the footer) and its per-page head (tags, pruned CSS), so the nav stays the
   // same nodes and keeps its :hover and cursor. Anything unexpected falls back to a full load.
-  const pageLink = (event: Event) => {
-    const a = event.target instanceof Element ? event.target.closest("a") : null;
+  const pageLink = (target: EventTarget | null) => {
+    const a = target instanceof Element ? target.closest("a") : null;
     return a?.origin === location.origin &&
       !a.target &&
       !a.hasAttribute("download") &&
@@ -114,11 +114,33 @@ function client(bg: Record<string, string>, islands: () => void) {
   };
   // Hovering, pressing or focusing a link warms the cache (a failed fetch is dropped from
   // it, so it never rejects unhandled); pages are static, so it holds for the visit.
-  const warm = (event: Event) => {
-    const a = pageLink(event);
+  const warm = (target: EventTarget | null) => {
+    const a = pageLink(target);
     if (a && a.pathname !== location.pathname) load(a.pathname + a.search);
   };
-  for (const type of ["pointerover", "pointerdown", "focusin"]) d.addEventListener(type, warm, { passive: true });
+  for (const type of ["pointerover", "pointerdown", "focusin"])
+    d.addEventListener(type, event => warm(event.target), { passive: true });
+
+  // Prefetch, so even a first tap swaps from memory instead of waiting on the network: the
+  // nav's few pages once the page is idle, and any other page link as it scrolls into view.
+  // Off under Save-Data. Runs on load and after each soft navigation.
+  const visible = new IntersectionObserver(entries => {
+    for (const { isIntersecting, target } of entries) {
+      if (isIntersecting) {
+        visible.unobserve(target);
+        warm(target);
+      }
+    }
+  });
+  const prefetch = () => {
+    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
+    visible.disconnect();
+    for (const a of d.querySelectorAll("a[href]:not([data-ghost] a)")) {
+      if (a.closest("header")) warm(a);
+      else visible.observe(a);
+    }
+  };
+  const idle = () => (self.requestIdleCallback ?? setTimeout)(prefetch);
 
   // Scroll positions by history entry, restored on back and forward. The browser restores
   // them itself for full loads (a reload), so it's only off while the page is shown.
@@ -184,6 +206,7 @@ function client(bg: Record<string, string>, islands: () => void) {
       // keyboard start there; the new <title> is already in place.
       main.focus({ preventScroll: true });
       islands();
+      idle();
     };
     // A crossfade without a View Transition (its snapshot made the blended nav flash): a copy
     // of the old content, fixed where it was, fades out over the new page while its title
@@ -216,7 +239,7 @@ function client(bg: Record<string, string>, islands: () => void) {
   };
 
   d.addEventListener("click", event => {
-    const a = pageLink(event);
+    const a = pageLink(event.target);
     if (
       !a ||
       event.defaultPrevented ||
@@ -240,6 +263,7 @@ function client(bg: Record<string, string>, islands: () => void) {
   });
 
   islands();
+  idle();
 }
 
 /**
