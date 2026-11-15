@@ -89,5 +89,8 @@ const styles = stylex.create({
     margin: 0,
     accentColor: colors.fg,
     cursor: "pointer",
+    // A touch on the slider moves either the slider or the page, never both: sideways
+    // drags go to the slider, and a vertical swipe still scrolls past it.
+    touchAction: "pan-y",
   },
 });
