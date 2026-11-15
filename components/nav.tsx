@@ -16,6 +16,8 @@ export function Nav({ path }: { path: string }) {
     <>
       {/* Fades content out under the nav so its blended text never sits on body text. */}
       <div aria-hidden="true" {...stylex.props(styles.scrim)} />
+      {/* Fills the strip under Safari's status bar, so scrolled content doesn't show there. */}
+      <div aria-hidden="true" {...stylex.props(styles.statusBarFill)} />
       <header {...stylex.props(styles.header)}>
         {/* data-nav and data-nav-link carry the underline handoff (globals.css). */}
         <div data-nav="" {...stylex.props(styles.inner)}>
@@ -158,6 +160,19 @@ const styles = stylex.create({
     animationFillMode: { default: null, [SCROLL_TIMELINE]: "both" },
     animationTimeline: { default: null, [SCROLL_TIMELINE]: "scroll()" },
     animationRange: { default: null, [SCROLL_TIMELINE]: "0 3rem" },
+  },
+  // Safari 26+ draws the page under its status bar, above the top of the viewport. This
+  // covers that strip in the page colour. It ends exactly at the viewport's top edge, so
+  // Safari doesn't take it for a toolbar (see `header`) and keeps reading the tint from the
+  // page background.
+  statusBarFill: {
+    position: "fixed",
+    insetInline: 0,
+    bottom: "100%",
+    height: "100lvh",
+    zIndex: 49,
+    pointerEvents: "none",
+    backgroundColor: colors.bg,
   },
   header: {
     position: "fixed",
