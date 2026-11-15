@@ -10,10 +10,11 @@ const CANDIDATES = [
   { file: "image-medium.jpg", width: 768 },
   { file: "image-large.jpg", width: 1280 },
 ] as const;
+// Pixel density, named the way most people meet it: how sharp the screen is.
 const DENSITIES = [
-  { value: 1, label: "1×" },
-  { value: 2, label: "2×" },
-  { value: 3, label: "3×" },
+  { value: 1, label: "Standard" },
+  { value: 2, label: "Retina 2×" },
+  { value: 3, label: "Retina 3×" },
 ] as const;
 type Density = (typeof DENSITIES)[number]["value"];
 const MIN = 320;
@@ -44,7 +45,7 @@ function SrcsetPicker() {
       <Controls>
         <RangeField
           id={`${ID}-width`}
-          label="Viewport width"
+          label="Screen width"
           value={viewport}
           display={fixed(px(viewport), 8)}
           min={MIN}
@@ -54,12 +55,11 @@ function SrcsetPicker() {
           onValue={setViewport}
         />
         <Segmented
-          legend="Pixel density"
+          legend="Screen sharpness"
           name={`${ID}-density`}
           options={DENSITIES}
           value={density}
           onChange={setDensity}
-          variant="numeric"
         />
       </Controls>
 
@@ -87,7 +87,7 @@ function SrcsetPicker() {
             </span>
           </code>
         </Row>
-        <Row label="Slot width">
+        <Row label="Image shows at">
           <Num>{fixed(px(slot), 6)}</Num>
         </Row>
         <Row label="Pixels needed">
@@ -125,7 +125,10 @@ function SrcsetPicker() {
         <span aria-hidden="true" style={vars({ "--at": Math.min(needed / SCALE, 1) })} {...stylex.props(styles.need)} />
       </div>
 
-      <Caption>Simplified: browsers may reuse a cached larger file or pick a smaller one on slow connections.</Caption>
+      <Caption>
+        A Retina screen draws each pixel of the layout with 2 or 3 real pixels, so the image needs that many more to
+        stay sharp. Simplified: browsers may reuse a cached larger file or pick a smaller one on slow connections.
+      </Caption>
     </Panel>
   );
 }
@@ -148,7 +151,7 @@ function SrcsetTable() {
             Device
           </th>
           <th scope="col" {...stylex.props(styles.th)}>
-            Slot
+            Shows at
           </th>
           <th scope="col" {...stylex.props(styles.th)}>
             Needs
