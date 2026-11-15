@@ -17,8 +17,6 @@ class InlineCssHead extends Head {
 
 const profiles = socials.filter(s => s.href.startsWith("https://")).map(s => s.href);
 
-const analytics = `window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)}`;
-
 export default class SiteDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const initial = await ctx.defaultGetInitialProps(ctx);
@@ -74,13 +72,6 @@ export default class SiteDocument extends Document {
           <NextScript />
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: the site's only client JS */}
           <script dangerouslySetInnerHTML={{ __html: clientScript }} />
-          {process.env.VERCEL ? (
-            <>
-              {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Vercel Web Analytics queue */}
-              <script dangerouslySetInnerHTML={{ __html: analytics }} />
-              <script defer src="/_vercel/insights/script.js" />
-            </>
-          ) : null}
         </body>
       </Html>
     );
