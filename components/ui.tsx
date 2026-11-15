@@ -296,9 +296,11 @@ const styles = stylex.create({
     color: colors.fg,
   },
   nowrap: { whiteSpace: "nowrap" },
+  // 9px with its arms on the middle (5th) pixel, offset 4px so they land exactly on the
+  // rule's 1px line and its end pixels.
   cross: {
     position: "absolute",
-    top: "-5px",
+    top: "-4px",
     width: "9px",
     height: "9px",
     pointerEvents: "none",
@@ -307,8 +309,8 @@ const styles = stylex.create({
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
   },
-  crossL: { left: "-5px" },
-  crossR: { right: "-5px" },
+  crossL: { left: "-4px" },
+  crossR: { right: "-4px" },
   rule: {
     position: "relative",
     height: "1px",
