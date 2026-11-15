@@ -168,7 +168,9 @@ const styles = stylex.create({
   statusBarFill: {
     position: "fixed",
     insetInline: 0,
-    bottom: "100%",
+    // Anchored by its top in lvh, which stays put while Safari's toolbar collapses: a
+    // `bottom` anchor follows the viewport's changing height and opens a gap mid-scroll.
+    top: "-100lvh",
     height: "100lvh",
     zIndex: 49,
     pointerEvents: "none",
