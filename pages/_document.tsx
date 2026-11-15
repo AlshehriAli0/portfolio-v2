@@ -3,6 +3,7 @@ import Document, { type DocumentContext, Head, Html, Main, NextScript } from "ne
 import { clientScript, speculationRules, themeScript } from "@/lib/client-script";
 import { builtCss, pruneCss } from "@/lib/prune-css";
 import { site, socials, themeBg } from "@/lib/site";
+import { paletteCss } from "@/styles/palette";
 import { colors, fonts } from "@/styles/tokens.stylex";
 
 /**
@@ -46,6 +47,15 @@ export default class SiteDocument extends Document {
     return (
       <Html lang="en" suppressHydrationWarning>
         <InlineCssHead>
+          {/* First paint in the right colours, light or dark, even on a cold load: the
+              browser picks its own dark or light canvas from color-scheme before any CSS,
+              and the palette and the stored theme apply before <body> is read. */}
+          <meta name="color-scheme" content="light dark" />
+          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: the colour palette (one tag, never pruned) */}
+          <style
+            data-palette=""
+            dangerouslySetInnerHTML={{ __html: `${paletteCss}:root{background-color:var(--c-bg)}` }}
+          />
           <meta name="theme-color" media="(prefers-color-scheme: light)" content={themeBg.light} />
           <meta name="theme-color" media="(prefers-color-scheme: dark)" content={themeBg.dark} />
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: theme must apply before first paint */}
