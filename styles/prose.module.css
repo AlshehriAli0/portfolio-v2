@@ -15,7 +15,7 @@
 
   counter-reset: post-figure;
   min-width: 0;
-  font-size: clamp(1.1875rem, 1.105rem + 0.3vw, 1.3125rem);
+  font-size: clamp(1.125rem, 1.035rem + 0.37vw, 1.3125rem);
   line-height: 1.65;
   letter-spacing: -0.006em;
   color: var(--body);
