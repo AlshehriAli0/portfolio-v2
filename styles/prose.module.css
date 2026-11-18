@@ -15,7 +15,7 @@
 
   counter-reset: post-figure;
   min-width: 0;
-  font-size: clamp(1.125rem, 1.035rem + 0.37vw, 1.3125rem);
+  font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
   line-height: 1.65;
   letter-spacing: -0.006em;
   color: var(--body);
@@ -392,8 +392,8 @@
 }
 
 /* Last, so it wins over the static weights above. */
-/* From about 776px wide, body text takes the dark-mode compensation (see --wdk in
-   globals.css), bold included. */
+/* Body text reaches 18px at about 776px wide; from there it takes the dark-mode
+   compensation (see --wdk in globals.css), bold included. */
 @media (min-width: 48.5rem) {
   .article {
     font-variation-settings: "wght" calc(400 + var(--wdk));
